@@ -1,0 +1,45 @@
+body{
+    background-color: rgb(222, 214, 201);
+}
+
+.center {
+    text-align: center;
+}
+
+.contact-picture {
+    width: 170px;
+    border-radius: 50%;
+
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+#main-logo {
+    font-size: 30px;
+    font-family: 'Pattaya', sans-serif;
+    color: #d5693d;
+}
+
+#test{
+    background-color: rgba(255,0,0,0.1);
+}
+
+.error-messages {
+    color: red;
+}
+
+.background-image{
+    background-image:url(../../static/wallpaper/1.jpg);
+
+    background-repeat: no-repeat;
+
+    background-size: cover;
+}
+
+.background {
+    min-height: 100vh;
+    position: relative;
+}

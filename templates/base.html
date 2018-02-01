@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+
+
+    <title>{% block title %}Supergib{% endblock title %}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap.min.css" %}">
+
+    <!-- Custom outsourced CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap-social.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "lib/css/fancy login form.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "lib/css/font-awesome.min.css" %}">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Pattaya" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    {% block link %}
+    {% endblock link %}
+
+
+</head>
+
+<body class="background" style="
+background-image:url(/static/wallpaper/cold-snow-winter-mountain.jpg);
+background-position: center center;
+background-size: cover;">
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% include 'navbar.html' %}
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <!-- Distinct page content starts here -->
+            {% block content %}
+            {% endblock content %}
+        </div>
+
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="{% static "lib/js/jquery-3.3.1.js" %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script type="text/javascript" src="{% static "lib/js/bootstrap.min.js" %}"></script>
+
+    {% block script %}
+    {% endblock script %}
+    </div>
+
+
+</body>
+
+</html>
