@@ -25,7 +25,7 @@ SECRET_KEY = 'fvlabevmq+je0ybvu8_ksjgrz-v(*$0_93sjhz13l0)s%5!l7-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #External packages
+    'social_django',
+
 ]
 
 MIDDLEWARE = [
@@ -47,6 +51,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #External packages
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'TBA4250.urls'
@@ -63,6 +70,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                #External packages
+                'social_django.context_processors.backends',  # <--
+                'social_django.context_processors.login_redirect', # <--
             ],
         },
     },
@@ -70,6 +81,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TBA4250.wsgi.application'
 
+LOGIN_URL = 'login'
+LOGOUT_URL = 'home'
+LOGIN_REDIRECT_URL = 'home'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '171056550287904'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '0cf6dd3741e9a1382cc2c834c8e844ba'  # App Secret
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -99,6 +116,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 
 # Internationalization
