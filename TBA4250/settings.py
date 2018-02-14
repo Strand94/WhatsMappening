@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    #Custom made apps
+    'apps.staticpages',
+
     #External packages
     'social_django',
 
@@ -52,7 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    #External packages
+    #Social Django
     'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
@@ -71,7 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                #External packages
+                # Social Django
                 'social_django.context_processors.backends',  # <--
                 'social_django.context_processors.login_redirect', # <--
             ],

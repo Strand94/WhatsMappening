@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'home' %}">
                 <p id="main-logo">SuperGib</p>
             </a>
         </div>
@@ -18,7 +18,7 @@
     <div class="collapse navbar-collapse" id="navigation_menu">
         <ul class="nav navbar-nav">
            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Project sites <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Prosjektsider<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="#">link 1</a></li>
                     <li role="separator" class="divider"></li>
@@ -28,30 +28,51 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
 
-        {% if user.is_authenticated %}
+       {% if user.is_authenticated %}
                 {% if user.is_superuser %}
-                    <li><a href="{% url 'admin:index' %}">Admin</a>
+                    <li><a href="{% url 'admin:index' %}">Administrering</a>
                 {% endif %}
 
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="#">My profile</a></li>
-                <li><a href="#">Profil settings</a></li>
+                <li><a href="{% url 'user' %}">Min profil</a></li>
+                <li><a href="{% url 'settings' %}">Profil instillinger</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="{% url 'logout' %}">Logg ut</a>
             </ul>
         </li>
-
         {% else %}
-
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
 			<ul id="login-dp" class="dropdown-menu">
 				<li>
                     <div class="row">
                         <div class="col-md-12">
-                        </div>
+                            <p class="center">Logg in / register bruker med</p>
+								<div class="social-buttons">
+									<a href="{% url 'social:begin' 'facebook' %}" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+								</div>
+                                <p class="center">eller</p>
+
+								 <form class="form" method="post" action="{% url 'login' %}" accept-charset="UTF-8" id="login-nav">{% csrf_token %}
+										<div class="form-group">
+											 <input type="text" class="form-control" name="username" placeholder="Brukernavn" required>
+										</div>
+										<div class="form-group">
+											 <input type="password" class="form-control" name="password" placeholder="Passord" required>
+{#                                             <div class="help-block center">#}
+{#                                                 <a href="">Glemt passordet?</a>#}
+{#                                             </div>#}
+										</div>
+										<div class="form-group">
+											 <button type="submit" class="btn btn-primary btn-block">Logg inn</button>
+										</div>
+								 </form>
+							</div>
+{#							<div class="bottom text-center">#}
+{#								New here ? <a href="#"><b>Join Us</b></a>#}
+{#							</div>#}
 					 </div>
 				</li>
 			</ul>

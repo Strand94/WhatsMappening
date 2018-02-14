@@ -1,86 +1,83 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <!-- Meta -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+        <meta name="description" content="Webapplication made in NTNU course TBA4250">
+        <title>{% block title %}Supergib{% endblock title %}</title>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+        <!-- Bootstrap Core CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap.min.css" %}">
 
+        <!-- Custom outsourced CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap-social.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "lib/css/fancy login form.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "lib/css/font-awesome.min.css" %}">
 
-    <title>{% block title %}Supergib{% endblock title %}</title>
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Pattaya" rel="stylesheet">
 
-    <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap.min.css" %}">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
 
-    <!-- Custom outsourced CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap-social.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "lib/css/fancy login form.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "lib/css/font-awesome.min.css" %}">
+        {% block link %}
+        {% endblock link %}
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Pattaya" rel="stylesheet">
+        <!-- Custom javascript -->
+        <script type="text/javascript" src="{% static "js/main.js" %}"></script>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
-    {% block link %}
-    {% endblock link %}
+        <!-- jQuery -->
+        <script type="text/javascript" src="{% static "lib/js/jquery-3.3.1.js" %}"></script>
 
+        <!-- Bootstrap Core JavaScript -->
+        <script type="text/javascript" src="{% static "lib/js/bootstrap.min.js" %}"></script>
 
-</head>
+        <!-- Facebook SDK -->
+        <script>
+          window.fbAsyncInit = function() {
+            FB.init({
+              appId      : '171056550287904',
+              xfbml      : true,
+              version    : 'v2.12'
+            });
+            FB.AppEvents.logPageView();
+          };
 
-<body class="background" style="
-background-image:url(/static/wallpaper/cold-snow-winter-mountain.jpg);
-background-position: center center;
-background-size: cover;">
+          (function(d, s, id){
+             var js, fjs = d.getElementsByTagName(s)[0];
+             if (d.getElementById(id)) {return;}
+             js = d.createElement(s); js.id = id;
+             js.src = "https://connect.facebook.net/en_US/sdk.js";
+             fjs.parentNode.insertBefore(js, fjs);
+           }(document, 'script', 'facebook-jssdk'));
+        </script>
 
-    <div id="wrapper">
+        {% block script %}
+        {% endblock script %}
 
-        <!-- Sidebar -->
-        {% include 'navbar.html' %}
-        <!-- /#sidebar-wrapper -->
+    </head>
 
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <!-- Distinct page content starts here -->
-            {% block content %}
-            {% endblock content %}
+    <body>
+
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            {% include 'navbar.html' %}
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <!-- Distinct page content starts here -->
+                {% block content %}
+                {% endblock content %}
+            </div>
+
+        <!-- /#wrapper -->
         </div>
 
-    <!-- /#wrapper -->
-
-    <!-- jQuery -->
-    <script type="text/javascript" src="{% static "lib/js/jquery-3.3.1.js" %}"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script type="text/javascript" src="{% static "lib/js/bootstrap.min.js" %}"></script>
-
-    {% block script %}
-    {% endblock script %}
-    </div>
-
-
-</body>
+    </body>
 
 </html>
-
-
-<!-- Facebook SDK -->
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '171056550287904',
-      xfbml      : true,
-      version    : 'v2.12'
-    });
-    FB.AppEvents.logPageView();
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>

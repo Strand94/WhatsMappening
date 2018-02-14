@@ -32,8 +32,6 @@ body{
 }
 
 .background-image{
-    background-image:url(../../static/wallpaper/1.jpg);
-
     background-repeat: no-repeat;
 
     background-size: cover;

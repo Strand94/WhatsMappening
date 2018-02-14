@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="main-page" class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="media">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ user_form }}
+                        {{ profile_form }}
+                        <div class="center">
+                            <button class="btn btn-facebook" style="text-align: center" type="submit">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}

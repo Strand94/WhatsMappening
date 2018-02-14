@@ -21,8 +21,15 @@ from apps.staticpages import views
 urlpatterns = [
     url(r'^$', views.frontpage),
     url(r'^home/$', views.home, name='home'),
+    url(r'^user/$', views.user, name='user'),
     url(r'^login/$', auth_views.login, name='login'),
-    url(r'^logout/$', auth_views.logout, name='logout'),
+    url(r'^logout/$', auth_views.logout, {'next_page': '/login'}, name='logout'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^admin/', admin.site.urls),
+
+    #settings
+    url(r'^settings/$', views.settings, name='settings'),
+    url(r'^settings/password/$', views.password, name='password'),
+    url(r'^settings/user/$', views.update_profile, name='update_profile'),
+
 ]
