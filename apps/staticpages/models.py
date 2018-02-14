@@ -16,7 +16,7 @@ class Profile(models.Model):
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     picture = models.ImageField(upload_to=user_folder, default='placeholderProfile.png')
-    gender = models.CharField(max_length=1, default='U', choices=(('U', 'Unknown'), ('M', 'Male'), ('F', 'Female'),))
+    gender = models.CharField(null=True, max_length=10, default='U', choices=(('U', 'Unknown'), ('M', 'Male'), ('F', 'Female'),))
 
 
 @receiver(post_save, sender=User)
@@ -29,3 +29,6 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+
+def get_profile(user):
+    return user.profile
