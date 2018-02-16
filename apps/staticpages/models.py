@@ -31,4 +31,5 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 def get_profile(user):
-    return user.profile
+    if user.profile:
+        return user.profile
