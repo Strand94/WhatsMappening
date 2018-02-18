@@ -1,0 +1,61 @@
+/*/* Sidebar */
+#sidebar-wrapper {
+    z-index: 1;
+    position: absolute;
+    width: 250px;
+    height: 100vh;
+    overflow-y: hidden;
+    background: #2C3E50;
+}
+
+/* Always take up entire screen */
+#page-content-wrapper {
+    width: 100%;
+    position: sticky;
+    padding-left: 250px;
+    padding-top: 0;
+}
+
+#sidebar-toggle{
+    position: sticky;
+    padding-left: 250px;
+    border-radius: 0;
+    background-color: #2C3E50;
+}
+
+
+/* Change with of sidebar from 250px to 0*/
+#wrapper.sidebarHidden #sidebar-wrapper {
+    width: 0;
+    padding: 0;
+}
+
+#wrapper.sidebarHidden #sidebar-toggle{
+    padding-left: 0;
+}
+
+/* Since we added left padding, we need to shrink the width by 250px */
+#wrapper.sidebarHidden #page-content-wrapper {
+    padding: 0;
+}
+
+/* Sidebar styling - the entire ul list */
+.sidebar-nav {
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #ddd;
+}
+
+.sidebar-nav li a:hover {
+    background: #1e2b38;
+}*/
