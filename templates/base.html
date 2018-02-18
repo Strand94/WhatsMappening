@@ -11,6 +11,7 @@
         <!-- Bootstrap Core CSS -->
         <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap.css" %}">
         <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap.min.css" %}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
         <!-- Custom outsourced CSS -->
         <link rel="stylesheet" type="text/css" href="{% static "lib/css/bootstrap-social.css" %}">
@@ -79,19 +80,40 @@
 
         <div id="wrapper">
 
-            <!-- Sidebar -->
+            <!-- Navbar -->
             {% include 'navbar.html' %}
+            <!-- /#navbar-wrapper -->
+
+            <!-- Sidebar -->
+            {% include 'sidebar.html' %}
             <!-- /#sidebar-wrapper -->
 
             <!-- Page Content -->
+
             <div id="page-content-wrapper">
                 <!-- Distinct page content starts here -->
+                
                 {% block content %}
                 {% endblock content %}
             </div>
 
+
         <!-- /#wrapper -->
         </div>
+
+    <!-- sidebar toggle script -->
+    <script>
+        $("#sidebar-toggle").click( function (e){
+            e.preventDefault();
+
+        $("#wrapper").toggleClass("sidebarHidden");
+            var icon = $(this).parent().find(".glyphicon");
+            if (icon.hasClass('glyphicon-chevron-right'))
+                icon.removeClass('glyphicon-chevron-right').addClass("glyphicon-chevron-left");
+            else
+                icon.removeClass('glyphicon-chevron-left').addClass("glyphicon-chevron-right");
+        });
+    </script>
 
     </body>
 
