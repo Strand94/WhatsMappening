@@ -101,20 +101,6 @@
         <!-- /#wrapper -->
         </div>
 
-    <!-- sidebar toggle script -->
-    <script>
-        $("#sidebar-toggle").click( function (e){
-            e.preventDefault();
-
-        $("#wrapper").toggleClass("sidebarHidden");
-            var icon = $(this).parent().find(".glyphicon");
-            if (icon.hasClass('glyphicon-chevron-right'))
-                icon.removeClass('glyphicon-chevron-right').addClass("glyphicon-chevron-left");
-            else
-                icon.removeClass('glyphicon-chevron-left').addClass("glyphicon-chevron-right");
-        });
-    </script>
-
     </body>
 
 </html>
