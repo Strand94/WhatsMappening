@@ -1,7 +1,8 @@
 /*/* Sidebar */
+
 #sidebar-wrapper {
     z-index: 1;
-    position: absolute;
+    position: fixed;
     width: 250px;
     height: 100vh;
     overflow-y: hidden;
@@ -41,6 +42,7 @@
 
 /* Sidebar styling - the entire ul list */
 .sidebar-nav {
+    position: relative;
     padding: 0;
     list-style: none;
 }
