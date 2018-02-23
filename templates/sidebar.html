@@ -6,7 +6,16 @@
     <ul class="sidebar-nav">
         <li><a href="#">Some Link</a></li>
         <li><a href="#">Another thing</a></li>
-    </ul>   
+    </ul>
+    <!-- Search form -->
+    <form class="form-inline" action="https://nominatim.openstreetmap.org/search?q=(search.value)>
+       <div>
+            <label class="sr-only" for="search">Search:</label>
+        <input type="text" name="q" placeholder="Search for location" id="search" value="search">
+
+        <button type="submit" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
+         </div>
+    </form>
 </div>
 
 <!-- Button-->
