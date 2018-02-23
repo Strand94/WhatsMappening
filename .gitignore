@@ -98,3 +98,7 @@ ENV/
 /site
 
 *.sqlite3
+
+# Pipenv
+Pipfile
+Pipfile.lock
