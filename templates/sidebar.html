@@ -4,28 +4,32 @@
 <!-- Sidebar -->
 <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
-        <li><a href="#">Some Link</a></li>
-        <li><a href="#">Another thing</a></li>
-    </ul>   
-</div>
-
-<!-- Button-->
-<div class="container-fluid">
-            <a href="#" class="btn btn-default" id="sidebar-toggle" >
-            	<span class="glyphicon glyphicon-chevron-left"  style="color:white" id="textarea"></span>
+        <li class="sidebar-brand">
+            <a href="#">
+                Start Bootstrap
             </a>
+        </li>
+        <li>
+            <a href="#">Dashboard</a>
+        </li>
+        <li>
+            <a href="#">Shortcuts</a>
+        </li>
+        <li>
+            <a href="#">Overview</a>
+        </li>
+        <li>
+            <a href="#">Events</a>
+        </li>
+        <li>
+            <a href="#">About</a>
+        </li>
+        <li>
+            <a href="#">Services</a>
+        </li>
+        <li>
+            <a href="#">Contact</a>
+        </li>
+    </ul>
 </div>
-
-<!-- sidebar toggle script -->
-<script>
-    $("#sidebar-toggle").click( function (e){
-        e.preventDefault();
-
-    $("#wrapper").toggleClass("sidebarHidden");
-        var icon = $(this).parent().find(".glyphicon");
-        if (icon.hasClass('glyphicon-chevron-right'))
-            icon.removeClass('glyphicon-chevron-right').addClass("glyphicon-chevron-left");
-        else
-            icon.removeClass('glyphicon-chevron-left').addClass("glyphicon-chevron-right");
-    });
-</script>
+<!-- /#sidebar-wrapper -->

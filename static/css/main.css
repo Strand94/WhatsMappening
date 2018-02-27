@@ -42,5 +42,6 @@ body{
     position: relative;
 }
 
-.navbar-default { margin-bottom: 0px; }
+.navbar-default { margin-bottom: 0px;
+z-index: 1001;}
 
