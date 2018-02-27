@@ -1,7 +1,7 @@
 /*/* Sidebar */
 
 #sidebar-wrapper {
-    z-index: 1;
+    z-index: 1000;
     position: fixed;
     width: 250px;
     height: 100vh;
@@ -18,9 +18,15 @@
 }
 
 #sidebar-toggle{
-    position: sticky;
+    position: relative;
+    z-index: 999;
+    top: 150px;
     padding-left: 250px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 2px;
     border-radius: 0;
+    margin: 0;
     background-color: #2C3E50;
 }
 
@@ -33,6 +39,8 @@
 
 #wrapper.sidebarHidden #sidebar-toggle{
     padding-left: 0;
+    left: 0;
+    margin-left: 0;
 }
 
 /* Since we added left padding, we need to shrink the width by 250px */
