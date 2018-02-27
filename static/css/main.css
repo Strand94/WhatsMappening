@@ -42,6 +42,25 @@ body{
     position: relative;
 }
 
-.navbar-default { margin-bottom: 0px;
-z-index: 1001;}
+.navbar-default {
+    margin-bottom: 0px;
+    z-index: 1001;
+}
+
+#map-container{
+    height: 100%;
+}
+
+#map{
+    width: 100%;
+    height: calc(100vh - 50px);
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#super-wrapper{
+    max-height: 100vh;
+}
 
