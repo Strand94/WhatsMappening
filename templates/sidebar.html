@@ -8,15 +8,70 @@
         <li><a href="#">Another thing</a></li>
     </ul>
     <!-- Search form -->
-    <form class="form-inline" action="https://nominatim.openstreetmap.org/search?q=(search.value)>
-       <div>
-            <label class="sr-only" for="search">Search:</label>
-        <input type="text" name="q" placeholder="Search for location" id="search" value="search">
 
-        <button type="submit" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
-         </div>
-    </form>
+       <div>
+
+        <input type="text" name="addr" placeholder="Search for location" id="addr" value="">
+
+        <button type="button" onclick="addr_search()" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
+       </div>
+
+
 </div>
+
+<!-- JavaScrip SearchEngine -->
+<script>
+
+
+
+    function addr_search() {
+        var inp=document.getElementById("addr");
+
+        $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + inp.value, function(data) {
+    //var items=[];
+    $.each(data, function (key,val) {
+        var location = new L.LatLng(val.lat,val.lon);
+        eventMap.panTo(location);
+        if(val.type=='city' || val.type=='administrative'){
+            eventMap.setZoom(11);
+        }else{
+            eventMap.setZoom(13);
+        }
+    });
+        });
+    }
+       /* item.push(
+            "<li><a href='#' onclick='chooseAddr("+val.lat + ", " + val.lon + "); return false;'>" + val.dispaly_name + '</a></li>');
+        
+    });
+
+    $('results').empty();
+    if(items.length!=0){
+        $('<p>',{html: "Search results:"}).appendTo('results');
+        $('<ul/>',{
+            'class':'my-new-list',
+            html: items.join('')
+        }).appendTo('#results');
+    }else{
+        $('<p>',{html: "No results found"}).appendTo('results');
+    }
+
+        });
+
+    }
+
+    function chooseAddr(lat,lng, type) {
+        var location = new L.LatLng(lat,lng);
+        eventMap.panTo(location);
+        if(type=='city' || type=='administrative'){
+            eventMap.setZoom(11);
+        }else{
+            eventMap.setZoom(13);
+        }
+
+    }*/
+
+</script>
 
 <!-- Button-->
 <div class="container-fluid">
