@@ -27,6 +27,13 @@ body{
     background-color: rgba(255,0,0,0.1);
 }
 
+/* Always take up entire screen (padding left is because sidebar is open) */
+#page-content-wrapper {
+    width: 100%;
+    padding-left: 250px;
+    padding-top: 0;
+}
+
 .error-messages {
     color: red;
 }
@@ -41,3 +48,6 @@ body{
     min-height: 100vh;
     position: relative;
 }
+
+.navbar-default { margin-bottom: 0px; }
+
