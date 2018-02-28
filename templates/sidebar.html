@@ -14,5 +14,37 @@
         </li>
 
     </ul>
+    <!-- Search form -->
+
+       <div>
+
+        <input type="text" name="addr" placeholder="Search for location" id="addr" value="">
+
+        <button type="button" onclick="addr_search()" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
+       </div>
+
 </div>
+
+<!-- JavaScrip SearchEngine -->
+<script>
+
+
+
+    function addr_search() {
+        var inp=document.getElementById("addr");
+
+        $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + inp.value, function(data) {
+    //var items=[];
+    $.each(data, function (key,val) {
+        var location = new L.LatLng(val.lat,val.lon);
+        eventMap.panTo(location);
+        if(val.type=='city' || val.type=='administrative'){
+            eventMap.setZoom(11);
+        }else{
+            eventMap.setZoom(13);
+        }
+    });
+        });
+    }
+    </script>
 <!-- /#sidebar-wrapper -->
