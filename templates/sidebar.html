@@ -20,13 +20,25 @@
 
         <input type="text" name="addr" placeholder="Search for location" id="addr" value="">
 
-        <button type="button" onclick="addr_search()" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
+        <button type="button" id="addrbtn" onclick="addr_search()" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
        </div>
 
 </div>
 
 <!-- JavaScrip SearchEngine -->
 <script>
+
+    var input =document.getElementById("addr");
+    input.addEventListener("keyup",function (event) {
+        // Cancel the default action, if needed
+  event.preventDefault();
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Trigger the button element with a click
+    document.getElementById("addrbtn").click();
+  }
+});
+
 
 
 
