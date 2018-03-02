@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     # Custom made apps
     'apps.staticpages',
+    'apps.events',
 
     # External packages
     'social_django',
