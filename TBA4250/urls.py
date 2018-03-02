@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 from apps.staticpages import views
 
 urlpatterns = [
-    url(r'^$', views.frontpage),
+    url(r'^$', views.frontpage, name='frontpage'),
     url(r'^home/$', views.home, name='home'),
     url(r'^user/$', views.user, name='user'),
     url(r'^login/$', auth_views.login, name='login'),
