@@ -1,0 +1,64 @@
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static "css/sidebar.css" %}">
+
+<!-- Sidebar -->
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+
+        <li>
+            <a href="#">Link1</a>
+        </li>
+        <li>
+            <a href="#">Link2</a>
+        </li>
+
+    </ul>
+    <!-- Search form -->
+
+       <div>
+
+        <input type="text" name="addr" placeholder="Search for location" id="addr" value="">
+
+        <button type="button" id="addrbtn" onclick="addr_search()" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
+       </div>
+
+</div>
+
+<!-- JavaScrip SearchEngine -->
+<script>
+
+    var input =document.getElementById("addr");
+    input.addEventListener("keyup",function (event) {
+        // Cancel the default action, if needed
+  event.preventDefault();
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Trigger the button element with a click
+    document.getElementById("addrbtn").click();
+  }
+});
+
+
+
+
+    function addr_search() {
+        var inp=document.getElementById("addr");
+
+        $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + inp.value, function(data) {
+    //var items=[];
+    $.each(data, function (key,val) {
+        var location = new L.LatLng(val.lat,val.lon);
+        addMarker(eventMap,marker,location);
+
+        if(val.type=='city' || val.type=='administrative'){
+            eventMap.setView(location,11);
+        }else{
+            eventMap.setView(location,13);
+        }
+
+    });
+        });
+    }
+    </script>
+<!-- /#sidebar-wrapper -->
