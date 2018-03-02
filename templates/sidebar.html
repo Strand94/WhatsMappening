@@ -49,12 +49,14 @@
     //var items=[];
     $.each(data, function (key,val) {
         var location = new L.LatLng(val.lat,val.lon);
-        eventMap.panTo(location);
+        addMarker(eventMap,marker,location);
+
         if(val.type=='city' || val.type=='administrative'){
-            eventMap.setZoom(11);
+            eventMap.setView(location,11);
         }else{
-            eventMap.setZoom(13);
+            eventMap.setView(location,13);
         }
+
     });
         });
     }
