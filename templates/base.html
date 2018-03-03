@@ -75,22 +75,18 @@
     </head>
 
     <body>
-    <div id="super-wrapper">
-            <!-- Navbar -->
-            {% include 'navbar.html' %}
-            <!-- /#navbar-wrapper -->
-
-            <div id="wrapper" class="toggled">
-            <!-- Sidebar -->
-            {% include 'sidebar.html' %}
-            <!-- /#sidebar-wrapper -->
+    <div id="wrapper" class="toggled">
+            {% block infoBar %}
+            {% endblock infoBar %}
 
             <!-- Page Content -->
 
             <div id="page-content-wrapper">
-                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
-                    <span class="glyphicon glyphicon-chevron-left"  style="color:var(--sidebar-text-color)" id="textarea"></span>
-                </a>
+
+                {% block menuToggle %}
+                {% endblock menuToggle %}
+                <!-- Distinct page content starts here -->
+
                 <!-- Distinct page content starts here -->
                 {% block content %}
                 {% endblock content %}
@@ -99,11 +95,9 @@
             <!-- /#page-content-wrapper -->
 
 
-        </div>
-        <!-- /#wrapper -->
-
     </div>
-    <!-- /#super-wrapper -->
+    <!-- /#wrapper -->
+
 
     <!-- Menu Toggle Script -->
     <script>
