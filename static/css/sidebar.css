@@ -69,19 +69,19 @@ body {
   list-style: none;
 }
 
-.sidebar-nav li {
+.sidebar-nav li, .modal li {
   padding-top: 10px;
   text-indent: 10px;
   line-height: 30px;
 }
 
-.sidebar-nav li a {
+.sidebar-nav li a, .modal li a {
   display: block;
   text-decoration: none;
   color: var(--sidebar-text-color);
 }
 
-.sidebar-nav li a:hover {
+.sidebar-nav li a:hover, .modal  li a:hover{
   text-decoration: none;
   color: rgba(2, 0, 1, 1);
 }
@@ -92,9 +92,14 @@ body {
   line-height: 20px;
 }
 
-.sidebar-nav li a:active, .sidebar-nav li a:focus {
+.sidebar-nav  li a:active, .sidebar-nav li a:focus, .modal li a:active, .modal  li a:focus{
   text-decoration: none;
 }
+
+.modal ul {
+  list-style-type: none;
+}
+
 
 hr {
     display: block;
@@ -142,3 +147,68 @@ hr {
     margin: 0;
     background-color: var(--sidebar-color);
   }
+
+   .fa {
+    padding-top : 50px;
+    margin: 0;
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50%;
+    }
+
+   .fa:hover {
+    opacity: 0.6;
+    }
+
+    .fa-user-circle{
+        background: #d5693d;
+        color: white;
+    }
+
+    #user-icon {
+        position: relative;
+        z-index: 1000;
+        top: 5px;
+        left: calc(100vw - 70px);
+        padding: 0;
+        margin: 0;
+        border-radius: 50%;
+        box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+
+    }
+
+    #wrapper.toggled #user-icon{
+    position: relative;
+    z-index: 1000;
+    top: 5px;
+    left: calc(100vw - 320px);
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
+    }
+
+    #userModal-dialog{
+        position: absolute;
+        z-index: 1000;
+        left: calc(100vw - 300px);
+        top: 5px;
+        width: 250px;
+
+    }
+
+    #userModal-dialog .modal-content{
+        border-top-right-radius: 0;
+
+    }
+
+
+
+
