@@ -36,10 +36,10 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="{% url 'user' %}">Min profil</a></li>
-                <li><a href="{% url 'settings' %}">Profil instillinger</a></li>
+                <li><a href="{% url 'user' %}">My profile</a></li>
+                <li><a href="{% url 'settings' %}">Edit Profile</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="{% url 'logout' %}">Logg ut</a>
+                <li><a href="{% url 'logout' %}">Logg out</a>
             </ul>
         </li>
         {% else %}
