@@ -57,6 +57,7 @@ def password(request):
         form = PasswordForm(request.user)
     return render(request, 'registration/password.html', {'form': form})
 
+
 @login_required
 @transaction.atomic
 def update_profile(request):
