@@ -3,6 +3,15 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=70)
+    parent = models.ForeignKey('self', blank=True, null=True, related_name='child', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+        ordering = ['title']
+
+
 class Event(models.Model):
     title = models.CharField(max_length=150)
     ingress = models.CharField(max_length=300, blank=True, default='')
@@ -14,6 +23,7 @@ class Event(models.Model):
     coordinates = models.CharField(max_length=500, null=True, blank=True)
     address = models.CharField(max_length=500, null=True, blank=True)
     image = models.ImageField(upload_to='events', blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
 class Participation(models.Model):
