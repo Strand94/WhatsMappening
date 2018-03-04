@@ -1,0 +1,25 @@
+{% extends 'baseNavbar.html' %}
+
+{% block content %}
+
+    <div class="container" style="color: black">
+        <div class="row space-below">
+            <div class="col-xl-12 space-above">
+                <div class="white-box" id="text-box">
+
+                    <form action="{% url 'events:new_event' %}" method="get">
+                        {% csrf_token %}
+                        <input class="input-button" type="submit" value="Create new event"><br>
+                    </form>
+                    <br>
+                    <form action="#" method="get">
+                        {% csrf_token %}
+                        <input class="input-button" type="submit" value="(Deadlink) View all my events"><br>
+                    </form>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

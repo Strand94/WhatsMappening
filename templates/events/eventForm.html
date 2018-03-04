@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'baseNavbar.html' %}
 
 {% block content %}
 
@@ -6,7 +6,7 @@
         <div class="row space-below">
             <div class="col-xl-12 space-above">
                 <div class="white-box" id="text-box">
-                    <h2>Apply</h2>
+                    <h2>Create new event:</h2>
                     <form method="post">
                         {% csrf_token %}
                         {% for field in form %}

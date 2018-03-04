@@ -33,6 +33,6 @@ urlpatterns = [
     url(r'^settings/user/$', views.update_profile, name='update_profile'),
 
     #Apps
-    url(r'^events/', include('apps.events.urls')),
+    url(r'^events/', include('apps.events.urls', namespace='events')),
 
 ]

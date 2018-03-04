@@ -5,6 +5,10 @@ from django.utils import timezone
 from django.shortcuts import redirect
 
 
+def interface(request):
+    return render(request, 'events/eventInterface.html')
+
+
 def create_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
@@ -13,6 +17,6 @@ def create_event(request):
             event.author = request.user
             event.timestamp = timezone.now()
             event.save()
-            return redirect('home')
+            return redirect('events:interface')
     form = EventForm(request.POST)
     return render(request, 'events/eventForm.html', {'form':form})
