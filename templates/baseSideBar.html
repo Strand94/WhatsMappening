@@ -12,8 +12,11 @@
         <span class="glyphicon glyphicon-chevron-left"  style="color:var(--sidebar-text-color)" id="textarea"></span>
     </a>
 
-    <!-- /#profile icon -->
+    <!-- profile icon -->
     <a id="user-icon" href="" class="fa fa-user-circle" data-toggle="modal" data-target="#userModal"> </a>
+
+    <!-- tribar icon -->
+    <a id="tribar-icon" href="" class="fa fa-bars" data-toggle="modal" data-target="#tribarModal"> </a>
 
     <!-- Modal -->
     <div id="userModal" class="modal fade" role="button">
@@ -38,6 +41,29 @@
 
       </div>
     </div>
+
+    <!-- Modal -->
+    <div id="tribarModal" class="modal fade" role="button">
+      <div id="tribarModal-dialog" class="modal-dialog">
+
+        <!-- Modal content-->
+
+        <div class="modal-content">
+
+        <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" >&times;</button>
+
+        <ul>
+            <li><a href="{% url 'events:new_event' %}">Create Event</a></li>
+            <li><a href="#">Manage Events</a></li>
+        </ul>
+        </div>
+
+        </div>
+
+      </div>
+    </div>
+
 
 
 

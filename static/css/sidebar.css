@@ -6,6 +6,7 @@ body {
     --sidebar-color: #f8f8f8;
     --sidebar-border-color: #000000;
     --sidebar-text-color: rgba(0, 0, 0, 0.65);
+    --logoColour: #d5693d;
 }
 
 
@@ -143,7 +144,6 @@ hr {
     padding-bottom: 10px;
     padding-right: 2px;
     border-radius: 0;
-    box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
     margin: 0;
     background-color: var(--sidebar-color);
   }
@@ -160,53 +160,71 @@ hr {
     }
 
    .fa:hover {
-    opacity: 0.6;
+    color: #363636;
+    opacity: 1;
+
     }
 
     .fa-user-circle{
-        background: #d5693d;
+        background: var(--logoColour);
         color: white;
+        box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
+
     }
 
-    #user-icon {
+    .fa-bars{
+        color: #555555;
+    }
+
+    #user-icon, #tribar-icon {
         position: relative;
         z-index: 1000;
-        top: 5px;
-        left: calc(100vw - 70px);
+        top: 20px;
         padding: 0;
         margin: 0;
-        border-radius: 50%;
-        box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
         -webkit-transition: all 0.5s ease;
         -moz-transition: all 0.3s ease;
         -o-transition: all 0.3s ease;
         transition: all 0.3s ease;
+    }
 
+    #user-icon{
+        left: calc(100vw - 70px);
+        border-radius: 50%;
+    }
+
+    #tribar-icon{
+        left: calc(100vw - 170px);
+        border-radius: 20%;
     }
 
     #wrapper.toggled #user-icon{
-    position: relative;
-    z-index: 1000;
-    top: 5px;
     left: calc(100vw - 320px);
-    padding: 0;
-    margin: 0;
-    border-radius: 50%;
-    box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
+    }
+
+    #wrapper.toggled #tribar-icon{
+        left: calc(100vw - 420px);
     }
 
     #userModal-dialog{
         position: absolute;
         z-index: 1000;
         left: calc(100vw - 300px);
-        top: 5px;
+        top: 20px;
         width: 250px;
 
     }
 
-    #userModal-dialog .modal-content{
+    .modal-content{
         border-top-right-radius: 0;
+    }
 
+    #tribarModal-dialog{
+        position: absolute;
+        z-index: 1000;
+        left: calc(100vw - 380px);
+        top: 20px;
+        width: 250px;
     }
 
 
