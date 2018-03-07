@@ -20,3 +20,10 @@ def create_event(request):
             return redirect('events:interface')
     form = EventForm(request.POST)
     return render(request, 'events/eventForm.html', {'form':form})
+
+
+def user_created(request):
+    events = Event.objects.filter(author=request.user)
+    return render(request, 'events/userCreated.html',{
+        'events':events,
+    })

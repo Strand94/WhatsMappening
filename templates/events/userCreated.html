@@ -1,0 +1,23 @@
+{% extends 'baseNavbar.html' %}
+
+{% block content %}
+
+    <div class="container" style="color: black">
+        <div class="row space-below">
+            <div class="col-xl-12 space-above">
+                <div class="white-box" id="text-box">
+                <button><a href="{% url 'events:new_event' %}">Create Event</a></button>
+                <hr>
+                <h1>Your events</h1>
+                <hr>
+                    {% for event in events %}
+                        <div>
+                            <a href="#">{{ event.title }}</a>
+                        </div>
+                   {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
