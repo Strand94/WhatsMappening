@@ -17,6 +17,10 @@ def create_event(request):
             event.author = request.user
             event.timestamp = timezone.now()
             event.save()
+            attendance = Attendance.objects.create(event=event)
+            participation = Participation.objects.create(attendance=attendance, user=request.user, status='G')
+            attendance.save()
+            participation.save()
             return redirect('events:interface')
     form = EventForm(request.POST)
     return render(request, 'events/eventForm.html', {'form':form})
