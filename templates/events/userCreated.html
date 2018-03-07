@@ -12,7 +12,7 @@
                 <hr>
                     {% for event in events %}
                         <div>
-                            <a href="#">{{ event.title }}</a>
+                            <a href="{% url 'events:event_detail' event.pk %}">{{ event.title }}</a>
                         </div>
                    {% endfor %}
                 </div>

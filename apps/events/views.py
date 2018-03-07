@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .forms import EventForm
 from .models import Event, Attendance, Participation
 from django.utils import timezone
@@ -27,3 +27,8 @@ def user_created(request):
     return render(request, 'events/userCreated.html',{
         'events':events,
     })
+
+
+def event_detail(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    return render(request, 'events/eventDetail.html', {'event':event})
