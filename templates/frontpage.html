@@ -24,11 +24,9 @@
 <script>
 
     var marker=L.marker(locatione).addTo(eventMap);
-    function addMarker(map, marker,locations) {
-        if(marker != null){
-            map.removeLayer(marker);
-        }
-        marker=L.marker(locations).addTo(map);
+    function addMarker(marker,locations) {
+
+        marker.setLatLng(locations)
 
         
     }

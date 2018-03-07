@@ -49,7 +49,7 @@
     //var items=[];
     $.each(data, function (key,val) {
         var location = new L.LatLng(val.lat,val.lon);
-        addMarker(eventMap,marker,location);
+        addMarker(marker,location);
 
         if(val.type=='city' || val.type=='administrative'){
             eventMap.setView(location,11);
