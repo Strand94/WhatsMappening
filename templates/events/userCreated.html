@@ -13,6 +13,7 @@
                     {% for event in events %}
                         <div>
                             <a href="{% url 'events:event_detail' event.pk %}">{{ event.title }}</a>
+                            <button><a href="{% url 'events:event_edit' event.pk %}">Edit Event</a></button>
                         </div>
                    {% endfor %}
                 </div>

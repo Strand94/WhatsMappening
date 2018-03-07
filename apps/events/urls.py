@@ -7,5 +7,7 @@ urlpatterns = [
     path('', views.interface, name='interface'),
     path('new', views.create_event, name='new_event'),
     path('list', views.user_created, name='user_events'),
-    path('<int:pk>', views.event_detail, name='event_detail')
+    path('<int:pk>', views.event_detail, name='event_detail'),
+    path('<int:pk>/edit/', views.edit_event, name='event_edit'),
+
 ]

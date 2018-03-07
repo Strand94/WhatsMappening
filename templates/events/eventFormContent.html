@@ -1,0 +1,24 @@
+<div class="container" style="color: black">
+    <div class="row space-below">
+        <div class="col-xl-12 space-above">
+            <div class="white-box" id="text-box">
+                <h2>{{ action }} event:</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <p>
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </p>
+                    {% endfor %}
+                    <button name="submitForm" type="submit" class="btn btn-primary" style="width:100%">{{ action }}</button>
+                 </form>
+        </div>
+    </div>
+</div>
