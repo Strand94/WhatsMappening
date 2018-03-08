@@ -89,7 +89,8 @@
         addMarker(marker,location);
 
         if(val.type=='city' || val.type=='administrative'){
-            eventMap.setView(location,11);
+            eventMap.setView(location);
+            eventMap.fitBounds([[val.boundingbox[0],val.boundingbox[2]],[val.boundingbox[1],val.boundingbox[3]]])
         }else{
             eventMap.setView(location,13);
         }
