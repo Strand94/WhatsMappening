@@ -148,7 +148,7 @@ hr {
     background-color: var(--sidebar-color);
   }
 
-   .fa {
+   .fa-user-circle, .fa-bars {
     padding-top : 50px;
     margin: 0;
     font-size: 30px;
@@ -176,6 +176,10 @@ hr {
         color: #555555;
     }
 
+    .fa-facebook{
+        color: white;
+    }
+
     #user-icon, #tribar-icon {
         position: relative;
         z-index: 1000;
@@ -187,6 +191,7 @@ hr {
         -o-transition: all 0.3s ease;
         transition: all 0.3s ease;
     }
+
 
     #user-icon{
         left: calc(100vw - 70px);
@@ -217,6 +222,7 @@ hr {
 
     .modal-content{
         border-top-right-radius: 0;
+
     }
 
     #tribarModal-dialog{
