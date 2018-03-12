@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.contrib.gis.db import models as geomodels
 
 
 class Category(models.Model):
@@ -20,6 +21,7 @@ class Event(models.Model):
     timestamp = models.DateTimeField(default=timezone.now())
     start = models.DateTimeField(null=True, blank=True)
     end = models.DateTimeField(null=True, blank=True)
+    location = geomodels.PointField(srid=4326, null=True)
     coordinates = models.CharField(max_length=500, null=True, blank=True)
     address = models.CharField(max_length=500, null=True, blank=True)
     image = models.ImageField(upload_to='events', blank=True)
