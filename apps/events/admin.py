@@ -1,9 +1,10 @@
 from django.contrib import admin
 from . models import *
+from leaflet.admin import LeafletGeoAdmin
 
 
-class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'ingress')
+class EventAdmin(LeafletGeoAdmin):
+    list_display = ('title', 'location')
 
 
 class AttendanceAdmin(admin.ModelAdmin):
