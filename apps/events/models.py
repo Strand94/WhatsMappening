@@ -18,7 +18,7 @@ class Event(models.Model):
     ingress = models.CharField(max_length=300, blank=True, default='')
     description = models.CharField(max_length=3000, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(default=timezone.now())
+    timestamp = models.DateTimeField(default=timezone.now)
     start = models.DateTimeField(null=True, blank=True)
     end = models.DateTimeField(null=True, blank=True)
     location = geomodels.PointField(srid=4326, null=True)
