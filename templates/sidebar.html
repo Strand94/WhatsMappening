@@ -18,7 +18,9 @@
 
        <div align = "center">
 
-        <input type="text" name="addr" placeholder="Search for location" id="addr" value="">
+        <input type="text" name="addr" placeholder="Search for location" id="addr" list="try" value="">
+           <datalist id="try">
+           </datalist>
 
         <button type="button" id="addrbtn" onclick="addr_search()" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
        </div>
@@ -73,21 +75,40 @@
   if (event.keyCode === 13) {
     // Trigger the button element with a click
     document.getElementById("addrbtn").click();
+    //If any other key is pressed
+  }else if (!event.shiftKey){
+      searchSug();
   }
 });
 
+function searchSug() {
+        var inp=document.getElementById("addr");
+    $("#try").empty();
 
+    var dataList=document.getElementById("try");
+        $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=10&q=' + inp.value, function(data) {
+            $.each(data, function (key,val) {
+
+                var option=document.createElement("option");
+                option.setAttribute("value",val.display_name);
+                dataList.appendChild(option);
+                numb++;
+
+            });
+             console.log(dataList);
+             console.log("       -----       ")
+        });
+
+    }
 
 
     function addr_search() {
         var inp=document.getElementById("addr");
 
         $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + inp.value, function(data) {
-    //var items=[];
     $.each(data, function (key,val) {
         var location = new L.LatLng(val.lat,val.lon);
         addMarker(marker,location);
-
         if(val.type=='city' || val.type=='administrative'){
             eventMap.setView(location);
             eventMap.fitBounds([[val.boundingbox[0],val.boundingbox[2]],[val.boundingbox[1],val.boundingbox[3]]])
