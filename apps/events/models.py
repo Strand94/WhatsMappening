@@ -28,6 +28,16 @@ class Event(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
+class SimpleEvent(models.Model):
+    title = models.CharField(max_length=150)
+    location = geomodels.PointField(srid=4326, null=True)
+
+
+class SimpleEvent2(models.Model):
+    title = models.CharField(max_length=150)
+    geom = geomodels.PointField(srid=4326, null=True)
+
+
 class Participation(models.Model):
     going = 'G'
     interested = 'I'

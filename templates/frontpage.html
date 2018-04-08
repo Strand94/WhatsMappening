@@ -32,9 +32,18 @@
     function addMarker(marker,locations) {
 
         marker.setLatLng(locations)
-
-        
     }
+
+</script>
+    <script type="text/javascript">
+    function addMapLayers(map) {
+        var EventPoints = "{% url 'events:pointData' %}";
+        $.getJSON(EventPoints, function (data) {
+            L.geoJSON(data).addTo(map)
+        })
+    }
+
+    addMapLayers(eventMap);
 </script>
 
 {% endblock content %}
