@@ -2,7 +2,7 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import EventForm
-from .models import Event, SimpleEvent, Attendance, Participation
+from .models import Event, SimpleEvent, Attendance, Participation, Category
 from django.utils import timezone
 from django.shortcuts import redirect
 
@@ -31,3 +31,8 @@ def testDjango(request):
 def showEvents(request):
     points = serialize('geojson', Event.objects.all())
     return HttpResponse(points, content_type='json')
+
+
+def showCategories(request):
+    categories = serialize('json', Category.objects.all())
+    return HttpResponse(categories, content_type='json')

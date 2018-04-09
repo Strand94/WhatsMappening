@@ -21,6 +21,8 @@
         <input type="text" name="addr" placeholder="Search for location" id="addr" value="">
 
         <button type="button" id="addrbtn" onclick="addr_search()" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
+
+
        </div>
 
 <BR><BR>
@@ -60,6 +62,8 @@
     <p>&nbsp;&nbsp;Going to&nbsp;&nbsp;<input type="checkbox" onclick="if(this.checked){myFunction()}"></p>
     <p>&nbsp;&nbsp;Interested in&nbsp;&nbsp;<input type="checkbox" id="myCheck"></p>
 
+    <select id="categories"></select>
+
 </div>
 
 <!-- JavaScrip SearchEngine -->
@@ -98,5 +102,23 @@
     });
         });
     }
+
+    function getCategories(){
+        var dataList=document.getElementById("categories");
+        var categories ="{% url 'events:categories' %}";
+        $("#categories").empty();
+        $.getJSON(categories,function (data) {
+            $.each(data,function (key,val) {
+                var option =document.createElement("option");
+                option.setAttribute("value",val.fields.title);
+                option.innerText=val.fields.title;
+                console.log(val.fields.title);
+                dataList.appendChild(option);
+            });
+
+        });
+    }
+
+    getCategories();
     </script>
 <!-- /#sidebar-wrapper -->
