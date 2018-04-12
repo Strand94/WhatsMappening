@@ -124,7 +124,7 @@
                 var div = document.createElement("div");
                 var input =document.createElement("input");
                 input.setAttribute("id",val.fields.title);
-                input.setAttribute("value",val.fields.title);
+                input.setAttribute("value",val.pk);
                 var label =document.createElement("label");
                 label.setAttribute("for", val.fields.title );
                 label.innerText=val.fields.title;
@@ -143,7 +143,12 @@
 var checks = $('input[type="checkbox"]:checked').map(function(){
 		return $(this).val();
 	}).get()
-    console.log(checks);
+    var string =
+        checks[0];
+    for(var i=1; i<checks.length; i++){
+        string=string+"&"+checks[i];
+    }
+    //todo
     }
 
     getCategories();

@@ -12,4 +12,6 @@ urlpatterns = [
     path('pointData', views.showEvents, name='pointData'),
     path('categories', views.showCategories, name='categories'),
     path('data', GeoJSONLayerView.as_view(model=SimpleEvent2, properties=('title')), name='data')
+    #path('categories=<string:values', views.showRequestedEvents)
 ]
+

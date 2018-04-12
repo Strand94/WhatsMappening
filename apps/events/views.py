@@ -36,3 +36,7 @@ def showEvents(request):
 def showCategories(request):
     categories = serialize('json', Category.objects.all())
     return HttpResponse(categories, content_type='json')
+
+
+#def showRequestedEvents(request, values):
+#    events = serialize('geojson', Event.objects.filter())
