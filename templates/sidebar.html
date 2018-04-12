@@ -109,21 +109,41 @@
         var dataList=document.getElementById("categories");
         var categories ="{% url 'events:categories' %}";
         $("#categories").empty();
+        var form=document.createElement("form");
+
+        var div = document.createElement("div");
+        var button = document.createElement("input");
+        button.setAttribute("type", "submit");
+        button.setAttribute("value", "Choose categoreis");
+        div.appendChild(button);
+        form.appendChild(div);
+        form.setAttribute("method","post");
+        form.setAttribute("onsubmit","sendCategories()");
         $.getJSON(categories,function (data) {
             $.each(data,function (key,val) {
-                var div = document.createElement("div")
+                var div = document.createElement("div");
                 var input =document.createElement("input");
                 input.setAttribute("id",val.fields.title);
+                input.setAttribute("value",val.fields.title);
                 var label =document.createElement("label");
                 label.setAttribute("for", val.fields.title );
                 label.innerText=val.fields.title;
                 input.setAttribute("type", "checkbox");
-                div.appendChild(input)
+                div.appendChild(input);
                 div.appendChild( label);
-                dataList.appendChild(div);
+                form.appendChild(div);
             });
 
         });
+
+        dataList.appendChild(form);
+    }
+
+    function sendCategories(){
+var checks = $('input[type="checkbox"]:checked').map(function(){
+		return $(this).val();
+	}).get()
+    console.log(checks);
     }
 
     getCategories();
