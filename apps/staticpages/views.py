@@ -9,6 +9,9 @@ from .forms import *
 from social_django.models import UserSocialAuth
 
 
+def testGeoDjango(request):
+    return render(request, "testGeoDjango.html")
+
 
 def frontpage(request):
     return render(request, "frontpage.html")

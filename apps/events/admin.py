@@ -1,33 +1,26 @@
 from django.contrib import admin
+from . models import *
+from leaflet.admin import LeafletGeoAdmin
 
-from .models import *
 
-
-class ParticipationInline(admin.TabularInline):
-    model = Participation
+class EventAdmin(LeafletGeoAdmin):
+    list_display = ('title', 'location')
 
 
 class AttendanceAdmin(admin.ModelAdmin):
-    model = Attendance
-    filter_horizontal = ('participants',)
-    inlines = [
-        ParticipationInline,
-    ]
+    list_display = ('event', 'name')
 
 
-class AttendanceInline(admin.StackedInline):
-    model = Attendance
-    filter_horizontal = ('participants',)
-    extra = 0
+class ParticipationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'status')
 
 
-class EventAdmin(admin.ModelAdmin):
-    inlines = [
-        AttendanceInline,
-    ]
-    exclude = ('timestamp','author')
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('title', 'parent')
 
 
+# Register your models here.
 admin.site.register(Event, EventAdmin)
 admin.site.register(Attendance, AttendanceAdmin)
-admin.site.register(Category)
+admin.site.register(Participation, ParticipationAdmin)
+admin.site.register(Category, CategoryAdmin)

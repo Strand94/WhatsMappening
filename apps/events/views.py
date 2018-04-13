@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.serializers import serialize
+from django.http import HttpResponse
+from django.shortcuts import render
 from .forms import EventForm
-from .models import Event, Attendance, Participation
+from .models import Event, SimpleEvent, Attendance, Participation, Category
 from django.utils import timezone
 from django.shortcuts import redirect
 
@@ -58,7 +61,6 @@ def edit_event(request, pk):
     })
 
 
-
 def user_created(request):
     events = Event.objects.filter(author=request.user)
     return render(request, 'events/userCreated.html',{
@@ -69,3 +71,18 @@ def user_created(request):
 def event_detail(request, pk):
     event = get_object_or_404(Event, pk=pk)
     return render(request, 'events/eventDetail.html', {'event':event})
+    return render(request, 'events/eventForm.html', {'form': form})
+
+
+def testDjango(request):
+    return render(request, 'events/testGeoDjango.html')
+
+
+def showEvents(request):
+    points = serialize('geojson', Event.objects.all())
+    return HttpResponse(points, content_type='json')
+
+
+def showCategories(request):
+    categories = serialize('json', Category.objects.all())
+    return HttpResponse(categories, content_type='json')

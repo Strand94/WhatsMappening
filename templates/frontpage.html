@@ -24,12 +24,30 @@
 <script>
 
     var marker=L.marker(locatione).addTo(eventMap);
+    eventMap.locate({setView:true}).on('locationfound',function (e) {
+
+        var userLocation=new L.setLatLng(e.lat,e.lng);
+        addMarker(marker,userLocation);
+    });
     function addMarker(marker,locations) {
 
-        marker.setLatLng(locations)
-
-        
+        marker.setLatLng(locations);
     }
+
+</script>
+    <script type="text/javascript">
+    function addEvents(map) {
+        var EventPoints = "{% url 'events:pointData' %}";
+        $.getJSON(EventPoints, function (data) {
+            L.geoJSON(data).addTo(map);
+        });
+    }
+
+    addEvents(eventMap);
+
+
+
+
 </script>
 
 {% endblock content %}

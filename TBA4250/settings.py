@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'leaflet',
+    'djgeojson',
 
     # Custom made apps
     'apps.staticpages',
@@ -53,7 +56,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     # Social Django
     'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
@@ -119,8 +121,12 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'whatsmappening',
+        'USER': 'postgres',
+        'HOST': 'localhost',
+        'PASSWORD': 'supergib',
+        'PORT': '5432',
     }
 }
 
@@ -167,6 +173,18 @@ MEDIA_ROOT = '/uploads/'
 
 STATIC_URL = '/static/'
 
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (63.4305, 10.3951),
+    'DEFAULT_ZOOM': 10,
+    'ATTRIBUTION_PREFIX': 'whatsmappening'
+}
+
+
+
+

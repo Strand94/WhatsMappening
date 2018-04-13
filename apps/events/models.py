@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.contrib.gis.db import models as geomodels
 
 
 class Category(models.Model):
@@ -20,9 +21,10 @@ class Event(models.Model):
     ingress = models.CharField(max_length=300, blank=True, default='')
     description = models.CharField(max_length=3000, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(default=timezone.now())
+    timestamp = models.DateTimeField(default=timezone.now)
     start = models.DateTimeField(null=True, blank=True)
     end = models.DateTimeField(null=True, blank=True)
+    location = geomodels.PointField(srid=4326, null=True)
     coordinates = models.CharField(max_length=500, null=True, blank=True)
     address = models.CharField(max_length=500, null=True, blank=True)
     image = models.ImageField(upload_to='events', blank=True)
@@ -30,6 +32,16 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class SimpleEvent(models.Model):
+    title = models.CharField(max_length=150)
+    location = geomodels.PointField(srid=4326, null=True)
+
+
+class SimpleEvent2(models.Model):
+    title = models.CharField(max_length=150)
+    geom = geomodels.PointField(srid=4326, null=True)
 
 
 class Participation(models.Model):
