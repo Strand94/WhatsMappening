@@ -163,7 +163,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 MEDIA_URL = '/uploads/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_ROOT = '/uploads/'
 
 STATIC_URL = '/static/'
 

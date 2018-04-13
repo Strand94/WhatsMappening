@@ -6,7 +6,13 @@
         <div class="row space-below">
             <div class="col-xl-12 space-above">
                 <div class="white-box" id="text-box">
-                    <h1>{{ event.title }}</h1>
+                    {% if event.image %}
+                        <div class="remove-whitebox-padding">
+                            <img src="/uploads/{{ event.image }}" class="center-block img-responsive art-img" width="100%">
+                        </div>
+                    {% endif %}
+                    <h1 id="event_title">{{ event.title }}</h1>
+                    <h4 class="text-center">{{ event.ingress }}</h4>
                 </div>
             </div>
         </div>
