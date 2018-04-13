@@ -1,6 +1,8 @@
+from django.core.serializers import serialize
+from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import EventForm
-from .models import Event, Attendance, Participation
+from .models import Event, SimpleEvent, Attendance, Participation, Category
 from django.utils import timezone
 from django.shortcuts import redirect
 
@@ -19,4 +21,18 @@ def create_event(request):
             event.save()
             return redirect('events:interface')
     form = EventForm(request.POST)
-    return render(request, 'events/eventForm.html', {'form':form})
+    return render(request, 'events/eventForm.html', {'form': form})
+
+
+def testDjango(request):
+    return render(request, 'events/testGeoDjango.html')
+
+
+def showEvents(request):
+    points = serialize('geojson', Event.objects.all())
+    return HttpResponse(points, content_type='json')
+
+
+def showCategories(request):
+    categories = serialize('json', Category.objects.all())
+    return HttpResponse(categories, content_type='json')

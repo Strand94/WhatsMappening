@@ -31,10 +31,23 @@
     });
     function addMarker(marker,locations) {
 
-        marker.setLatLng(locations)
-
-        
+        marker.setLatLng(locations);
     }
+
+</script>
+    <script type="text/javascript">
+    function addEvents(map) {
+        var EventPoints = "{% url 'events:pointData' %}";
+        $.getJSON(EventPoints, function (data) {
+            L.geoJSON(data).addTo(map);
+        });
+    }
+
+    addEvents(eventMap);
+
+
+
+
 </script>
 
 {% endblock content %}
