@@ -34,16 +34,6 @@ class Event(models.Model):
         return self.title
 
 
-class SimpleEvent(models.Model):
-    title = models.CharField(max_length=150)
-    location = geomodels.PointField(srid=4326, null=True)
-
-
-class SimpleEvent2(models.Model):
-    title = models.CharField(max_length=150)
-    geom = geomodels.PointField(srid=4326, null=True)
-
-
 class Participation(models.Model):
     going = 'G'
     interested = 'I'
