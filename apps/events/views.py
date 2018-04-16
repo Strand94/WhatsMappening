@@ -2,7 +2,7 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import EventForm
-from .models import Event, SimpleEvent, Attendance, Participation, Category
+from .models import Event, Attendance, Participation, Category
 from django.utils import timezone
 from django.shortcuts import redirect
 
