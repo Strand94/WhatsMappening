@@ -62,9 +62,13 @@
     <p>&nbsp;&nbsp;Going to&nbsp;&nbsp;<input type="checkbox" onclick="if(this.checked){myFunction()}"></p>
     <p>&nbsp;&nbsp;Interested in&nbsp;&nbsp;<input type="checkbox" id="myCheck"></p>
 
-    <!--<select id="categories"></select> -->
+    <!--<select id=127"categories"></select> -->
     <details ><summary>Choose event categories</summary>
-    <div id="categories"></div> </details>
+    <div >
+        <form id="categories" onsubmit="sendCategories(eventMap)">{% csrf_token %}</form>
+
+
+    </div> </details>
 
 </div>
 
@@ -109,19 +113,15 @@
         var dataList=document.getElementById("categories");
         var categories ="{% url 'events:categories' %}";
         $("#categories").empty();
-        var form=document.createElement("form");
 
         var div = document.createElement("div");
         var button = document.createElement("input");
         button.setAttribute("type", "submit");
         button.setAttribute("value", "Choose categoreis");
         div.appendChild(button);
-        form.appendChild(div);
-        form.setAttribute("method","post");
-        form.setAttribute("onsubmit","sendCategories()");
         $.getJSON(categories,function (data) {
             $.each(data,function (key,val) {
-                var div = document.createElement("div");
+                var subDiv = document.createElement("div");
                 var input =document.createElement("input");
                 input.setAttribute("id",val.fields.title);
                 input.setAttribute("value",val.pk);
@@ -129,27 +129,39 @@
                 label.setAttribute("for", val.fields.title );
                 label.innerText=val.fields.title;
                 input.setAttribute("type", "checkbox");
-                div.appendChild(input);
-                div.appendChild( label);
-                form.appendChild(div);
+                subDiv.appendChild(input);
+                subDiv.appendChild( label);
+                div.appendChild(subDiv);
             });
 
         });
 
-        dataList.appendChild(form);
+        dataList.appendChild(div);
     }
 
-    function sendCategories(){
-var checks = $('input[type="checkbox"]:checked').map(function(){
-		return $(this).val();
+    function sendCategories(map){
+        var checks = $('input[type="checkbox"]:checked').map(function(){
+		    return $(this).val();
 	}).get()
-    var string =
-        checks[0];
+   /* var string =
+        "SELECT * FROM public.events_event where category_id="+checks[0];
     for(var i=1; i<checks.length; i++){
-        string=string+"&"+checks[i];
+        string=string+" OR category_id="+checks[i];
     }
-    //todo
+    string = string+";";*/
+        //var categories ="{% url 'events:listEvents' 12345 %}".replace(/12345/,string);
+        var liste = JSON.stringify(checks);
+        var categories ="{% url 'events:listEvents' 12345 %}".replace(/12345/,liste);
+        console.log(categories);
+        console.log(1);
+        $.getJSON(categories, function (data) {
+                console.log(2);
+            L.geoJSON(data).addTo(map);
+        });
+
     }
+
+    sendCategories(eventMap)
 
     getCategories();
     </script>

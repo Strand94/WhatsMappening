@@ -1,4 +1,5 @@
 from django.urls import path
+from django.urls import re_path
 from . import views
 from djgeojson.views import GeoJSONLayerView
 from . models import SimpleEvent2
@@ -11,7 +12,7 @@ urlpatterns = [
     path('test', views.testDjango, name='testDjango'),
     path('pointData', views.showEvents, name='pointData'),
     path('categories', views.showCategories, name='categories'),
-    path('data', GeoJSONLayerView.as_view(model=SimpleEvent2, properties=('title')), name='data')
-    #path('categories=<string:values', views.showRequestedEvents)
+    path('data', GeoJSONLayerView.as_view(model=SimpleEvent2, properties=('title')), name='data'),
+    path('listEvents/<str:values>/', views.showRequestedEvents, name='listEvents')
 ]
 

@@ -5,6 +5,7 @@ from .forms import EventForm
 from .models import Event, SimpleEvent, Attendance, Participation, Category
 from django.utils import timezone
 from django.shortcuts import redirect
+import json
 
 
 def interface(request):
@@ -38,5 +39,14 @@ def showCategories(request):
     return HttpResponse(categories, content_type='json')
 
 
-#def showRequestedEvents(request, values):
-#    events = serialize('geojson', Event.objects.filter())
+def showRequestedEvents(request, values):
+    #events = serialize('geojson', Event.objects.raw('SELECT id FROM events_event where category_id=1'))
+    print(values)
+    liste = json.loads(values)
+    print(liste)
+    value = []
+    for item in liste:
+        value.append(int(item))
+    events = serialize('geojson', Event.objects.filter(category_id__in = value))
+   # print(events)
+    return HttpResponse(events, content_type='json')

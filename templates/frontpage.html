@@ -38,12 +38,13 @@
     <script type="text/javascript">
     function addEvents(map) {
         var EventPoints = "{% url 'events:pointData' %}";
+        console.log(EventPoints);
         $.getJSON(EventPoints, function (data) {
             L.geoJSON(data).addTo(map);
         });
     }
 
-    addEvents(eventMap);
+    //addEvents(eventMap);
 
 
 
