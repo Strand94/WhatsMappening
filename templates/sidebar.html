@@ -62,7 +62,13 @@
     <p>&nbsp;&nbsp;Going to&nbsp;&nbsp;<input type="checkbox" onclick="if(this.checked){myFunction()}"></p>
     <p>&nbsp;&nbsp;Interested in&nbsp;&nbsp;<input type="checkbox" id="myCheck"></p>
 
-    <select id="categories"></select>
+    <!--<select id=127"categories"></select> -->
+    <details ><summary>Choose event categories</summary>
+    <div >
+        <form id="categories" onsubmit="sendCategories(); event.preventDefault()">{% csrf_token %}</form>
+
+
+    </div> </details>
 
 </div>
 
@@ -103,20 +109,58 @@
         });
     }
 
+
+
     function getCategories(){
         var dataList=document.getElementById("categories");
         var categories ="{% url 'events:categories' %}";
         $("#categories").empty();
+        var div = document.createElement("div");
+        var button = document.createElement("input");
+        button.setAttribute("type", "submit");
+        button.setAttribute("value", "Choose categories");
+        div.appendChild(button);
         $.getJSON(categories,function (data) {
             $.each(data,function (key,val) {
-                var option =document.createElement("option");
-                option.setAttribute("value",val.fields.title);
-                option.innerText=val.fields.title;
-                console.log(val.fields.title);
-                dataList.appendChild(option);
+                var subDiv = document.createElement("div");
+                var input =document.createElement("input");
+                input.setAttribute("id",val.fields.title);
+                input.setAttribute("value",val.pk);
+                var label =document.createElement("label");
+                label.setAttribute("for", val.fields.title );
+                label.innerText=val.fields.title;
+                input.setAttribute("type", "checkbox");
+                subDiv.appendChild(input);
+                subDiv.appendChild( label);
+                div.appendChild(subDiv);
             });
 
         });
+
+        dataList.appendChild(div);
+    }
+
+
+
+    function sendCategories(){
+        var checks = $('input[type="checkbox"]:checked').map(function(){
+		    return $(this).val();
+	}).get();
+        eventMap.removeLayer(layer);
+        var liste = JSON.stringify(checks);
+        var categories ="{% url 'events:listEvents' 12345 %}".replace(/12345/,liste);
+        console.log(categories);
+        $.getJSON(categories, function(data) {
+           console.log(data);
+           layer=L.geoJSON(data);
+           layer.addTo(eventMap);
+        }).fail( function(d, textStatus, error) {
+            console.error("getJSON failed, status: " + textStatus + ", error: "+error);
+
+        });
+
+
+
     }
 
     getCategories();
