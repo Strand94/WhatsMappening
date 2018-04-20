@@ -11,6 +11,9 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
         ordering = ['title']
 
+    def __str__(self):
+        return self.title
+
 
 class Event(models.Model):
     title = models.CharField(max_length=150)
@@ -26,15 +29,8 @@ class Event(models.Model):
     image = models.ImageField(upload_to='events', blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-
-class SimpleEvent(models.Model):
-    title = models.CharField(max_length=150)
-    location = geomodels.PointField(srid=4326, null=True)
-
-
-class SimpleEvent2(models.Model):
-    title = models.CharField(max_length=150)
-    geom = geomodels.PointField(srid=4326, null=True)
+    def __str__(self):
+        return self.title
 
 
 class Participation(models.Model):
@@ -59,3 +55,6 @@ class Attendance(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     participants = models.ManyToManyField(User, blank=True, through=Participation)
+
+    def __str__(self):
+        return self.event.title+'-'+self.name

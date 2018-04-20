@@ -33,14 +33,33 @@
 
     <script type="text/javascript">
 
+    function onEachFeature(feature, layer) {
+            layer.on('click', function (e) {
+
+                    var ourPopup = "<h4>" + e.target.feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, e.target.feature.properties.pk.toString()) ;
+
+
+                        layer.bindPopup(ourPopup)
+                }
+
+            )
+        }
+
     function addEvents(map) {
         var EventPoints = "{% url 'events:pointData' %}";
-        console.log(EventPoints);
+
+
+
+        layer = L.geoJson(null ,{
+            onEachFeature: onEachFeature
+        }).addTo(map);
+
         $.getJSON(EventPoints, function (data) {
-            layer =L.geoJSON(data);
-            layer.addTo(map);
+            //L.geoJSON(data).addTo(map);
+            layer.addData(data);
 
         });
+
     }
 
     addEvents(eventMap);
