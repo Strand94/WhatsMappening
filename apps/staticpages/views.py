@@ -9,6 +9,9 @@ from .forms import *
 from social_django.models import UserSocialAuth
 
 
+def testGeoDjango(request):
+    return render(request, "testGeoDjango.html")
+
 
 def frontpage(request):
     return render(request, "frontpage.html")
@@ -56,6 +59,7 @@ def password(request):
     else:
         form = PasswordForm(request.user)
     return render(request, 'registration/password.html', {'form': form})
+
 
 @login_required
 @transaction.atomic

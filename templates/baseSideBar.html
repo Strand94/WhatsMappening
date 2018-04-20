@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+ {% block infoBar %}
+    <!-- Sidebar -->
+    {% include 'sidebar.html' %}
+    <!-- /#sidebar-wrapper -->
+ {% endblock infoBar %}
+
+{% block menuToggle %}
+    <!-- /#menu toggle -->
+    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
+        <span class="glyphicon glyphicon-chevron-left"  style="color:var(--sidebar-text-color)" id="textarea"></span>
+    </a>
+
+    <!-- profile icon -->
+    <a id="user-icon" href="" class="fa fa-user-circle" data-toggle="modal" data-target="#userModal"> </a>
+
+    <!-- tribar icon -->
+    <a id="tribar-icon" href="" class="fa fa-bars" data-toggle="modal" data-target="#tribarModal"> </a>
+
+    <!-- Modal -->
+    <div id="userModal" class="modal fade" role="button">
+      <div id="userModal-dialog" class="modal-dialog">
+
+        <!-- Modal content-->
+
+        <div class="modal-content">
+
+        <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" >&times;</button>
+
+        <ul>
+            <li><a href="{% url 'user' %}">My profile</a></li>
+            <li><a href="{% url 'settings' %}">Edit Profile</a></li>
+            <hr/>
+            <li><a href="{% url 'logout' %}">Logg out</a>
+        </ul>
+        </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="tribarModal" class="modal fade" role="button">
+      <div id="tribarModal-dialog" class="modal-dialog">
+
+        <!-- Modal content-->
+
+        <div class="modal-content">
+
+        <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" >&times;</button>
+
+        <ul>
+            <li><a href="{% url 'events:new_event' %}">Create Event</a></li>
+            <li><a href="#">Manage Events</a></li>
+        </ul>
+        </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+{% endblock menuToggle %}

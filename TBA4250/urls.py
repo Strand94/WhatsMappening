@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 from apps.staticpages import views
 
 urlpatterns = [
-    url(r'^$', views.frontpage),
+    url(r'^$', views.frontpage, name='frontpage'),
     url(r'^home/$', views.home, name='home'),
     url(r'^user/$', views.user, name='user'),
     url(r'^login/$', auth_views.login, name='login'),
@@ -31,5 +31,8 @@ urlpatterns = [
     url(r'^settings/$', views.settings, name='settings'),
     url(r'^settings/password/$', views.password, name='password'),
     url(r'^settings/user/$', views.update_profile, name='update_profile'),
+
+    #Apps
+    url(r'^events/', include('apps.events.urls', namespace='events')),
 
 ]

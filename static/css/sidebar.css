@@ -6,6 +6,7 @@ body {
     --sidebar-color: #f8f8f8;
     --sidebar-border-color: #000000;
     --sidebar-text-color: rgba(0, 0, 0, 0.65);
+    --logoColour: #d5693d;
 }
 
 
@@ -15,6 +16,11 @@ body {
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+}
+
+/* Always take up entire screen (padding left is because sidebar is open) */
+#page-content-wrapper {
+    padding-left: 250px;
 }
 
 #wrapper.toggled {
@@ -64,24 +70,45 @@ body {
   list-style: none;
 }
 
-.sidebar-nav li {
-  text-indent: 20px;
-  line-height: 40px;
+.sidebar-nav li, .modal li {
+  padding-top: 10px;
+  text-indent: 10px;
+  line-height: 30px;
 }
 
-.sidebar-nav li a {
+.sidebar-nav li a, .modal li a {
   display: block;
   text-decoration: none;
   color: var(--sidebar-text-color);
 }
 
-.sidebar-nav li a:hover {
+.sidebar-nav li a:hover, .modal  li a:hover{
   text-decoration: none;
   color: rgba(2, 0, 1, 1);
 }
 
-.sidebar-nav li a:active, .sidebar-nav li a:focus {
+.sidebar-nav li a p{
+  text-indent: 0;
+  text-align: center;
+  line-height: 20px;
+}
+
+.sidebar-nav  li a:active, .sidebar-nav li a:focus, .modal li a:active, .modal  li a:focus{
   text-decoration: none;
+}
+
+.modal ul {
+  list-style-type: none;
+}
+
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
 }
 
 
@@ -96,10 +123,6 @@ body {
   #wrapper.toggled #sidebar-wrapper {
     width: 250px;
   }
-
-
-
-
 }
 
   #page-content-wrapper {
@@ -121,7 +144,89 @@ body {
     padding-bottom: 10px;
     padding-right: 2px;
     border-radius: 0;
-    box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
     margin: 0;
     background-color: var(--sidebar-color);
   }
+
+   .fa {
+    padding-top : 50px;
+    margin: 0;
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50%;
+    }
+
+   .fa:hover {
+    color: #363636;
+    opacity: 1;
+
+    }
+
+    .fa-user-circle{
+        background: var(--logoColour);
+        color: white;
+        box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6);
+
+    }
+
+    .fa-bars{
+        color: #555555;
+    }
+
+    #user-icon, #tribar-icon {
+        position: relative;
+        z-index: 1000;
+        top: 20px;
+        padding: 0;
+        margin: 0;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+
+    #user-icon{
+        left: calc(100vw - 70px);
+        border-radius: 50%;
+    }
+
+    #tribar-icon{
+        left: calc(100vw - 170px);
+        border-radius: 20%;
+    }
+
+    #wrapper.toggled #user-icon{
+    left: calc(100vw - 320px);
+    }
+
+    #wrapper.toggled #tribar-icon{
+        left: calc(100vw - 420px);
+    }
+
+    #userModal-dialog{
+        position: absolute;
+        z-index: 1000;
+        left: calc(100vw - 300px);
+        top: 20px;
+        width: 250px;
+
+    }
+
+    .modal-content{
+        border-top-right-radius: 0;
+    }
+
+    #tribarModal-dialog{
+        position: absolute;
+        z-index: 1000;
+        left: calc(100vw - 380px);
+        top: 20px;
+        width: 250px;
+    }
+
+
+
+

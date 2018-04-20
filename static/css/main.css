@@ -30,7 +30,6 @@ body{
 /* Always take up entire screen (padding left is because sidebar is open) */
 #page-content-wrapper {
     width: 100%;
-    padding-left: 250px;
     padding-top: 0;
 }
 
@@ -60,7 +59,7 @@ body{
 
 #map{
     width: 100%;
-    height: calc(100vh - 50px);
+    height: calc(100vh);
     margin: 0;
     position: absolute;
     top: 0;
@@ -71,5 +70,31 @@ body{
     max-height: 100vh;
 }
 
+.clearfix {
+    display: block;
+    width: 100%;
+    height: 0;
+    clear: both;
+}
 
+.space-above {
+    margin-top: 15px;
+}
 
+.space-below {
+    margin-bottom: 20px;
+}
+
+.white-box {
+    background-color: #fff;
+    padding: 20px;
+    overflow: auto;
+}
+
+.unstyled-box {
+    padding: 20px;
+}
+
+.clearfix {
+    overflow: auto;
+}
