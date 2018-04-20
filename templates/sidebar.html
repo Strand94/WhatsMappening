@@ -65,7 +65,7 @@
     <!--<select id=127"categories"></select> -->
     <details ><summary>Choose event categories</summary>
     <div >
-        <form id="categories" onsubmit="sendCategories(eventMap)">{% csrf_token %}</form>
+        <form id="categories" onsubmit="sendCategories(); event.preventDefault()">{% csrf_token %}</form>
 
 
     </div> </details>
@@ -109,15 +109,16 @@
         });
     }
 
+
+
     function getCategories(){
         var dataList=document.getElementById("categories");
         var categories ="{% url 'events:categories' %}";
         $("#categories").empty();
-
         var div = document.createElement("div");
         var button = document.createElement("input");
         button.setAttribute("type", "submit");
-        button.setAttribute("value", "Choose categoreis");
+        button.setAttribute("value", "Choose categories");
         div.appendChild(button);
         $.getJSON(categories,function (data) {
             $.each(data,function (key,val) {
@@ -139,29 +140,28 @@
         dataList.appendChild(div);
     }
 
-    function sendCategories(map){
+
+
+    function sendCategories(){
         var checks = $('input[type="checkbox"]:checked').map(function(){
 		    return $(this).val();
-	}).get()
-   /* var string =
-        "SELECT * FROM public.events_event where category_id="+checks[0];
-    for(var i=1; i<checks.length; i++){
-        string=string+" OR category_id="+checks[i];
-    }
-    string = string+";";*/
-        //var categories ="{% url 'events:listEvents' 12345 %}".replace(/12345/,string);
+	}).get();
+        eventMap.removeLayer(layer);
         var liste = JSON.stringify(checks);
         var categories ="{% url 'events:listEvents' 12345 %}".replace(/12345/,liste);
         console.log(categories);
-        console.log(1);
-        $.getJSON(categories, function (data) {
-                console.log(2);
-            L.geoJSON(data).addTo(map);
+        $.getJSON(categories, function(data) {
+           console.log(data);
+           layer=L.geoJSON(data);
+           layer.addTo(eventMap);
+        }).fail( function(d, textStatus, error) {
+            console.error("getJSON failed, status: " + textStatus + ", error: "+error);
+
         });
 
-    }
 
-    sendCategories(eventMap)
+
+    }
 
     getCategories();
     </script>
