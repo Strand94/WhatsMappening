@@ -1,1 +1,1 @@
-web: gunicorn whatsmappening.wsgi --log-file -
+web: gunicorn TBA4250.wsgi --log-file -
