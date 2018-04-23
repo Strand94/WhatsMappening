@@ -23,6 +23,7 @@
 
 <script>
     var layer;
+    var markerLayer = new L.featureGroup();
 
     eventMap.locate({setView:true}).on('locationfound',function (e) {
         eventMap.setZoom(13);
@@ -34,38 +35,38 @@
     <script type="text/javascript">
 
     function onEachFeature(feature, layer) {
-            layer.on('click', function (e) {
+        var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
+        var marker = L.marker(layer.getLatLng(), {icon: greenIcon});
+        marker.bindPopup(ourPopup);
+        markerLayer.addLayer(marker);
+    }
 
-                    var ourPopup = "<h4>" + e.target.feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, e.target.feature.properties.pk.toString()) ;
+    var greenIcon = L.icon({
+    iconUrl: '{% static "img/icons/leaf-green.png" %}',
+    shadowUrl: '{% static "img/icons/leaf-shadow.png" %}',
 
-
-                        layer.bindPopup(ourPopup)
-                }
-
-            )
-        }
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
 
     function addEvents(map) {
         var EventPoints = "{% url 'events:pointData' %}";
 
-
-
-        layer = L.geoJson(null ,{
-            onEachFeature: onEachFeature
-        }).addTo(map);
-
         $.getJSON(EventPoints, function (data) {
             //L.geoJSON(data).addTo(map);
-            layer.addData(data);
-
+            layer = L.geoJson(data, {
+                onEachFeature: onEachFeature
+            });
+            markerLayer.addTo(eventMap);
+            console.log(layer);
         });
 
     }
 
     addEvents(eventMap);
-
-
-
 
 </script>
 
