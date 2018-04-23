@@ -120,14 +120,17 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'whatsmappening',
-        'USER': 'postgres',
-        'HOST': 'localhost',
-        'PASSWORD': 'supergib',
-        'PORT': '5432',
-    }
+   'default': {
+       'ENGINE': 'django.contrib.gis.db.backends.postgis',
+       'NAME': 'webinar',
+       'USER': 'webinar',
+       'HOST': '46.101.4.130',
+       'PASSWORD': 'webinar',
+       'PORT': '5432',
+       'OPTIONS': {
+           'options': '-c search_path=whatsmappening,public'
+       }
+   }
 }
 
 # Password validation
@@ -171,17 +174,13 @@ USE_TZ = True
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = '/uploads/'
 
-STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
 
 
 LEAFLET_CONFIG = {
@@ -190,8 +189,8 @@ LEAFLET_CONFIG = {
     'ATTRIBUTION_PREFIX': 'whatsmappening'
 }
 
+
 GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
 GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
-
 
 
