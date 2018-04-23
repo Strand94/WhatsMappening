@@ -165,6 +165,7 @@ function searchSug() {
 		    return $(this).val();
 	}).get();
         eventMap.removeLayer(markerLayer);
+        markerLayer = new L.featureGroup();
 
         var liste = JSON.stringify(checks);
         var categories ="{% url 'events:listEvents' 12345 %}".replace(/12345/,liste);
