@@ -164,14 +164,17 @@ function searchSug() {
         var checks = $('input[type="checkbox"]:checked').map(function(){
 		    return $(this).val();
 	}).get();
-        eventMap.removeLayer(layer);
+        eventMap.removeLayer(markerLayer);
+
         var liste = JSON.stringify(checks);
         var categories ="{% url 'events:listEvents' 12345 %}".replace(/12345/,liste);
         console.log(categories);
+
         $.getJSON(categories, function(data) {
-           console.log(data);
-           layer=L.geoJSON(data);
-           layer.addTo(eventMap);
+           layer = L.geoJSON(data, {
+               onEachFeature: onEachFeature
+           });
+          markerLayer.addTo(eventMap);
         }).fail( function(d, textStatus, error) {
             console.error("getJSON failed, status: " + textStatus + ", error: "+error);
 
