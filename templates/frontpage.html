@@ -7,7 +7,7 @@
      <div id="map">
 
          <script>
-             var locatione= new L.LatLng(63.429722, 10.393333);
+
              var eventMap = L.map('map').setView([63.429722, 10.393333], 13);
          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
@@ -22,25 +22,44 @@
 
 
 <script>
+    var layer;
 
-    var marker=L.marker(locatione).addTo(eventMap);
     eventMap.locate({setView:true}).on('locationfound',function (e) {
-
-        var userLocation=new L.setLatLng(e.lat,e.lng);
-        addMarker(marker,userLocation);
+        eventMap.setZoom(13);
     });
-    function addMarker(marker,locations) {
 
-        marker.setLatLng(locations);
-    }
 
 </script>
+
     <script type="text/javascript">
+
+    function onEachFeature(feature, layer) {
+            layer.on('click', function (e) {
+
+                    var ourPopup = "<h4>" + e.target.feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, e.target.feature.properties.pk.toString()) ;
+
+
+                        layer.bindPopup(ourPopup)
+                }
+
+            )
+        }
+
     function addEvents(map) {
         var EventPoints = "{% url 'events:pointData' %}";
+
+
+
+        layer = L.geoJson(null ,{
+            onEachFeature: onEachFeature
+        }).addTo(map);
+
         $.getJSON(EventPoints, function (data) {
-            L.geoJSON(data).addTo(map);
+            //L.geoJSON(data).addTo(map);
+            layer.addData(data);
+
         });
+
     }
 
     addEvents(eventMap);
