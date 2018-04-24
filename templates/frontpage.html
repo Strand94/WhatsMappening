@@ -9,8 +9,12 @@
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
     <link rel="stylesheet" type="text/css" href="{% static "css/leaflet.awesome-markers.css" %}">
     <script type="text/javascript" src="{% static "js/leaflet.awesome-markers.js" %}"></script>
+ <!-- clustering -->
+	<link rel="stylesheet" href="{% static "dist/MarkerCluster.css" %}" />
+	<link rel="stylesheet" href="{% static "dist/MarkerCluster.Default.css" %}" />
+	<script src="{% static "dist/leaflet.markercluster-src.js" %}"></script>
 
-{% endblock script %}
+   {% endblock script %}
 
 
 {% block content %}
@@ -37,7 +41,7 @@
 
 <script>
     var layer;
-    var markerLayer = new L.featureGroup();
+    var markerLayer = new L.markerClusterGroup();
 
     eventMap.locate({setView:true}).on('locationfound',function (e) {
         eventMap.setZoom(13);
@@ -208,7 +212,6 @@
             markerLayer.addTo(eventMap);
             console.log(layer);
         });
-
     }
 
     addEvents(eventMap);

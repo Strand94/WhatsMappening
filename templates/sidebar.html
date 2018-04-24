@@ -165,7 +165,7 @@ function searchSug() {
 		    return $(this).val();
 	}).get();
         eventMap.removeLayer(markerLayer);
-        markerLayer = new L.featureGroup();
+        markerLayer = new L.markerClusterGroup();
 
         var liste = JSON.stringify(checks);
         var categories ="{% url 'events:listEvents' 12345 %}".replace(/12345/,liste);
@@ -178,7 +178,6 @@ function searchSug() {
           markerLayer.addTo(eventMap);
         }).fail( function(d, textStatus, error) {
             console.error("getJSON failed, status: " + textStatus + ", error: "+error);
-
         });
 
 
