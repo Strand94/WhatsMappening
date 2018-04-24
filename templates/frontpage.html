@@ -1,7 +1,21 @@
 {% extends "baseSideBar.html" %}
 {% load static %}
 
+{% block script %}
+
+    <link rel="stylesheet" type="text/css" href="{% static "dist/web-fonts-with-css/css/fontawesome-all.css" %}">
+
+     <!-- map Markers -->
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static "css/leaflet.awesome-markers.css" %}">
+    <script type="text/javascript" src="{% static "js/leaflet.awesome-markers.js" %}"></script>
+
+{% endblock script %}
+
+
 {% block content %}
+
+
 
 <div id="map-container" class="container-fluid">
      <div id="map">
@@ -36,10 +50,86 @@
 
     function onEachFeature(feature, layer) {
         var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
-        var marker = L.marker(layer.getLatLng(), {icon: greenIcon});
+        var marker = L.marker(layer.getLatLng(), {icon: theaterMarker});
         marker.bindPopup(ourPopup);
         markerLayer.addLayer(marker);
     }
+
+    var redMarker = L.AwesomeMarkers.icon({
+    icon: "home",
+    markerColor: 'red'
+    });
+
+    var theaterMarker = L.icon({
+    iconUrl: '{% static "img/icons/theatreMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
+
+    var partyMarker = L.AwesomeMarkers.icon({
+    icon: "glass",
+    markerColor: 'darkblue'
+    });
+
+
+    var sportMarker = L.icon({
+    iconUrl: '{% static "img/icons/sportsMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
+
+    var defaultMarker = L.AwesomeMarkers.icon({
+    icon: "",
+    markerColor: 'darkblue'
+    });
+
+    var foodMarker = L.AwesomeMarkers.icon({
+    icon: "glyphicon glyphicon-cutlery",
+    markerColor: 'darkblue'
+    });
+
+    var festivalMarker = L.AwesomeMarkers.icon({
+    icon: "glyphicon glyphicon-tent",
+    markerColor: 'darkblue'
+    });
+
+    var expoMarker = L.AwesomeMarkers.icon({
+    icon: "glyphicon glyphicon-picture",
+    markerColor: 'darkblue'
+    });
+
+    var courseMarker = L.AwesomeMarkers.icon({
+    icon: "glyphicon glyphicon-blackboard",
+    markerColor: 'darkblue'
+    });
+
+    var concert = L.AwesomeMarkers.icon({
+    icon: "music",
+    markerColor: 'darkblue'
+    });
+
+    var childMarkerBlue = L.icon({
+    iconUrl: '{% static "img/icons/kidsMarker-blue.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
+
+
 
     var greenIcon = L.icon({
     iconUrl: '{% static "img/icons/leaf-green.png" %}',
