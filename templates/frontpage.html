@@ -112,10 +112,6 @@
                 return L.marker(layer.getLatLng(), {icon: defaultMarker});
 }
 
-
-
-
-
     }
 
     var redMarker = L.AwesomeMarkers.icon({
@@ -206,8 +202,8 @@
     });
 
     function addEvents(map) {
-        var EventPoints = "{% url 'events:pointData' %}";
         populateCategoryMap();
+        var EventPoints = "{% url 'events:pointData' %}";
         $.getJSON(EventPoints, function (data) {
             //L.geoJSON(data).addTo(map);
             layer = L.geoJson(data, {
