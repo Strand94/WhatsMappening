@@ -50,9 +50,64 @@
 
     function onEachFeature(feature, layer) {
         var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
-        var marker = L.marker(layer.getLatLng(), {icon: theaterMarker});
+        var marker = getMarker(feature.properties.category, layer);
+
         marker.bindPopup(ourPopup);
         markerLayer.addLayer(marker);
+    }
+
+    var categoryMap = new Map();
+
+   populateCategoryMap()
+   function populateCategoryMap(){
+        var categories ="{% url 'events:categories' %}";
+
+        $.getJSON(categories,function (data) {
+            $.each(data,function (key,val) {
+                categoryMap.set(val.pk, val.fields.title);
+            });
+
+        });
+    }
+
+    function getMarker(categoryID, layer) {
+        var markerCategory = categoryMap.get(categoryID)
+        switch(markerCategory) {
+            case "Children":
+                return L.marker(layer.getLatLng(), {icon: childMarkerBlue});
+                break;
+            case "Concert":
+                return L.marker(layer.getLatLng(), {icon: concert});
+                break;
+            case "Course":
+                return L.marker(layer.getLatLng(), {icon: courseMarker});
+                break;
+            case "Exhibition":
+                return L.marker(layer.getLatLng(), {icon: expoMarker});
+                break;
+            case "Festival":
+                return L.marker(layer.getLatLng(), {icon: festivalMarker});
+                break;
+            case "Food":
+                return L.marker(layer.getLatLng(), {icon: foodMarker});
+                break;
+            case "Party":
+                return L.marker(layer.getLatLng(), {icon: partyMarker});
+                break;
+            case "Theatre":
+                return L.marker(layer.getLatLng(), {icon: theaterMarker});
+                break;
+            case "Sport":
+                return L.marker(layer.getLatLng(), {icon: sportMarker});
+                break;
+            default:
+                return L.marker(layer.getLatLng(), {icon: defaultMarker});
+}
+
+
+
+
+
     }
 
     var redMarker = L.AwesomeMarkers.icon({
