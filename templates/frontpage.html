@@ -3,16 +3,18 @@
 
 {% block script %}
 
-    <link rel="stylesheet" type="text/css" href="{% static "dist/web-fonts-with-css/css/fontawesome-all.css" %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
 
      <!-- map Markers -->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
     <link rel="stylesheet" type="text/css" href="{% static "css/leaflet.awesome-markers.css" %}">
     <script type="text/javascript" src="{% static "js/leaflet.awesome-markers.js" %}"></script>
- <!-- clustering -->
-	<link rel="stylesheet" href="{% static "dist/MarkerCluster.css" %}" />
-	<link rel="stylesheet" href="{% static "dist/MarkerCluster.Default.css" %}" />
-	<script src="{% static "dist/leaflet.markercluster-src.js" %}"></script>
+
+    <!-- clustering -->
+	<link rel="stylesheet" href="{% static "css/MarkerCluster.css" %}" />
+	<link rel="stylesheet" href="{% static "css/MarkerCluster.Default.css" %}" />
+	<script src="{% static "js/leaflet.markercluster-src.js" %}"></script>
 
    {% endblock script %}
 
@@ -76,6 +78,7 @@
     }
 
     function getMarker(categoryID, layer) {
+
         var markerCategory = categoryMap.get(categoryID)
         switch(markerCategory) {
             case "Children":
@@ -116,7 +119,7 @@
     }
 
     var redMarker = L.AwesomeMarkers.icon({
-    icon: "home",
+    icon: "coffee",
     markerColor: 'red'
     });
 
@@ -204,7 +207,7 @@
 
     function addEvents(map) {
         var EventPoints = "{% url 'events:pointData' %}";
-
+        populateCategoryMap();
         $.getJSON(EventPoints, function (data) {
             //L.geoJSON(data).addTo(map);
             layer = L.geoJson(data, {
