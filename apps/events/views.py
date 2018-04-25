@@ -100,6 +100,15 @@ def showTime(request, values):
         points = serialize('geojson', Event.objects.filter(start__range=(tomorrow_min, tomorrow_max)))
     return HttpResponse(points, content_type='json')
 
+def showCustomTime(request, values):
+    string =json.loads(values)
+    dates=string.split("&&&")
+    start_date=datetime.datetime.combine(datetime.datetime.strptime(dates[0], '%Y-%m-%d').date(), datetime.time.min)
+    end_date=datetime.datetime.combine(datetime.datetime.strptime(dates[1], '%Y-%m-%d').date(), datetime.time.max)
+    points = serialize('geojson', Event.objects.filter(start__range=(start_date, end_date)))
+    return HttpResponse(points,content_type='json')
+
+
 def showCategories(request):
     categories = serialize('json', Category.objects.all())
     return HttpResponse(categories, content_type='json')

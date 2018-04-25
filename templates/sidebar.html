@@ -67,9 +67,11 @@
     <!--<select id=127"categories"></select> -->
     <details><summary><b>Time</b></summary>
         <form  onsubmit="getTime();event.preventDefault()">
-           <p> <input  type="radio" name="time" value="1">   Today</p>
-            <p> <input type="radio" name="time" value="2">   Tomorrow</p>
-            <p><input  type="radio" name="time" value="0" checked>  This week</p>
+           <p> <input  type="radio" name="time" value="1" onclick="showDate('else')">   Today</p>
+            <p> <input type="radio" name="time" value="2"onclick="showDate('else')">   Tomorrow</p>
+            <p><input  type="radio" name="time" value="0" checked onclick="showDate('else')">  This week</p>
+            <p><input type ="radio" name="time"  id="custom" value="3" onclick="showDate('custom')"> Custom date</p>
+            <p><input type="hidden" id="date" name="date" ><input type="hidden" name="date" id="date"> </p>
             <button  type="submit">Choose time</button>
 
 
@@ -87,7 +89,23 @@
 
 <!-- JavaScrip SearchEngine -->
 <script>
+//this function makes the date input visible/hidden
+   function showDate(box) {
+       var input= document.getElementsByName("date");
+        if(box==="custom"){
+            for(var i=0;i<input.length;i++){
+                console.log("Now date");
+                input[i].type="date";
+            }
+        }else {
+            for (var i = 0; i < input.length; i++) {
+                console.log("Now hidden");
+                input[i].type = "hidden";
+            }
+        }
+}
 
+//for search on enter to work
     var input =document.getElementById("addr");
     input.addEventListener("keyup",function (event) {
         // Cancel the default action, if needed
@@ -101,27 +119,48 @@
       searchSug();
   }
 });
+
+//get the events in a timeperiod
 function getTime() {
     var radio = document.querySelector('input[name="time"]:checked').value;
     eventMap.removeLayer(markerLayer);
     markerLayer = new L.markerClusterGroup();
+    if(radio!="3") {
+        var liste = JSON.stringify(radio);
+        var categories = "{% url 'events:timeData' 12345 %}".replace(/12345/, liste);
 
-    var liste = JSON.stringify(radio);
-    var categories = "{% url 'events:timeData' 12345 %}".replace(/12345/, liste);
-    console.log(categories);
-
-    $.getJSON(categories, function (data) {
-        layer = L.geoJSON(data, {
-            onEachFeature: onEachFeature
+        $.getJSON(categories, function (data) {
+            layer = L.geoJSON(data, {
+                onEachFeature: onEachFeature
+            });
+            markerLayer.addTo(eventMap);
+        }).fail(function (d, textStatus, error) {
+            console.error("getJSON failed, status: " + textStatus + ", error: " + error);
         });
-        markerLayer.addTo(eventMap);
-    }).fail(function (d, textStatus, error) {
-        console.error("getJSON failed, status: " + textStatus + ", error: " + error);
-    });
+    }else{
+        var dates=document.getElementsByName("date");
+       /* for(var i=0;i<dates.length;i++){
+
+            console.log(dates[i].value);
+        }*/
+       var query=dates[0].value+"&&&"+dates[1].value;
+       var liste = JSON.stringify(query);
+       var categories= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
+       $.getJSON(categories, function (data) {
+            layer = L.geoJSON(data, {
+                onEachFeature: onEachFeature
+            });
+            markerLayer.addTo(eventMap);
+        }).fail(function (d, textStatus, error) {
+            console.error("getJSON failed, status: " + textStatus + ", error: " + error);
+        });
+
+
+    }
 }
 
 
-
+//searching suggestions
 function searchSug() {
     var inp = document.getElementById("addr");
     $("#try").empty();
@@ -138,7 +177,7 @@ function searchSug() {
 
     }
 
-
+//search on adress
     function addr_search() {
         var inp=document.getElementById("addr");
         $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + inp.value, function(data) {
@@ -156,7 +195,7 @@ function searchSug() {
     }
 
 
-
+//get the categories
     function getCategories(){
         var dataList=document.getElementById("categories");
         var categories ="{% url 'events:categories' %}";
@@ -187,7 +226,7 @@ function searchSug() {
     }
 
 
-
+//get events with categories.
     function sendCategories(){
         var checks = $('input[type="checkbox"]:checked').map(function(){
 		    return $(this).val();
