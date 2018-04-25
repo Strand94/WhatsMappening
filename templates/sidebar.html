@@ -65,6 +65,17 @@
     <p>&nbsp;&nbsp;Interested in&nbsp;&nbsp;<input type="checkbox" id="myCheck"></p>
 
     <!--<select id=127"categories"></select> -->
+    <details><summary><b>Time</b></summary>
+        <form  onsubmit="getTime();event.preventDefault()">
+           <p> <input  type="radio" name="time" value="1">   Today</p>
+            <p> <input type="radio" name="time" value="2">   Tomorrow</p>
+            <p><input  type="radio" name="time" value="0" checked>  This week</p>
+            <button  type="submit">Choose time</button>
+
+
+        </form>
+
+    </details>
     <details ><summary>Choose event categories</summary>
     <div >
         <form id="categories" onsubmit="sendCategories(); event.preventDefault()">{% csrf_token %}</form>
@@ -90,12 +101,30 @@
       searchSug();
   }
 });
+function getTime() {
+    var radio = document.querySelector('input[name="time"]:checked').value;
+    eventMap.removeLayer(markerLayer);
+    markerLayer = new L.markerClusterGroup();
+
+    var liste = JSON.stringify(radio);
+    var categories = "{% url 'events:timeData' 12345 %}".replace(/12345/, liste);
+    console.log(categories);
+
+    $.getJSON(categories, function (data) {
+        layer = L.geoJSON(data, {
+            onEachFeature: onEachFeature
+        });
+        markerLayer.addTo(eventMap);
+    }).fail(function (d, textStatus, error) {
+        console.error("getJSON failed, status: " + textStatus + ", error: " + error);
+    });
+}
+
+
 
 function searchSug() {
-        var inp=document.getElementById("addr");
+    var inp = document.getElementById("addr");
     $("#try").empty();
-
-
     var dataList=document.getElementById("try");
         $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=10&q=' + inp.value, function(data) {
             $.each(data, function (key,val) {
