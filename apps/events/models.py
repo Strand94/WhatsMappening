@@ -7,7 +7,6 @@ from django.contrib.gis.db import models as geomodels
 class Category(models.Model):
     title = models.CharField(max_length=70)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='child', on_delete=models.CASCADE)
-
     class Meta:
         verbose_name_plural = 'Categories'
         ordering = ['title']
