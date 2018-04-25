@@ -1,9 +1,12 @@
 {% load static %}
+{% load leaflet_tags %}
+
+   {% leaflet_js plugins="forms" %}
+   {% leaflet_css plugins="forms" %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/event_form.css' %}"
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %} "/>
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/global.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/>
-
 
 <script type="text/javascript" src="/admin/jsi18n/"></script>
 <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
