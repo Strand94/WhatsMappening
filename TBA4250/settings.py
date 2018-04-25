@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # External packages
     'social_django',
+    'storages',
 
 ]
 
@@ -64,6 +65,7 @@ ROOT_URLCONF = 'TBA4250.urls'
 
 TEMPLATES = [
     {
+
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')]
         ,
@@ -193,3 +195,5 @@ GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
 GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
 
 
+DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+DROPBOX_OAUTH2_TOKEN = '5S9o2uS5nGAAAAAAAAAABsyX295X-hfVSF7Z5G3m2S-tiH5PcqwF0eGxn76zUuFH'
