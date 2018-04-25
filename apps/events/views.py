@@ -6,6 +6,7 @@ from .forms import EventForm
 from .models import Event, Attendance, Participation, Category
 from django.utils import timezone
 from django.shortcuts import redirect
+from datetime import datetime, timedelta
 import json
 
 
@@ -80,7 +81,7 @@ def testDjango(request):
 
 
 def showEvents(request):
-    points = serialize('geojson', Event.objects.all())
+    points = serialize('geojson', Event.objects.filter(start__range=[datetime.now(), (datetime.now()+timedelta(days=7))]))
     return HttpResponse(points, content_type='json')
 
 
