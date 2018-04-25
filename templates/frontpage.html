@@ -21,8 +21,6 @@
 
 {% block content %}
 
-
-
 <div id="map-container" class="container-fluid">
      <div id="map">
 
@@ -42,6 +40,7 @@
 
 
 <script>
+
     var layer;
     var markerLayer = new L.markerClusterGroup();
 
@@ -49,12 +48,6 @@
         eventMap.setZoom(13);
     });
 
-
-</script>
-
-    <script type="text/javascript">
-    var categoryMap = new Map();
-    populateCategoryMap();
 
     function onEachFeature(feature, layer) {
         var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
@@ -64,22 +57,15 @@
         markerLayer.addLayer(marker);
     }
 
-
-
-   function populateCategoryMap(){
-        var categories ="{% url 'events:categories' %}";
-
-        $.getJSON(categories,function (data) {
-            $.each(data,function (key,val) {
-                categoryMap.set(val.pk, val.fields.title);
-            });
-
-        });
-    }
-
     function getMarker(categoryID, layer) {
 
-        var markerCategory = categoryMap.get(categoryID)
+        if (Object.keys(categoryMap).length < 1){
+            location.reload(true);
+            categoryMap = populateCategoryMap();
+        }
+
+        var markerCategory = categoryMap[categoryID];
+
         switch(markerCategory) {
             case "Children":
                 return L.marker(layer.getLatLng(), {icon: childMarkerBlue});
@@ -202,7 +188,6 @@
     });
 
     function addEvents(map) {
-        populateCategoryMap();
         var EventPoints = "{% url 'events:pointData' %}";
         $.getJSON(EventPoints, function (data) {
             //L.geoJSON(data).addTo(map);
