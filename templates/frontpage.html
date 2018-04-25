@@ -1,13 +1,33 @@
 {% extends "baseSideBar.html" %}
 {% load static %}
 
+{% block script %}
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+
+     <!-- map Markers -->
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static "css/leaflet.awesome-markers.css" %}">
+    <script type="text/javascript" src="{% static "js/leaflet.awesome-markers.js" %}"></script>
+
+    <!-- clustering -->
+	<link rel="stylesheet" href="{% static "css/MarkerCluster.css" %}" />
+	<link rel="stylesheet" href="{% static "css/MarkerCluster.Default.css" %}" />
+	<script src="{% static "js/leaflet.markercluster-src.js" %}"></script>
+
+   {% endblock script %}
+
+
 {% block content %}
+
+
 
 <div id="map-container" class="container-fluid">
      <div id="map">
 
          <script>
-             var locatione= new L.LatLng(63.429722, 10.393333);
+
              var eventMap = L.map('map').setView([63.429722, 10.393333], 13);
          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
@@ -22,31 +42,179 @@
 
 
 <script>
+    var layer;
+    var markerLayer = new L.markerClusterGroup();
 
-    var marker=L.marker(locatione).addTo(eventMap);
     eventMap.locate({setView:true}).on('locationfound',function (e) {
-
-        var userLocation=new L.setLatLng(e.lat,e.lng);
-        addMarker(marker,userLocation);
+        eventMap.setZoom(13);
     });
-    function addMarker(marker,locations) {
 
-        marker.setLatLng(locations);
-    }
 
 </script>
+
     <script type="text/javascript">
+    var categoryMap = new Map();
+    populateCategoryMap();
+
+    function onEachFeature(feature, layer) {
+        var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
+        var marker = getMarker(feature.properties.category, layer);
+
+        marker.bindPopup(ourPopup);
+        markerLayer.addLayer(marker);
+    }
+
+
+
+   function populateCategoryMap(){
+        var categories ="{% url 'events:categories' %}";
+
+        $.getJSON(categories,function (data) {
+            $.each(data,function (key,val) {
+                categoryMap.set(val.pk, val.fields.title);
+            });
+
+        });
+    }
+
+    function getMarker(categoryID, layer) {
+
+        var markerCategory = categoryMap.get(categoryID)
+        switch(markerCategory) {
+            case "Children":
+                return L.marker(layer.getLatLng(), {icon: childMarkerBlue});
+                break;
+            case "Concert":
+                return L.marker(layer.getLatLng(), {icon: concert});
+                break;
+            case "Course":
+                return L.marker(layer.getLatLng(), {icon: courseMarker});
+                break;
+            case "Exhibition":
+                return L.marker(layer.getLatLng(), {icon: expoMarker});
+                break;
+            case "Festival":
+                return L.marker(layer.getLatLng(), {icon: festivalMarker});
+                break;
+            case "Food":
+                return L.marker(layer.getLatLng(), {icon: foodMarker});
+                break;
+            case "Party":
+                return L.marker(layer.getLatLng(), {icon: partyMarker});
+                break;
+            case "Theatre":
+                return L.marker(layer.getLatLng(), {icon: theaterMarker});
+                break;
+            case "Sport":
+                return L.marker(layer.getLatLng(), {icon: sportMarker});
+                break;
+            default:
+                return L.marker(layer.getLatLng(), {icon: defaultMarker});
+}
+
+    }
+
+    var redMarker = L.AwesomeMarkers.icon({
+    icon: "coffee",
+    markerColor: 'red'
+    });
+
+    var theaterMarker = L.icon({
+    iconUrl: '{% static "img/icons/theatreMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
+
+    var partyMarker = L.AwesomeMarkers.icon({
+    icon: "glass",
+    markerColor: 'darkblue'
+    });
+
+
+    var sportMarker = L.icon({
+    iconUrl: '{% static "img/icons/sportsMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
+
+    var defaultMarker = L.AwesomeMarkers.icon({
+    icon: "",
+    markerColor: 'darkblue'
+    });
+
+    var foodMarker = L.AwesomeMarkers.icon({
+    icon: "glyphicon glyphicon-cutlery",
+    markerColor: 'darkblue'
+    });
+
+    var festivalMarker = L.AwesomeMarkers.icon({
+    icon: "glyphicon glyphicon-tent",
+    markerColor: 'darkblue'
+    });
+
+    var expoMarker = L.AwesomeMarkers.icon({
+    icon: "glyphicon glyphicon-picture",
+    markerColor: 'darkblue'
+    });
+
+    var courseMarker = L.AwesomeMarkers.icon({
+    icon: "glyphicon glyphicon-blackboard",
+    markerColor: 'darkblue'
+    });
+
+    var concert = L.AwesomeMarkers.icon({
+    icon: "music",
+    markerColor: 'darkblue'
+    });
+
+    var childMarkerBlue = L.icon({
+    iconUrl: '{% static "img/icons/kidsMarker-blue.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
+
+
+
+    var greenIcon = L.icon({
+    iconUrl: '{% static "img/icons/leaf-green.png" %}',
+    shadowUrl: '{% static "img/icons/leaf-shadow.png" %}',
+
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+
     function addEvents(map) {
+        populateCategoryMap();
         var EventPoints = "{% url 'events:pointData' %}";
         $.getJSON(EventPoints, function (data) {
-            L.geoJSON(data).addTo(map);
+            //L.geoJSON(data).addTo(map);
+            layer = L.geoJson(data, {
+                onEachFeature: onEachFeature
+            });
+            markerLayer.addTo(eventMap);
+            console.log(layer);
         });
     }
 
     addEvents(eventMap);
-
-
-
 
 </script>
 
