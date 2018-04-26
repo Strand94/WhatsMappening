@@ -6,6 +6,7 @@ from .forms import EventForm
 from .models import Event, Attendance, Participation, Category
 from django.utils import timezone
 from django.shortcuts import redirect
+import datetime
 import json
 
 
@@ -84,8 +85,32 @@ def testDjango(request):
 
 
 def showEvents(request):
-    points = serialize('geojson', Event.objects.all())
+    points = serialize('geojson', Event.objects.filter(start__range=[datetime.datetime.now(), (datetime.datetime.now()+datetime.timedelta(days=7))]))
     return HttpResponse(points, content_type='json')
+
+
+def showTime(request, values):
+    date = json.loads(values)
+    option = int(date)
+    if option == 0:
+       points = serialize('geojson', Event.objects.filter(start__range=[datetime.datetime.now(), (datetime.datetime.now() + datetime.timedelta(days=7))]))
+    elif option == 1:
+        today_min = datetime.datetime.combine(datetime.date.today(), datetime.time.min)
+        today_max = datetime.datetime.combine(datetime.date.today(), datetime.time.max)
+        points = serialize('geojson', Event.objects.filter(start__range=(today_min, today_max)))
+    elif option == 2:
+        tomorrow_min=datetime.datetime.combine(datetime.date.today()+datetime.timedelta(days=1), datetime.time.min)
+        tomorrow_max = datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1), datetime.time.max)
+        points = serialize('geojson', Event.objects.filter(start__range=(tomorrow_min, tomorrow_max)))
+    return HttpResponse(points, content_type='json')
+
+def showCustomTime(request, values):
+    string =json.loads(values)
+    dates=string.split("&&&")
+    start_date=datetime.datetime.combine(datetime.datetime.strptime(dates[0], '%Y-%m-%d').date(), datetime.time.min)
+    end_date=datetime.datetime.combine(datetime.datetime.strptime(dates[1], '%Y-%m-%d').date(), datetime.time.max)
+    points = serialize('geojson', Event.objects.filter(start__range=(start_date, end_date)))
+    return HttpResponse(points,content_type='json')
 
 
 def showCategories(request):
