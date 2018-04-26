@@ -3,7 +3,7 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import EventForm
-from .models import Event, Attendance, Participation, Category
+from .models import Event, Category
 from django.utils import timezone
 from django.shortcuts import redirect
 import datetime
@@ -21,10 +21,6 @@ def create_event(request):
             event.start = str(request.POST.get(("startDate"), "")+" "+request.POST.get(("startTime"), ""))
             event.end = str(request.POST.get(("endDate"), "")+" "+request.POST.get(("endTime"), ""))
             event.save()
-            attendance = Attendance.objects.create(event=event)
-            participation = Participation.objects.create(attendance=attendance, user=request.user, status='G')
-            attendance.save()
-            participation.save()
             return redirect('events:user_events')
     form = EventForm(request.POST)
     return render(request, 'events/eventForm.html', {

@@ -21,6 +21,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Event, LeafletGeoAdmin)
-admin.site.register(Attendance, AttendanceAdmin)
-admin.site.register(Participation, ParticipationAdmin)
 admin.site.register(Category, CategoryAdmin)
