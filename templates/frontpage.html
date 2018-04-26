@@ -49,20 +49,30 @@
     });
 
 
+
     function onEachFeature(feature, layer) {
         var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
         var marker = getMarker(feature.properties.category, layer);
+        setTags(feature.properties, marker);
 
         marker.bindPopup(ourPopup);
         markerLayer.addLayer(marker);
     }
 
-    function getMarker(categoryID, layer) {
-
+    function setTags(properties, marker) {
         if (Object.keys(categoryMap).length < 1){
             location.reload(true);
             categoryMap = populateCategoryMap();
         }
+
+        var curCategory = categoryMap[properties.category];// get title for the event category
+        var tagMarkers = tagMarkerMap[curCategory]; // get the current Markers for this tag
+        tagMarkers.push(marker); // add this marker to list
+        tagMarkerMap[curCategory] = tagMarkers;
+    }
+
+    function getMarker(categoryID, layer) {
+
 
         var markerCategory = categoryMap[categoryID];
 
