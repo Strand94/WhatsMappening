@@ -4,6 +4,8 @@
 {% block script %}
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
 
      <!-- map Markers -->
@@ -48,6 +50,22 @@
     eventMap.locate({setView:true}).on('locationfound',function (e) {
         eventMap.setZoom(13);
     });
+
+
+    //a marker that can be marked by user
+    var userMarker = L.marker(eventMap.getCenter(),{
+        draggable:true
+    })
+
+    var addedToMap=false;
+L.easyButton('fa-map-marker', function(btn, map){
+    if(!addedToMap) {
+        userMarker.setLatLng(map.getCenter()).addTo(eventMap);
+        addedToMap=true;
+    }else{
+        userMarker.setLatLng(map.getCenter());
+    }
+}).addTo(eventMap);
 
 
 </script>
