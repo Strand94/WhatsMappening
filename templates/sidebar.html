@@ -138,6 +138,8 @@ function addCircle() {
                 input[i].type = "hidden";
             }
         }
+        //TODO remove it later
+        filterDistance();
 }
 
 //for search on enter to work
@@ -225,6 +227,20 @@ function searchSug() {
         });
     }
 
+
+
+    function filterDistance() {
+    eventMap.removeLayer(markerLayer);
+    markerLayer.eachLayer(function(layer){
+        var distance= layer.getLatLng().distanceTo(userMarker.getLatLng());
+        if(distance>circleOfLife.getRadius()) {
+            //hiddenLayer.addToLayer(layer);
+            markerLayer.removeLayer(layer);
+        }
+    });
+    markerLayer.addTo(eventMap);
+    //TODO use markerLayer and HiddenLayer
+}
 
 //get the categories
     function getCategories(){
