@@ -42,21 +42,34 @@
       range: "min",
       value: 0,
       min: 0,
-      max: 50,
+      max: 100,
       slide: function( event, ui ) {
-        $( "#distance" ).val( ui.value + " km"  );
+        $( "#distance" ).val( ui.value );
+        circleOfLife.setRadius(ui.value*1000);
       }
     });
     $( "#distance" ).val( $( "#slider-range-min" ).slider( "value" ) + " km" );
   } );
+
+function circleRadius() {
+    var field=document.getElementsByName("radiusValue");
+    for(i=0;i<field.length;i++) {
+        console.log(field[i].value);
+        var radius=field[i].value;
+        console.log(radius);
+        circleOfLife.setRadius(radius*1000)
+    }
+
+}
   </script>
 
     <p>
-  <label for="distance">&nbsp;&nbsp;Maximum distance:</label>
-  <input type="text" id="distance" readonly style="border:10; color:#d77349; font-weight:bold;">
+  <label for="distance">&nbsp;&nbsp;Maximum distance in km:</label>
+  <input type="text" id="distance" name="radiusValue" oninput="circleRadius()">
 </p>
 
-<div id="slider-range-min"></div>
+<div id="slider-range-min">
+</div>
 
     <BR>
     <BR>
@@ -139,10 +152,6 @@ function getTime() {
         });
     }else{
         var dates=document.getElementsByName("date");
-       /* for(var i=0;i<dates.length;i++){
-
-            console.log(dates[i].value);
-        }*/
        var query=dates[0].value+"&&&"+dates[1].value;
        var liste = JSON.stringify(query);
        var categories= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
