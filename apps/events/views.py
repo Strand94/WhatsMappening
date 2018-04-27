@@ -65,6 +65,11 @@ def edit_event(request, pk):
 
 def user_created(request):
     events = Event.objects.filter(author=request.user)
+    if request.method == 'POST':
+        if 'delete_event' in request.POST:
+            delete = request.POST.get('delete_event')
+            event = Event.objects.filter(pk=delete)
+            event.delete()
     return render(request, 'events/userCreated.html',{
         'events':events,
     })
@@ -73,7 +78,6 @@ def user_created(request):
 def event_detail(request, pk):
     event = get_object_or_404(Event, pk=pk)
     return render(request, 'events/eventDetail.html', {'event':event})
-    return render(request, 'events/eventForm.html', {'form': form})
 
 
 def testDjango(request):

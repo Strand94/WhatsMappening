@@ -95,7 +95,26 @@
     </div>
     {% endif %}
 
+<script>
+    var categoryMap = populateCategoryMap();
 
+   function populateCategoryMap(){
+       categoryMap = {};
+
+        var categories ="{% url 'events:categories' %}";
+        $.getJSON(categories,function (data) {
+            $.each(data,function (key,val) {
+                categoryMap[val.pk]= val.fields.title;
+
+            });
+
+        });
+
+        return categoryMap;
+    }
+
+   // populateCategoryMap();
+</script>
 
 
 {% endblock menuToggle %}

@@ -23,8 +23,6 @@
 
 {% block content %}
 
-
-
 <div id="map-container" class="container-fluid">
      <div id="map">
 
@@ -44,12 +42,14 @@
 
 
 <script>
+
     var layer;
     var markerLayer = new L.markerClusterGroup();
 
     eventMap.locate({setView:true}).on('locationfound',function (e) {
         eventMap.setZoom(13);
     });
+
 
 
     //a marker that can be marked by user
@@ -93,22 +93,15 @@ userMarker.on("drag", function(e) {
         markerLayer.addLayer(marker);
     }
 
-
-
-   function populateCategoryMap(){
-        var categories ="{% url 'events:categories' %}";
-
-        $.getJSON(categories,function (data) {
-            $.each(data,function (key,val) {
-                categoryMap.set(val.pk, val.fields.title);
-            });
-
-        });
-    }
-
     function getMarker(categoryID, layer) {
 
-        var markerCategory = categoryMap.get(categoryID)
+        if (Object.keys(categoryMap).length < 1){
+            location.reload(true);
+            categoryMap = populateCategoryMap();
+        }
+
+        var markerCategory = categoryMap[categoryID];
+
         switch(markerCategory) {
             case "Children":
                 return L.marker(layer.getLatLng(), {icon: childMarkerBlue});
@@ -231,7 +224,6 @@ userMarker.on("drag", function(e) {
     });
 
     function addEvents(map) {
-        populateCategoryMap();
         var EventPoints = "{% url 'events:pointData' %}";
         $.getJSON(EventPoints, function (data) {
             //L.geoJSON(data).addTo(map);
