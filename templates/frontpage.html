@@ -49,7 +49,6 @@
 
 <div id="map-container" class="container-fluid">
      <div id="map">
-
          <script>
 
              var eventMap = L.map('map').setView([63.429722, 10.393333], 13);
@@ -77,12 +76,11 @@
 
     function onEachFeature(feature, layer) {
         var ourPopup = '<h4 class=centered">' + feature.properties.title + "</h4>" +
-            '<button class="invisible-button centerize" style="color: #d5693d" name="remove_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star centerize" aria-hidden="true"></span></button>' +
+            '<p>Start: ' + feature.properties.start + '</p>' +
             '<hr>' + '<h4 class=centered style="font-size: 16px">' + feature.properties.ingress + '</h4>' +
             '<a class="btn btn-github centerize" href="{% url 'events:event_detail' 55 %}">See more</a>'
                 .replace(/55/, feature.properties.pk.toString()) ;
         var marker = getMarker(feature.properties.category, layer);
-
         marker.bindPopup(ourPopup);
         markerLayer.addLayer(marker);
     }
