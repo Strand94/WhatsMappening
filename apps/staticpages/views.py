@@ -5,6 +5,7 @@ from apps.staticpages.forms import CreateUserForm
 from django.contrib import messages
 from django.db import transaction
 from .forms import *
+from apps.events.models import Starred
 from django.contrib.auth.decorators import user_passes_test
 
 from social_django.models import UserSocialAuth
@@ -80,6 +81,8 @@ def register(request):
                 username = form.cleaned_data.get('username')
                 raw_password = form.cleaned_data.get('password1')
                 user = authenticate(username=username, password=raw_password)
+                user_favourites = Starred.objects.create(user=user)
+                user_favourites.save()
                 login(request, user)
                 return redirect('frontpage')
         else:

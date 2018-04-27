@@ -18,7 +18,11 @@ class ParticipationAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'parent')
 
+class StarredAdmin(admin.ModelAdmin):
+       filter_horizontal = ('favorites',)
+
 
 # Register your models here.
 admin.site.register(Event, LeafletGeoAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Starred, StarredAdmin)

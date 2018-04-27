@@ -32,8 +32,9 @@ class Event(models.Model):
         return self.title
 
 
-
 class Starred(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    favorites = models.ManyToManyField(Event, related_name='favorited_by')
+
+    def __str__(self):
+        return self.user.username
