@@ -1,20 +1,17 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, authenticate, login
+from apps.staticpages.forms import CreateUserForm
 from django.contrib import messages
 from django.db import transaction
 from .forms import *
+from django.contrib.auth.decorators import user_passes_test
 
 from social_django.models import UserSocialAuth
 
 
 def frontpage(request):
     return render(request, "frontpage.html")
-
-
-@login_required
-def home(request):
-    return render(request, 'staticpages/home.html')
 
 
 @login_required
@@ -70,3 +67,21 @@ def update_user(request):
     return render(request, 'registration/edit_user_form.html', {
         'user_form': user_form,
     })
+
+
+def register(request):
+    if request.user.is_authenticated:
+        return redirect('frontpage')
+    else:
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get('username')
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=raw_password)
+                login(request, user)
+                return redirect('frontpage')
+        else:
+            form = CreateUserForm()
+        return render(request, 'registration/registration.html', {'form': form})

@@ -19,14 +19,19 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from apps.staticpages import views
 from django.conf.urls.static import static
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.views import login
+
+login_forbidden =  user_passes_test(lambda u: u.is_anonymous(), '/')
 
 
 urlpatterns = [
-    url(r'^$', views.frontpage, name='frontpage'),
+    url(r'^$', views.frontpage, name='frontpage' ),
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login'}, name='logout'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^admin/', admin.site.urls),
+    url(r'^register/', views.register, name='register'),
 
     #settings
     url(r'^user/$', views.settings, name='user'),
