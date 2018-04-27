@@ -3,7 +3,7 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import EventForm
-from .models import Event, Category
+from .models import Event, Category, Starred
 from django.utils import timezone
 from django.shortcuts import redirect
 import datetime
@@ -61,13 +61,19 @@ def edit_event(request, pk):
 
 def user_created(request):
     events = Event.objects.filter(author=request.user)
+    user_starred = Starred.objects.filter(user=request.user).first()
+    favorites = user_starred.favorites.all()
     if request.method == 'POST':
         if 'delete_event' in request.POST:
             delete = request.POST.get('delete_event')
             event = Event.objects.filter(pk=delete)
             event.delete()
+        if 'remove_favorite' in request.POST:
+            remove_pk = request.POST.get('remove_favorite')
+            user_starred.favorites.remove(remove_pk)
     return render(request, 'events/userCreated.html',{
         'events':events,
+        'favorited':favorites,
     })
 
 
