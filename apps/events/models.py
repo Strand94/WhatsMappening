@@ -34,7 +34,7 @@ class Event(models.Model):
 
 class Starred(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    favorites = models.ManyToManyField(Event, related_name='favorited_by')
+    favorites = models.ManyToManyField(Event, related_name='favorited_by', blank=True)
 
     def __str__(self):
         return self.user.username

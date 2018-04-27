@@ -78,8 +78,26 @@ def user_created(request):
 
 
 def event_detail(request, pk):
+    user_starred = Starred.objects.filter(user=request.user).first()
+    favorites = user_starred.favorites.all()
     event = get_object_or_404(Event, pk=pk)
-    return render(request, 'events/eventDetail.html', {'event':event})
+    if request.method == 'POST':
+        if 'add_favorite' in request.POST:
+            add_pk = request.POST.get('add_favorite')
+            event = Event.objects.filter(pk=add_pk).first()
+            user_starred.favorites.add(event)
+        if 'remove_favorite' in request.POST:
+            remove_pk = request.POST.get('remove_favorite')
+            user_starred.favorites.remove(remove_pk)
+    if event in favorites:
+        is_favorited = True
+    else:
+        is_favorited = False
+
+    return render(request, 'events/eventDetail.html', {
+        'event':event,
+        'is_favorited':is_favorited,
+    })
 
 
 def testDjango(request):

@@ -2,6 +2,18 @@
 
 {% block content %}
 
+    <style>
+       .invisible-button {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        cursor:pointer;
+        overflow: hidden;
+        outline:none;
+        font-size: 25px;
+    }
+    </style>
+
         <div class="row space-under">
             <div class="col-xl-12 space-above">
                 <div class="white-box" id="text-box">
@@ -43,11 +55,11 @@
                         </div>
                     </form>
                     {% else %}
-                        <h1>No events found for {{ request.user }}</h1><hr>
+                        <h3>No events found for {{ request.user }}</h3><hr>
                     {% endif %}
                     <a class="btn btn-facebook" href="{% url 'events:new_event' %}">Create Event</a>
 
-
+                    {% if favorited %}
                     <h1>{{ request.user }}'s favorited events</h1>
                     <hr>
                     {# Table start event favorited by user #}
@@ -71,13 +83,16 @@
                                             </td>
                                             <td class="text-left; responsible">{{ event.start }}</td>
                                             <td class="text-left; tag" >{{ event.category }}</td>
-                                            <td> <button class="btn btn-warning" name="remove_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button></td>
+                                            <td> <button class="invisible-button" style="color: #d5693d" name="remove_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button></td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </form>
+                    {% else %}
+                        <h3>No events favorited for {{ request.user }}</h3><hr>
+                    {% endif %}
 
 
 
