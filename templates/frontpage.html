@@ -58,7 +58,7 @@
     });
     var circleOfLife=L.circle(userMarker.getLatLng(),{
         radius:2000
-    }).addTo(eventMap);
+    });
 
     var addedToMap=false;
 
@@ -68,8 +68,9 @@ L.easyButton('fa-map-marker', function(btn, map){
         addedToMap=true;
     }else{
         userMarker.setLatLng(map.getCenter());
+
     }
-    circleOfLife.setLatLng(userMarker.getLatLng());
+      circleOfLife.setLatLng(userMarker.getLatLng());
 }).addTo(eventMap);
 
 userMarker.on("drag", function(e) {

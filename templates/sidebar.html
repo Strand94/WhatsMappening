@@ -48,7 +48,7 @@
         circleOfLife.setRadius(ui.value*1000);
       }
     });
-    $( "#distance" ).val( $( "#slider-range-min" ).slider( "value" ) + " km" );
+    $( "#distance" ).val( $( "#slider-range-min" ).slider( "value" ) );
   } );
 
 function circleRadius() {
@@ -61,8 +61,30 @@ function circleRadius() {
     }
 
 }
-  </script>
 
+var circleOnMap=false;
+function addCircle() {
+    if(!addedToMap) {
+        userMarker.setLatLng(eventMap.getCenter()).addTo(eventMap);
+        addedToMap=true;
+    }else{
+        userMarker.setLatLng(eventMap.getCenter());
+
+    }
+      circleOfLife.setLatLng(userMarker.getLatLng());
+
+
+    if (circleOnMap){
+        circleOfLife.removeFrom(eventMap);
+        circleOnMap=false;
+    }else{
+        circleOfLife.addTo(eventMap);
+        circleOnMap=true;
+    }
+    
+}
+  </script>
+<details onclick="addCircle()"><summary><B>Choose distance from point.</B></summary>
     <p>
   <label for="distance">&nbsp;&nbsp;Maximum distance in km:</label>
   <input type="text" id="distance" name="radiusValue" oninput="circleRadius()">
@@ -70,6 +92,7 @@ function circleRadius() {
 
 <div id="slider-range-min">
 </div>
+    </details>
 
     <BR>
     <BR>
