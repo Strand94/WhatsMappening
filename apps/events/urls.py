@@ -12,7 +12,8 @@ urlpatterns = [
     path('test', views.testDjango, name='testDjango'),
     path('pointData', views.showEvents, name='pointData'),
     path('categories', views.showCategories, name='categories'),
-
+    path('timeData/<str:values>/', views.showTime, name='timeData'),
+    path('customData/<str:values>/', views.showCustomTime, name='customData'),
     path('listEvents/<str:values>/', views.showRequestedEvents, name='listEvents')
 ]
 

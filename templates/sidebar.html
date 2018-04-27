@@ -33,7 +33,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>jQuery UI Slider - Range with fixed minimum</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
@@ -42,21 +41,57 @@
       range: "min",
       value: 0,
       min: 0,
-      max: 50,
+      max: 100,
       slide: function( event, ui ) {
-        $( "#distance" ).val( ui.value + " km"  );
+        $( "#distance" ).val( ui.value );
+        circleOfLife.setRadius(ui.value*1000);
       }
     });
-    $( "#distance" ).val( $( "#slider-range-min" ).slider( "value" ) + " km" );
+    $( "#distance" ).val( $( "#slider-range-min" ).slider( "value" ) );
   } );
-  </script>
 
+function circleRadius() {
+    var field=document.getElementsByName("radiusValue");
+    for(i=0;i<field.length;i++) {
+        console.log(field[i].value);
+        var radius=field[i].value;
+        console.log(radius);
+        circleOfLife.setRadius(radius*1000)
+    }
+
+}
+
+var circleOnMap=false;
+function addCircle() {
+    if(!addedToMap) {
+        userMarker.setLatLng(eventMap.getCenter()).addTo(eventMap);
+        addedToMap=true;
+    }else{
+        userMarker.setLatLng(eventMap.getCenter());
+
+    }
+      circleOfLife.setLatLng(userMarker.getLatLng());
+
+
+    if (circleOnMap){
+        circleOfLife.removeFrom(eventMap);
+        circleOnMap=false;
+    }else{
+        circleOfLife.addTo(eventMap);
+        circleOnMap=true;
+    }
+    
+}
+  </script>
+<details onclick="addCircle()"><summary><B>Choose distance from point.</B></summary>
     <p>
-  <label for="distance">&nbsp;&nbsp;Maximum distance:</label>
-  <input type="text" id="distance" readonly style="border:10; color:#d77349; font-weight:bold;">
+  <label for="distance">&nbsp;&nbsp;Maximum distance in km:</label>
+  <input type="text" id="distance" name="radiusValue" oninput="circleRadius()">
 </p>
 
-<div id="slider-range-min"></div>
+<div id="slider-range-min">
+</div>
+    </details>
 
     <BR>
     <BR>
@@ -65,6 +100,19 @@
     <p>&nbsp;&nbsp;Interested in&nbsp;&nbsp;<input type="checkbox" id="myCheck"></p>
 
     <!--<select id=127"categories"></select> -->
+    <details><summary><b>Time</b></summary>
+        <form  onsubmit="getTime();event.preventDefault()">
+           <p> <input  type="radio" name="time" value="1" onclick="showDate('else')">   Today</p>
+            <p> <input type="radio" name="time" value="2"onclick="showDate('else')">   Tomorrow</p>
+            <p><input  type="radio" name="time" value="0" checked onclick="showDate('else')">  This week</p>
+            <p><input type ="radio" name="time"  id="custom" value="3" onclick="showDate('custom')"> Custom date</p>
+            <p><input type="hidden" id="date" name="date" ><input type="hidden" name="date" id="date"> </p>
+            <button  type="submit">Choose time</button>
+
+
+        </form>
+
+    </details>
     <details ><summary>Choose event categories</summary>
     <div >
         <form id="categories" onsubmit="sendCategories(); event.preventDefault()">{% csrf_token %}</form>
@@ -76,7 +124,23 @@
 
 <!-- JavaScrip SearchEngine -->
 <script>
+//this function makes the date input visible/hidden
+   function showDate(box) {
+       var input= document.getElementsByName("date");
+        if(box==="custom"){
+            for(var i=0;i<input.length;i++){
+                console.log("Now date");
+                input[i].type="date";
+            }
+        }else {
+            for (var i = 0; i < input.length; i++) {
+                console.log("Now hidden");
+                input[i].type = "hidden";
+            }
+        }
+}
 
+//for search on enter to work
     var input =document.getElementById("addr");
     input.addEventListener("keyup",function (event) {
         // Cancel the default action, if needed
@@ -91,10 +155,46 @@
   }
 });
 
-function searchSug() {
-        var inp=document.getElementById("addr");
-    $("#try").empty();
+//get the events in a timeperiod
+function getTime() {
+    var radio = document.querySelector('input[name="time"]:checked').value;
+    eventMap.removeLayer(markerLayer);
+    markerLayer = new L.markerClusterGroup();
+    if(radio!="3") {
+        var liste = JSON.stringify(radio);
+        var categories = "{% url 'events:timeData' 12345 %}".replace(/12345/, liste);
 
+        $.getJSON(categories, function (data) {
+            layer = L.geoJSON(data, {
+                onEachFeature: onEachFeature
+            });
+            markerLayer.addTo(eventMap);
+        }).fail(function (d, textStatus, error) {
+            console.error("getJSON failed, status: " + textStatus + ", error: " + error);
+        });
+    }else{
+        var dates=document.getElementsByName("date");
+       var query=dates[0].value+"&&&"+dates[1].value;
+       var liste = JSON.stringify(query);
+       var categories= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
+       $.getJSON(categories, function (data) {
+            layer = L.geoJSON(data, {
+                onEachFeature: onEachFeature
+            });
+            markerLayer.addTo(eventMap);
+        }).fail(function (d, textStatus, error) {
+            console.error("getJSON failed, status: " + textStatus + ", error: " + error);
+        });
+
+
+    }
+}
+
+
+//searching suggestions
+function searchSug() {
+    var inp = document.getElementById("addr");
+    $("#try").empty();
     var dataList=document.getElementById("try");
         $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=10&q=' + inp.value, function(data) {
             $.each(data, function (key,val) {
@@ -108,14 +208,12 @@ function searchSug() {
 
     }
 
-
+//search on adress
     function addr_search() {
         var inp=document.getElementById("addr");
-
         $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + inp.value, function(data) {
     $.each(data, function (key,val) {
         var location = new L.LatLng(val.lat,val.lon);
-        addMarker(marker,location);
         if(val.type=='city' || val.type=='administrative'){
             eventMap.setView(location);
             eventMap.fitBounds([[val.boundingbox[0],val.boundingbox[2]],[val.boundingbox[1],val.boundingbox[3]]])
@@ -128,7 +226,7 @@ function searchSug() {
     }
 
 
-
+//get the categories
     function getCategories(){
         var dataList=document.getElementById("categories");
         var categories ="{% url 'events:categories' %}";
@@ -159,7 +257,7 @@ function searchSug() {
     }
 
 
-
+//get events with categories.
     function sendCategories(){
         var checks = $('input[type="checkbox"]:checked').map(function(){
 		    return $(this).val();

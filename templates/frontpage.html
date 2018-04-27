@@ -4,6 +4,8 @@
 {% block script %}
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
 
      <!-- map Markers -->
@@ -22,10 +24,33 @@
 {% block content %}
 
 
+    <style>
+       .invisible-button {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        cursor:pointer;
+        overflow: hidden;
+        outline:none;
+        font-size: 25px;
+        }
+
+        .centered {
+            margin-right: auto;
+            margin-left: auto;
+            width: 12em;
+        }
+        .centerize {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+    </style>
+
 
 <div id="map-container" class="container-fluid">
      <div id="map">
-
          <script>
 
              var eventMap = L.map('map').setView([63.429722, 10.393333], 13);
@@ -42,6 +67,7 @@
 
 
 <script>
+
     var layer;
     var markerLayer = new L.markerClusterGroup();
 
@@ -50,6 +76,34 @@
     });
 
 
+
+    //a marker that can be marked by user
+    var userMarker = L.marker(eventMap.getCenter(),{
+        draggable:true
+    });
+    var circleOfLife=L.circle(userMarker.getLatLng(),{
+        radius:2000
+    });
+
+    var addedToMap=false;
+
+L.easyButton('fa-map-marker', function(btn, map){
+    if(!addedToMap) {
+        userMarker.setLatLng(map.getCenter()).addTo(eventMap);
+        addedToMap=true;
+    }else{
+        userMarker.setLatLng(map.getCenter());
+
+    }
+      circleOfLife.setLatLng(userMarker.getLatLng());
+}).addTo(eventMap);
+
+userMarker.on("drag", function(e) {
+    console.log("Dragging");
+    var marker = e.target;
+    var position = marker.getLatLng();
+    circleOfLife.setLatLng(position);
+});
 </script>
 
     <script type="text/javascript">
@@ -57,29 +111,25 @@
     populateCategoryMap();
 
     function onEachFeature(feature, layer) {
-        var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
+        var ourPopup = '<h4 class=centered">' + feature.properties.title + "</h4>" +
+            '<p>Start: ' + feature.properties.start + '</p>' +
+            '<hr>' + '<h4 class=centered style="font-size: 16px">' + feature.properties.ingress + '</h4>' +
+            '<a class="btn btn-github centerize" href="{% url 'events:event_detail' 55 %}">See more</a>'
+                .replace(/55/, feature.properties.pk.toString()) ;
         var marker = getMarker(feature.properties.category, layer);
-
         marker.bindPopup(ourPopup);
         markerLayer.addLayer(marker);
     }
 
-
-
-   function populateCategoryMap(){
-        var categories ="{% url 'events:categories' %}";
-
-        $.getJSON(categories,function (data) {
-            $.each(data,function (key,val) {
-                categoryMap.set(val.pk, val.fields.title);
-            });
-
-        });
-    }
-
     function getMarker(categoryID, layer) {
 
-        var markerCategory = categoryMap.get(categoryID)
+        if (Object.keys(categoryMap).length < 1){
+            location.reload(true);
+            categoryMap = populateCategoryMap();
+        }
+
+        var markerCategory = categoryMap[categoryID];
+
         switch(markerCategory) {
             case "Children":
                 return L.marker(layer.getLatLng(), {icon: childMarkerBlue});
@@ -202,7 +252,6 @@
     });
 
     function addEvents(map) {
-        populateCategoryMap();
         var EventPoints = "{% url 'events:pointData' %}";
         $.getJSON(EventPoints, function (data) {
             //L.geoJSON(data).addTo(map);
@@ -210,7 +259,6 @@
                 onEachFeature: onEachFeature
             });
             markerLayer.addTo(eventMap);
-            console.log(layer);
         });
     }
 

@@ -1,6 +1,37 @@
 {% extends 'baseNavbar.html' %}
 
 {% block content %}
+<style>
+    #event_title {
+        text-align: center;
+        color: #d5693d;
+        font-size: 42px;
+    }
+    #event_ingress {
+        font-size: 20px;
+    }
+    #event_author {
+        font-size: 16px;
+        color: darkgrey;
+    }
+    #event_description {
+        font-size: 26px;
+    }
+
+    .invisible-button {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        cursor:pointer;
+        overflow: hidden;
+        outline:none;
+        font-size: 25px;
+    }
+
+
+</style>
+
+
 
     <div class="container" style="color: black">
         <div class="row space-below">
@@ -12,10 +43,32 @@
                         </div>
                     {% endif %}
                     <h1 id="event_title">{{ event.title }}</h1>
-                    <h4 class="text-center">{{ event.ingress }}</h4>
+                    <em id="event_ingress">{{ event.ingress }}</em>
+
+                    <p id="event_author">Av: {{ event.author.get_full_name }}</p>
+                    Event type:  {{ event.category }}<br>
+                    Start: {{ event.start }}<br>
+                    {% if event.end %}
+                        End: {{ event.start }}<br>
+                    {% endif %}
+                    {% if event.address %}
+                        Adress: {{ event.address }}
+                    {% endif %}
+                    <form action="" method="post">{% csrf_token %}
+                        {% if is_favorited %}
+                            <button class="invisible-button" style="color:#d5693d;" name="remove_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+                        {% else %}
+                            <button class="invisible-button" name="add_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button>
+                        {% endif %}
+                    </form>
+
+                    <hr>
+                    <p id="event_description">{{ event.description }}</p>
+
                 </div>
             </div>
         </div>
     </div>
+
 
 {% endblock %}
