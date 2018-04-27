@@ -45,6 +45,7 @@
 
     var layer;
     var markerLayer = new L.markerClusterGroup();
+    var hiddenMarkers = new L.markerClusterGroup();
 
     eventMap.locate({setView:true}).on('locationfound',function (e) {
         eventMap.setZoom(13);
@@ -85,20 +86,28 @@ userMarker.on("drag", function(e) {
     var categoryMap = new Map();
     populateCategoryMap();
 
+
     function onEachFeature(feature, layer) {
-        var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
+        setTimeout(function () {
+             var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
         var marker = getMarker(feature.properties.category, layer);
+        setTags(feature.properties, marker);
 
         marker.bindPopup(ourPopup);
         markerLayer.addLayer(marker);
+        }, 100)
+
+    }
+
+    function setTags(properties, marker) {
+        var curCategory = categoryMap[properties.category];// get title for the event category
+        var tagMarkers = tagMarkerMap[curCategory]; // get the current Markers for this tag
+        tagMarkers.push(marker); // add this marker to list
+        tagMarkerMap[curCategory] = tagMarkers;
     }
 
     function getMarker(categoryID, layer) {
 
-        if (Object.keys(categoryMap).length < 1){
-            location.reload(true);
-            categoryMap = populateCategoryMap();
-        }
 
         var markerCategory = categoryMap[categoryID];
 
