@@ -5,6 +5,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.db import transaction
 from .forms import *
+from apps.events.models import Category
 
 from social_django.models import UserSocialAuth
 
@@ -14,7 +15,8 @@ def testGeoDjango(request):
 
 
 def frontpage(request):
-    return render(request, "frontpage.html")
+    categories = Category.objects.all();
+    return render(request, "frontpage.html", {'categories': categories})
 
 @login_required
 def home(request):

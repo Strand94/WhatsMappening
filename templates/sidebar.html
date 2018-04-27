@@ -80,15 +80,76 @@
     <details ><summary>Choose event categories</summary>
     <div >
         <form id="categories" onsubmit="sendCategories(); event.preventDefault()">{% csrf_token %}</form>
-
+        <p><input type="checkbox" id="allCategories" name="All" value="AllCategories" onclick="checkAllCategories()" checked="True">
+        <label for="All">All Categories</label></p>
+        {% for category in categories %}
+            <p><input type="checkbox" id="{{ category.title }}" name="{{ category.title }}" value="{{ category.title }}" onclick="categoryChecked()">
+            <label for="{{ category.title }}">{{ category.title }}</label></p>
+        {% endfor %}
 
     </div> </details>
 
 </div>
 
-<!-- JavaScrip SearchEngine -->
+
 <script>
+
+var allTags = getAllTags();
+
+function getAllTags() {
+
+    setTimeout(function () {
+       console.log(Object.keys(tagMarkerMap)) ;
+        allTags = Object.keys(tagMarkerMap);
+        return allTags;
+    },100);
+
+}
+
+
+function filterMarkers() {
+    console.log("Filtering Markers");
+    eventMap.removeLayer(MarkersLayer);
+    //filteredMarkersLayer = allMarkersLayer;
+    MarkersLayer.addLayer(hiddenMarkers);
+
+    //remove all unchecked categories
+    if (!document.getElementById("allCategories").checked){
+       for(i = 0; i < allTags.length; i++){
+        console.log(allTags[i] + ": " + document.getElementById(allTags[i]).checked);
+       if(!document.getElementById(allTags[i]).checked){
+           for(j = 0; j < tagMarkerMap[allTags[i]].length; j++){
+               MarkersLayer.removeLayer(tagMarkerMap[allTags[i]][j]);
+               hiddenMarkers.addLayer(tagMarkerMap[allTags[i]][j]);
+           }
+       }
+        }
+    }
+
+
+    eventMap.addLayer(MarkersLayer);
+}
+
+function checkAllCategories() {
+    console.log("All categories checked");
+
+    //uncheck all categories
+    {% for category in categories %}
+        document.getElementById("{{ category.title }}").checked = false;
+    {% endfor %}
+
+    filterMarkers();
+}
+
+function categoryChecked() {
+    document.getElementById("allCategories").checked = false;
+    console.log("category Checked");
+    filterMarkers();
+}
+
 //this function makes the date input visible/hidden
+
+
    function showDate(box) {
        var input= document.getElementsByName("date");
         if(box==="custom"){
@@ -98,7 +159,7 @@
             }
         }else {
             for (var i = 0; i < input.length; i++) {
-                console.log("Now hidden");
+                console.log("Nowhidden ");
                 input[i].type = "hidden";
             }
         }
@@ -144,8 +205,8 @@ function getTime() {
         }*/
        var query=dates[0].value+"&&&"+dates[1].value;
        var liste = JSON.stringify(query);
-       var categories= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
-       $.getJSON(categories, function (data) {
+       var timeFilteredEvents= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
+       $.getJSON(timeFilteredEvents, function (data) {
             layer = L.geoJSON(data, {
                 onEachFeature: onEachFeature
             });
@@ -194,35 +255,56 @@ function searchSug() {
     }
 
 
-//get the categories
-    function getCategories(){
-        var dataList=document.getElementById("categories");
-        var categories ="{% url 'events:categories' %}";
-        $("#categories").empty();
-        var div = document.createElement("div");
-        var button = document.createElement("input");
-        button.setAttribute("type", "submit");
-        button.setAttribute("value", "Choose categories");
-        div.appendChild(button);
-        $.getJSON(categories,function (data) {
-            $.each(data,function (key,val) {
-                var subDiv = document.createElement("div");
-                var input =document.createElement("input");
-                input.setAttribute("id",val.fields.title);
-                input.setAttribute("value",val.pk);
-                var label =document.createElement("label");
-                label.setAttribute("for", val.fields.title );
-                label.innerText=val.fields.title;
-                input.setAttribute("type", "checkbox");
-                subDiv.appendChild(input);
-                subDiv.appendChild( label);
-                div.appendChild(subDiv);
-            });
+function showFilteredEvents() {
+   var input= document.getElementById("Sport");
 
-        });
+    console.log("checkbox checked");
+    eventMap.removeLayer(markerLayer);
+    addEvents(eventMap);
+    // remove Sports events:
+    //eventMap.removeLayers(tagMarkerMap["Sport"]);
+}
+
+
+function toggleSelect(transport_select_id) {
+    console.log("checked!!!")
+}
+
+//get the categories
+/*    function getCategories(){
+
+    setTimeout(function(){
+    console.log(categoryList);
+        var dataList=document.getElementById("categories");
+        var div = document.createElement("div");
+        for (i = 0; i < categoryList.length; i++){
+
+    //<p><input type ="radio" name="time"  id="custom" value="3" onclick="showDate('custom')"> Custom date</p>
+             var subDiv = document.createElement("div");
+             var input =document.createElement("input");
+             input.setAttribute("id",categoryList[i]);
+             input.setAttribute("value",categoryList[i]);
+             var label =document.createElement("label");
+            label.setAttribute("for", categoryList[i] );
+            label.innerText=categoryList[i];
+
+            input.setAttribute("type", "checkbox");
+            input.setAttribute("onClick", thingy);
+
+            function thingy() {
+                console.log("checked");
+            }
+
+            //input.onClick =showFilteredEvents();
+            subDiv.appendChild(input);
+            subDiv.appendChild( label);
+            div.appendChild(subDiv);
+        }
 
         dataList.appendChild(div);
-    }
+    }, 500);
+
+    }*/
 
 
 //get events with categories.
@@ -250,6 +332,6 @@ function searchSug() {
 
     }
 
-    getCategories();
+
     </script>
 <!-- /#sidebar-wrapper -->
