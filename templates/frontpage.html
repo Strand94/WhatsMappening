@@ -42,7 +42,7 @@
 <script>
 
     var layer;
-    var MarkersLayer = new L.markerClusterGroup();
+    var markerLayer = new L.markerClusterGroup();
     var hiddenMarkers = new L.markerClusterGroup();
 
     eventMap.locate({setView:true}).on('locationfound',function (e) {
@@ -58,7 +58,7 @@
         setTags(feature.properties, marker);
 
         marker.bindPopup(ourPopup);
-        MarkersLayer.addLayer(marker);
+        markerLayer.addLayer(marker);
         }, 100)
 
     }
@@ -203,7 +203,7 @@
             layer = L.geoJson(data, {
                 onEachFeature: onEachFeature
             });
-            MarkersLayer.addTo(eventMap);
+            markerLayer.addTo(eventMap);
         });
     }
 

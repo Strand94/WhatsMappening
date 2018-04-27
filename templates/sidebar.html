@@ -109,9 +109,9 @@ function getAllTags() {
 
 function filterMarkers() {
     console.log("Filtering Markers");
-    eventMap.removeLayer(MarkersLayer);
-    //filteredMarkersLayer = allMarkersLayer;
-    MarkersLayer.addLayer(hiddenMarkers);
+    eventMap.removeLayer(markerLayer);
+    //markerLayer = allMarkersLayer;
+    markerLayer.addLayer(hiddenMarkers);
 
     //remove all unchecked categories
     if (!document.getElementById("allCategories").checked){
@@ -119,7 +119,7 @@ function filterMarkers() {
         console.log(allTags[i] + ": " + document.getElementById(allTags[i]).checked);
        if(!document.getElementById(allTags[i]).checked){
            for(j = 0; j < tagMarkerMap[allTags[i]].length; j++){
-               MarkersLayer.removeLayer(tagMarkerMap[allTags[i]][j]);
+               markerLayer.removeLayer(tagMarkerMap[allTags[i]][j]);
                hiddenMarkers.addLayer(tagMarkerMap[allTags[i]][j]);
            }
        }
@@ -127,7 +127,7 @@ function filterMarkers() {
     }
 
 
-    eventMap.addLayer(MarkersLayer);
+    eventMap.addLayer(markerLayer);
 }
 
 function checkAllCategories() {
