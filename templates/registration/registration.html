@@ -1,27 +1,26 @@
 {% extends 'baseNavbar.html' %}
+{% load static %}
 
 {% block content %}
-     <div id="main-page" class="container">
+<div id="main-page" class="container" style="padding-top: 20px">
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="media">
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-            {{ field }}
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
-    <button type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
-
-  </form>
-                </div></div></div></div>
+                    <form method="POST">
+                    {% csrf_token %}
+                    <h2>Register new user:</h2>
+                        <hr>
+                        <strong>Username:</strong>{{ form.username }}<br>
+                        <strong>Password:</strong>{{ form.password1 }}<br>
+                        <strong>Password confirmation:</strong>{{ form.password2 }}<br>
+                        <ul><li>Your password can&#39;t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can&#39;t be a commonly used password.</li><li>Your password can&#39;t be entirely numeric.</li></ul>
+                        <hr>
+                        <div class="center" style="padding-top: 15px">
+                            <button class="btn btn-facebook" style="text-align: center" type="submit">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
 {% endblock %}

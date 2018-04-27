@@ -23,9 +23,34 @@
 
 {% block content %}
 
+
+    <style>
+       .invisible-button {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        cursor:pointer;
+        overflow: hidden;
+        outline:none;
+        font-size: 25px;
+        }
+
+        .centered {
+            margin-right: auto;
+            margin-left: auto;
+            width: 12em;
+        }
+        .centerize {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+    </style>
+
+
 <div id="map-container" class="container-fluid">
      <div id="map">
-
          <script>
 
              var eventMap = L.map('map').setView([63.429722, 10.393333], 13);
@@ -86,9 +111,12 @@ userMarker.on("drag", function(e) {
     populateCategoryMap();
 
     function onEachFeature(feature, layer) {
-        var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
+        var ourPopup = '<h4 class=centered">' + feature.properties.title + "</h4>" +
+            '<p>Start: ' + feature.properties.start + '</p>' +
+            '<hr>' + '<h4 class=centered style="font-size: 16px">' + feature.properties.ingress + '</h4>' +
+            '<a class="btn btn-github centerize" href="{% url 'events:event_detail' 55 %}">See more</a>'
+                .replace(/55/, feature.properties.pk.toString()) ;
         var marker = getMarker(feature.properties.category, layer);
-
         marker.bindPopup(ourPopup);
         markerLayer.addLayer(marker);
     }

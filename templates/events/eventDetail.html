@@ -18,6 +18,17 @@
         font-size: 26px;
     }
 
+    .invisible-button {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        cursor:pointer;
+        overflow: hidden;
+        outline:none;
+        font-size: 25px;
+    }
+
+
 </style>
 
 
@@ -33,6 +44,7 @@
                     {% endif %}
                     <h1 id="event_title">{{ event.title }}</h1>
                     <em id="event_ingress">{{ event.ingress }}</em>
+
                     <p id="event_author">Av: {{ event.author.get_full_name }}</p>
                     Event type:  {{ event.category }}<br>
                     Start: {{ event.start }}<br>
@@ -40,8 +52,15 @@
                         End: {{ event.start }}<br>
                     {% endif %}
                     {% if event.address %}
-                        Adress: {{ event.address }}<br>
+                        Adress: {{ event.address }}
                     {% endif %}
+                    <form action="" method="post">{% csrf_token %}
+                        {% if is_favorited %}
+                            <button class="invisible-button" style="color:#d5693d;" name="remove_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+                        {% else %}
+                            <button class="invisible-button" name="add_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button>
+                        {% endif %}
+                    </form>
 
                     <hr>
                     <p id="event_description">{{ event.description }}</p>

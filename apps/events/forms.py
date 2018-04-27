@@ -15,14 +15,13 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         exclude =['author', 'timestamp', 'start', 'end']
-        fields = ('title', 'ingress', 'description','startTime','startDate','endTime','endDate','coordinates','address','image','category', 'location')
+        fields = ('title', 'ingress', 'description','startTime','startDate','endTime','endDate','address','image','category', 'location')
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
         self.fields['title'].widget.attrs.update({'class': 'form-control'})
         self.fields['ingress'].widget.attrs.update({'class': 'form-control'})
         self.fields['description'].widget.attrs.update({'class': 'form-control'})
-        self.fields['coordinates'].widget.attrs.update({'class': 'form-control'})
         self.fields['address'].widget.attrs.update({'class': 'form-control'})
         self.fields['image'].widget.attrs.update({'class': 'form-control'})
         self.fields['category'].widget.attrs.update({'class': 'form-control'})
