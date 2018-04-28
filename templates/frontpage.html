@@ -213,18 +213,19 @@ userMarker.on("drag", function(e) {
     var categoryMap = {}; // mapsCategoryID to categoryName
     var categoryList = [];
     var tagMarkerMap= {};
+    var eventPoints = "{% url 'events:pointData' %}";
 
     function cbPopulateCategoryMap() {
-        console.log("in the populateCategoryMap Callback function");
-        var eventPoints = "{% url 'events:pointData' %}";
+        console.log("in the initiateEventPointCallbackMadnes Callback function");
         addEvents(map, eventPoints);
     }
 
-    function populateCategoryMap(){
+    // fill neccesary category variables -> THEN addEvents -> THEN getAllTags
+    function initiateEventPointCallbackMadnes(){
        categoryMap = {};
        categoryList =[];
        tagMarkerMap= {};
-       console.log("populateCategoryMap")
+       console.log("initiateEventPointCallbackMadnes")
 
         var categories ="{% url 'events:categories' %}";
 
@@ -260,7 +261,8 @@ userMarker.on("drag", function(e) {
         });
     }
 
-    populateCategoryMap();
+
+    initiateEventPointCallbackMadnes();
     //addEvents(eventMap, eventPoints);
 
 </script>

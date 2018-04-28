@@ -133,12 +133,11 @@ function addCircle() {
 var allTags;
 
 //uses tagMarkerMap
-function getAllTags() {
-
-
+function getAllTags( ) {
         console.log("allTags:");
        console.log(Object.keys(tagMarkerMap)) ;
         allTags = Object.keys(tagMarkerMap);
+
         return allTags;
 
 
@@ -227,18 +226,26 @@ function getTime() {
     markerLayer = new L.markerClusterGroup();
     if(radio!="3") {
         var liste = JSON.stringify(radio);
-        var timeFilteredEvents = "{% url 'events:timeData' 12345 %}".replace(/12345/, liste);
-       addEvents(eventMap, timeFilteredEvents);
+        eventPoints = "{% url 'events:timeData' 12345 %}".replace(/12345/, liste);
+       initiateEventPointCallbackMadnes();
+        setTimeout(function() {
+            filterMarkers();
+        }, 700);
 
 
+        //addEvents(eventMap, timeFilteredEvents);
 
     }else{
         var dates=document.getElementsByName("date");
        var query=dates[0].value+"&&&"+dates[1].value;
        var liste = JSON.stringify(query);
-       var timeFilteredEvents= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
+       eventPoints= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
+        initiateEventPointCallbackMadnes();
+        setTimeout(function() {
+            filterMarkers();
+        }, 700);
 
-       addEvents(eventMap, timeFilteredEvents);
+       //addEvents(eventMap, timeFilteredEvents);
     }
 }
 
