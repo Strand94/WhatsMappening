@@ -81,8 +81,6 @@ userMarker.on("drag", function(e) {
     circleOfLife.setLatLng(position);
 });
 
-    var categoryMap = new Map();
-    populateCategoryMap();
 
 
     function onEachFeature(feature, layer) {
@@ -212,25 +210,58 @@ userMarker.on("drag", function(e) {
     popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var eventPoints = "{% url 'events:pointData' %}";
+    var categoryMap = {}; // mapsCategoryID to categoryName
+    var categoryList = [];
+    var tagMarkerMap= {};
+
+    function cbPopulateCategoryMap() {
+        console.log("in the populateCategoryMap Callback function");
+        var eventPoints = "{% url 'events:pointData' %}";
+        addEvents(map, eventPoints);
+    }
+
+    function populateCategoryMap(){
+       categoryMap = {};
+       categoryList =[];
+       tagMarkerMap= {};
+       console.log("populateCategoryMap")
+
+        var categories ="{% url 'events:categories' %}";
+
+        $.getJSON(categories,function (data) {
+            $.each(data,function (key,val) {
+                categoryMap[val.pk]= val.fields.title;
+                console.log(val.pk);
+                categoryList.push(val.fields.title);
+                tagMarkerMap[val.fields.title] = [];
+            });
+
+            cbPopulateCategoryMap()
+        });
+        return categoryMap;
+    }
+
+
+    function cbAddEvents() {
+        console.log("in the AddEvents Callback function");
+        allTags = getAllTags();
+    }
 
     function addEvents(map, eventPoints) {
         markerLayer = new L.markerClusterGroup();
         hiddenMarkers = new L.markerClusterGroup();
-
-        categoryMap = populateCategoryMap(); // mapsCategoryID to categoryName
-        categoryList = [];
-        tagMarkerMap= {};
 
         $.getJSON(eventPoints, function (data) {
             layer = L.geoJson(data, {
                 onEachFeature: onEachFeature
             });
             markerLayer.addTo(eventMap);
+            cbAddEvents();
         });
     }
 
-    addEvents(eventMap, eventPoints);
+    populateCategoryMap();
+    //addEvents(eventMap, eventPoints);
 
 </script>
 

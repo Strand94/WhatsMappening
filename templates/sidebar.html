@@ -130,16 +130,17 @@ function addCircle() {
 
 <script>
 
-var allTags = getAllTags();
+var allTags;
 
 //uses tagMarkerMap
 function getAllTags() {
 
-    setTimeout(function () {
+
+        console.log("allTags:");
        console.log(Object.keys(tagMarkerMap)) ;
         allTags = Object.keys(tagMarkerMap);
         return allTags;
-    },100);
+
 
 }
 

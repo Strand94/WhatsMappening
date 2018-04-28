@@ -96,26 +96,7 @@
     {% endif %}
 
 <script>
-    var categoryMap = populateCategoryMap(); // mapsCategoryID to categoryName
-    var categoryList = [];
-    var tagMarkerMap= {};
 
-   function populateCategoryMap(){
-       categoryMap = {};
-
-        var categories ="{% url 'events:categories' %}";
-        $.getJSON(categories,function (data) {
-            $.each(data,function (key,val) {
-                categoryMap[val.pk]= val.fields.title;
-                categoryList.push(val.fields.title);
-                tagMarkerMap[val.fields.title] = [];
-            });
-
-        });
-        return categoryMap;
-    }
-
-   // populateCategoryMap();
 </script>
 
 
