@@ -115,16 +115,78 @@ function addCircle() {
     </details>
     <details ><summary>Choose event categories</summary>
     <div >
-        <form id="categories" onsubmit="sendCategories(); event.preventDefault()">{% csrf_token %}</form>
-
+        <form id="categories" >{% csrf_token %}</form>
+        <p><input type="checkbox" id="allCategories" name="All" value="AllCategories" onclick="checkAllCategories()" checked="True">
+        <label for="All">All Categories</label></p>
+        {% for category in categories %}
+            <p><input type="checkbox" id="{{ category.title }}" name="{{ category.title }}" value="{{ category.title }}" onclick="categoryChecked()">
+            <label for="{{ category.title }}">{{ category.title }}</label></p>
+        {% endfor %}
 
     </div> </details>
 
 </div>
 
-<!-- JavaScrip SearchEngine -->
+
 <script>
+
+var allTags;
+
+//uses tagMarkerMap
+function getAllTags( ) {
+        console.log("allTags:");
+       console.log(Object.keys(tagMarkerMap)) ;
+        allTags = Object.keys(tagMarkerMap);
+
+        return allTags;
+
+
+}
+
+//uses tagMarkerMap, allTags
+function filterMarkers() {
+    console.log("Filtering Markers");
+    eventMap.removeLayer(markerLayer);
+    //markerLayer = allMarkersLayer;
+    markerLayer.addLayer(hiddenMarkers);
+
+    //remove all unchecked categories
+    if (!document.getElementById("allCategories").checked){
+       for(i = 0; i < allTags.length; i++){
+        console.log(allTags[i] + ": " + document.getElementById(allTags[i]).checked);
+       if(!document.getElementById(allTags[i]).checked){
+           for(j = 0; j < tagMarkerMap[allTags[i]].length; j++){
+               markerLayer.removeLayer(tagMarkerMap[allTags[i]][j]);
+               hiddenMarkers.addLayer(tagMarkerMap[allTags[i]][j]);
+           }
+       }
+        }
+    }
+
+
+    eventMap.addLayer(markerLayer);
+}
+
+function checkAllCategories() {
+    console.log("All categories checked");
+
+    //uncheck all categories
+    {% for category in categories %}
+        document.getElementById("{{ category.title }}").checked = false;
+    {% endfor %}
+
+    filterMarkers();
+}
+
+function categoryChecked() {
+    document.getElementById("allCategories").checked = false;
+    console.log("category Checked");
+    filterMarkers();
+}
+
 //this function makes the date input visible/hidden
+
+
    function showDate(box) {
        var input= document.getElementsByName("date");
         if(box==="custom"){
@@ -134,10 +196,12 @@ function addCircle() {
             }
         }else {
             for (var i = 0; i < input.length; i++) {
-                console.log("Now hidden");
+                console.log("Nowhidden ");
                 input[i].type = "hidden";
             }
         }
+        //TODO remove it later
+        filterDistance();
 }
 
 //for search on enter to work
@@ -162,31 +226,26 @@ function getTime() {
     markerLayer = new L.markerClusterGroup();
     if(radio!="3") {
         var liste = JSON.stringify(radio);
-        var categories = "{% url 'events:timeData' 12345 %}".replace(/12345/, liste);
+        eventPoints = "{% url 'events:timeData' 12345 %}".replace(/12345/, liste);
+       initiateEventPointCallbackMadnes();
+        setTimeout(function() {
+            filterMarkers();
+        }, 700);
 
-        $.getJSON(categories, function (data) {
-            layer = L.geoJSON(data, {
-                onEachFeature: onEachFeature
-            });
-            markerLayer.addTo(eventMap);
-        }).fail(function (d, textStatus, error) {
-            console.error("getJSON failed, status: " + textStatus + ", error: " + error);
-        });
+
+        //addEvents(eventMap, timeFilteredEvents);
+
     }else{
         var dates=document.getElementsByName("date");
        var query=dates[0].value+"&&&"+dates[1].value;
        var liste = JSON.stringify(query);
-       var categories= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
-       $.getJSON(categories, function (data) {
-            layer = L.geoJSON(data, {
-                onEachFeature: onEachFeature
-            });
-            markerLayer.addTo(eventMap);
-        }).fail(function (d, textStatus, error) {
-            console.error("getJSON failed, status: " + textStatus + ", error: " + error);
-        });
+       eventPoints= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
+        initiateEventPointCallbackMadnes();
+        setTimeout(function() {
+            filterMarkers();
+        }, 700);
 
-
+       //addEvents(eventMap, timeFilteredEvents);
     }
 }
 
@@ -226,62 +285,18 @@ function searchSug() {
     }
 
 
-//get the categories
-    function getCategories(){
-        var dataList=document.getElementById("categories");
-        var categories ="{% url 'events:categories' %}";
-        $("#categories").empty();
-        var div = document.createElement("div");
-        var button = document.createElement("input");
-        button.setAttribute("type", "submit");
-        button.setAttribute("value", "Choose categories");
-        div.appendChild(button);
-        $.getJSON(categories,function (data) {
-            $.each(data,function (key,val) {
-                var subDiv = document.createElement("div");
-                var input =document.createElement("input");
-                input.setAttribute("id",val.fields.title);
-                input.setAttribute("value",val.pk);
-                var label =document.createElement("label");
-                label.setAttribute("for", val.fields.title );
-                label.innerText=val.fields.title;
-                input.setAttribute("type", "checkbox");
-                subDiv.appendChild(input);
-                subDiv.appendChild( label);
-                div.appendChild(subDiv);
-            });
-
-        });
-
-        dataList.appendChild(div);
-    }
-
-
-//get events with categories.
-    function sendCategories(){
-        var checks = $('input[type="checkbox"]:checked').map(function(){
-		    return $(this).val();
-	}).get();
+    function filterDistance() {
         eventMap.removeLayer(markerLayer);
-        markerLayer = new L.markerClusterGroup();
-
-        var liste = JSON.stringify(checks);
-        var categories ="{% url 'events:listEvents' 12345 %}".replace(/12345/,liste);
-        console.log(categories);
-
-        $.getJSON(categories, function(data) {
-           layer = L.geoJSON(data, {
-               onEachFeature: onEachFeature
-           });
-          markerLayer.addTo(eventMap);
-        }).fail( function(d, textStatus, error) {
-            console.error("getJSON failed, status: " + textStatus + ", error: "+error);
+        markerLayer.eachLayer(function (layer) {
+            var distance = layer.getLatLng().distanceTo(userMarker.getLatLng());
+            if (distance > circleOfLife.getRadius()) {
+                //hiddenLayer.addToLayer(layer);
+                markerLayer.removeLayer(layer);
+            }
         });
-
-
-
+        markerLayer.addTo(eventMap);
+        //TODO use markerLayer and HiddenLayer
     }
 
-    getCategories();
     </script>
 <!-- /#sidebar-wrapper -->

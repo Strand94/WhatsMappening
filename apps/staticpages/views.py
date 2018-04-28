@@ -5,14 +5,15 @@ from apps.staticpages.forms import CreateUserForm
 from django.contrib import messages
 from django.db import transaction
 from .forms import *
-from apps.events.models import Starred
+from apps.events.models import Category, Starred
 from django.contrib.auth.decorators import user_passes_test
 
 from social_django.models import UserSocialAuth
 
 
 def frontpage(request):
-    return render(request, "frontpage.html")
+    categories = Category.objects.all();
+    return render(request, "frontpage.html", {'categories': categories})
 
 
 @login_required
