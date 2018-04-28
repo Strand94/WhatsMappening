@@ -1,14 +1,19 @@
 {% extends 'baseNavbar.html' %}
 
 {% block content %}
-<div id="main-page" class="container">
+<div id="main-page" class="container" style="padding-top: 20px">
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="media">
+                    <h2>{{ request.user }}</h2><hr>
+                        Name: {{ request.user.get_full_name }}<br>
+                        email: {{ request.user.email }}
+
+                    <hr>
                     <h2>Settings</h2><hr>
 
                     <h3>Edit user</h3>
-                        <a class="btn btn-info" href="{% url 'update_profile' %}">Edit user</a>
+                        <a class="btn btn-info" href="{% url 'update_user' %}">Edit user</a>
                     <hr>
                     <h3>Change password</h3>
                         <a class="btn btn-info" href="{% url 'password' %}">Change password</a>

@@ -23,52 +23,50 @@
 
     <!-- Modal -->
     <div id="userModal" class="modal fade" role="button">
-      <div id="userModal-dialog" class="modal-dialog">
+        <div id="userModal-dialog" class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div>
+                    {% if user.is_authenticated %}
+                        <button type="button" class="close" data-dismiss="modal" >&times;</button>
+                        <ul>
+                            <li>
+                                <a href="{% url 'user' %}">My profile</a>
+                            </li>
+                            <hr/>
+                            <li>
+                                <a href="{% url 'logout' %}">Logg out</a>
+                            </li>
+                        </ul>
 
-        <!-- Modal content-->
-
-        <div class="modal-content">
-
-        <div class="modal-body">
-        {% if user.is_authenticated %}
-        <button type="button" class="close" data-dismiss="modal" >&times;</button>
-
-        <ul>
-            <li><a href="{% url 'user' %}">My profile</a></li>
-            <li><a href="{% url 'settings' %}">Edit Profile</a></li>
-            <hr/>
-            <li><a href="{% url 'logout' %}">Logg out</a>
-        </ul>
-
-        {% else %}
-        <ul>
-				<li>
-                    <p class="center">Logg in / register bruker med</p>
-                        <div class="social-buttons">
-                            <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-fb" style="color: white;"><i class="fa fa-facebook"></i> Facebook</a>
-                        </div>
-                        <p class="center">eller</p>
-                         <form class="form" method="post" action="{% url 'login' %}" accept-charset="UTF-8" id="login-nav">{% csrf_token %}
-                                <div class="form-group">
-                                     <input type="text" class="form-control" name="username" placeholder="Brukernavn" required>
+                    {% else %}
+                        <ul>
+                            <li>
+                                <p>Logg in / register bruker med</p>
+                                <div class="social-buttons">
+                                    <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-fb" style="color: white;"><i class="fa fa-facebook"></i> Facebook</a>
                                 </div>
-                                <div class="form-group">
-                                     <input type="password" class="form-control" name="password" placeholder="Passord" required>
+                                <p class="center">eller</p>
+                                <form class="form" method="post" action="{% url 'login' %}" accept-charset="UTF-8" id="login-nav">{% csrf_token %}
+                                    <div class="form-group">
+                                         <input type="text" class="form-control" name="username" placeholder="Brukernavn" required>
+                                    </div>
+                                    <div class="form-group">
+                                         <input type="password" class="form-control" name="password" placeholder="Passord" required>
+                                    </div>
+                                    <div class="form-group">
+                                         <button type="submit" class="btn btn-primary btn-block">Logg inn</button>
+                                    </div>
+                                </form>
+                                <div class="bottom text-center">
+                                    New here ? <a href="{% url 'register' %}"><b>Join Us</b></a>
                                 </div>
-                                <div class="form-group">
-                                     <button type="submit" class="btn btn-primary btn-block">Logg inn</button>
-                                </div>
-                         </form>
-
-				</li>
-            </ul>
-        {% endif %}
-
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-
-        </div>
-
-      </div>
     </div>
 
     <!-- Modal -->

@@ -3,7 +3,7 @@ from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import EventForm
-from .models import Event, Attendance, Participation, Category
+from .models import Event, Category, Starred
 from django.utils import timezone
 from django.shortcuts import redirect
 import datetime
@@ -21,10 +21,6 @@ def create_event(request):
             event.start = str(request.POST.get(("startDate"), "")+" "+request.POST.get(("startTime"), ""))
             event.end = str(request.POST.get(("endDate"), "")+" "+request.POST.get(("endTime"), ""))
             event.save()
-            attendance = Attendance.objects.create(event=event)
-            participation = Participation.objects.create(attendance=attendance, user=request.user, status='G')
-            attendance.save()
-            participation.save()
             return redirect('events:user_events')
     form = EventForm(request.POST)
     return render(request, 'events/eventForm.html', {
@@ -65,19 +61,43 @@ def edit_event(request, pk):
 
 def user_created(request):
     events = Event.objects.filter(author=request.user)
+    user_starred = Starred.objects.filter(user=request.user).first()
+    favorites = user_starred.favorites.all()
     if request.method == 'POST':
         if 'delete_event' in request.POST:
             delete = request.POST.get('delete_event')
             event = Event.objects.filter(pk=delete)
             event.delete()
+        if 'remove_favorite' in request.POST:
+            remove_pk = request.POST.get('remove_favorite')
+            user_starred.favorites.remove(remove_pk)
     return render(request, 'events/userCreated.html',{
         'events':events,
+        'favorited':favorites,
     })
 
 
 def event_detail(request, pk):
+    user_starred = Starred.objects.filter(user=request.user).first()
+    favorites = user_starred.favorites.all()
     event = get_object_or_404(Event, pk=pk)
-    return render(request, 'events/eventDetail.html', {'event':event})
+    if request.method == 'POST':
+        if 'add_favorite' in request.POST:
+            add_pk = request.POST.get('add_favorite')
+            event = Event.objects.filter(pk=add_pk).first()
+            user_starred.favorites.add(event)
+        if 'remove_favorite' in request.POST:
+            remove_pk = request.POST.get('remove_favorite')
+            user_starred.favorites.remove(remove_pk)
+    if event in favorites:
+        is_favorited = True
+    else:
+        is_favorited = False
+
+    return render(request, 'events/eventDetail.html', {
+        'event':event,
+        'is_favorited':is_favorited,
+    })
 
 
 def testDjango(request):

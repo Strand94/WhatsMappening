@@ -1,30 +1,20 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, authenticate, login
+from apps.staticpages.forms import CreateUserForm
 from django.contrib import messages
 from django.db import transaction
 from .forms import *
-from apps.events.models import Category
+from apps.events.models import Category, Starred
+from django.contrib.auth.decorators import user_passes_test
 
 from social_django.models import UserSocialAuth
-
-
-def testGeoDjango(request):
-    return render(request, "testGeoDjango.html")
 
 
 def frontpage(request):
     categories = Category.objects.all();
     return render(request, "frontpage.html", {'categories': categories})
 
-@login_required
-def home(request):
-    return render(request, 'staticpages/home.html')
-
-@login_required
-def user(request):
-    return render(request, 'staticpages/userpage.html')
 
 @login_required
 def settings(request):
@@ -45,9 +35,9 @@ def settings(request):
 @login_required
 def password(request):
     if request.user.has_usable_password():
-        PasswordForm = PasswordChangeForm
+        PasswordForm = ChangePasswordForm
     else:
-        PasswordForm = AdminPasswordChangeForm
+        PasswordForm = ChangePasswordForm
 
     if request.method == 'POST':
         form = PasswordForm(request.user, request.POST)
@@ -65,21 +55,37 @@ def password(request):
 
 @login_required
 @transaction.atomic
-def update_profile(request):
+def update_user(request):
     if request.method == 'POST':
         user_form = EditUserForm(request.POST, instance=request.user)
-        profile_form = EditProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
-            profile_form.save()
+        if user_form.is_valid():
             user_form.save()
-            messages.success(request, 'Your profile was successfully updated!')
+            messages.success(request, 'Your user was successfully updated!')
             return redirect('user')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
         user_form = EditUserForm(instance=request.user)
-        profile_form = EditProfileForm(instance=request.user.profile)
     return render(request, 'registration/edit_user_form.html', {
         'user_form': user_form,
-        'profile_form': profile_form
     })
+
+
+def register(request):
+    if request.user.is_authenticated:
+        return redirect('frontpage')
+    else:
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get('username')
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=raw_password)
+                user_favourites = Starred.objects.create(user=user)
+                user_favourites.save()
+                login(request, user)
+                return redirect('frontpage')
+        else:
+            form = CreateUserForm()
+        return render(request, 'registration/registration.html', {'form': form})
