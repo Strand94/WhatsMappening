@@ -110,7 +110,6 @@ userMarker.on("drag", function(e) {
 
     function onEachFeature(feature, layer) {
 
-        setTimeout(function () {
           var ourPopup = '<h4 class=centered">' + feature.properties.title + "</h4>" +
             '<p>Start: ' + feature.properties.start + '</p>' +
             '<hr>' + '<h4 class=centered style="font-size: 16px">' + feature.properties.ingress + '</h4>' +
@@ -121,7 +120,6 @@ userMarker.on("drag", function(e) {
 
         marker.bindPopup(ourPopup);
         markerLayer.addLayer(marker);
-        }, 100)
 
     }
 
@@ -262,7 +260,6 @@ userMarker.on("drag", function(e) {
         $.getJSON(categories,function (data) {
             $.each(data,function (key,val) {
                 categoryMap[val.pk]= val.fields.title;
-                console.log(val.pk);
                 categoryList.push(val.fields.title);
                 tagMarkerMap[val.fields.title] = [];
             });
