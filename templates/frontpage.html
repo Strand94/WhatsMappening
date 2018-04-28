@@ -80,16 +80,14 @@ userMarker.on("drag", function(e) {
     var position = marker.getLatLng();
     circleOfLife.setLatLng(position);
 });
-</script>
 
-    <script type="text/javascript">
     var categoryMap = new Map();
     populateCategoryMap();
 
 
     function onEachFeature(feature, layer) {
         setTimeout(function () {
-             var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
+         var ourPopup = "<h4>" + feature.properties.title + "" + '<br>' + '<p>' + '<a href="{% url 'events:event_detail' 55 %}">See more</a>'.replace(/55/, feature.properties.pk.toString()) ;
         var marker = getMarker(feature.properties.category, layer);
         setTags(feature.properties, marker);
 
@@ -99,6 +97,7 @@ userMarker.on("drag", function(e) {
 
     }
 
+    //uses categoryMap, tagMarkerMap
     function setTags(properties, marker) {
         var curCategory = categoryMap[properties.category];// get title for the event category
         var tagMarkers = tagMarkerMap[curCategory]; // get the current Markers for this tag
@@ -106,8 +105,8 @@ userMarker.on("drag", function(e) {
         tagMarkerMap[curCategory] = tagMarkers;
     }
 
+    //uses categoryMap
     function getMarker(categoryID, layer) {
-
 
         var markerCategory = categoryMap[categoryID];
 
@@ -145,11 +144,6 @@ userMarker.on("drag", function(e) {
 
     }
 
-    var redMarker = L.AwesomeMarkers.icon({
-    icon: "coffee",
-    markerColor: 'red'
-    });
-
     var theaterMarker = L.icon({
     iconUrl: '{% static "img/icons/theatreMarker.png" %}',
     shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
@@ -165,7 +159,6 @@ userMarker.on("drag", function(e) {
     icon: "glass",
     markerColor: 'darkblue'
     });
-
 
     var sportMarker = L.icon({
     iconUrl: '{% static "img/icons/sportsMarker.png" %}',
@@ -219,23 +212,17 @@ userMarker.on("drag", function(e) {
     popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
+    var eventPoints = "{% url 'events:pointData' %}";
 
+    function addEvents(map, eventPoints) {
+        markerLayer = new L.markerClusterGroup();
+        hiddenMarkers = new L.markerClusterGroup();
 
-    var greenIcon = L.icon({
-    iconUrl: '{% static "img/icons/leaf-green.png" %}',
-    shadowUrl: '{% static "img/icons/leaf-shadow.png" %}',
+        categoryMap = populateCategoryMap(); // mapsCategoryID to categoryName
+        categoryList = [];
+        tagMarkerMap= {};
 
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
-
-    function addEvents(map) {
-        var EventPoints = "{% url 'events:pointData' %}";
-        $.getJSON(EventPoints, function (data) {
-            //L.geoJSON(data).addTo(map);
+        $.getJSON(eventPoints, function (data) {
             layer = L.geoJson(data, {
                 onEachFeature: onEachFeature
             });
@@ -243,7 +230,7 @@ userMarker.on("drag", function(e) {
         });
     }
 
-    addEvents(eventMap);
+    addEvents(eventMap, eventPoints);
 
 </script>
 
