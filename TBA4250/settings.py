@@ -116,8 +116,6 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id,name,email,gender',
 }
 
-
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -168,7 +166,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_L10N = True
-
+settings
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -182,12 +180,20 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
-
-
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (63.4305, 10.3951),
     'DEFAULT_ZOOM': 10,
-    'ATTRIBUTION_PREFIX': 'whatsmappening'
+    'ATTRIBUTION_PREFIX': 'whatsmappening',
+    'PLUGINS': {
+        'leaflet-search': {
+            'css': STATIC_URL + 'css/leaflet-search.css',
+            'js': STATIC_URL + 'js/leaflet-search.js',
+            'auto-include': True,
+        },
+        'forms': {
+            'auto-include': True
+        }
+    }
 }
 
 
@@ -197,3 +203,4 @@ GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
 
 DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 DROPBOX_OAUTH2_TOKEN = '5S9o2uS5nGAAAAAAAAAABsyX295X-hfVSF7Z5G3m2S-tiH5PcqwF0eGxn76zUuFH'
+
