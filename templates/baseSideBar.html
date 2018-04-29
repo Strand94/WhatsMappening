@@ -16,11 +16,6 @@
     <!-- profile icon -->
     <a id="user-icon" href="" class="fa fa-user-circle" data-toggle="modal" data-target="#userModal"> </a>
 
-    <!-- tribar icon -->
-    {% if user.is_authenticated %}
-    <a id="tribar-icon" href="" class="fa fa-bars" data-toggle="modal" data-target="#tribarModal"> </a>
-    {% endif %}
-
     <!-- Modal -->
     <div id="userModal" class="modal fade" role="button">
         <div id="userModal-dialog" class="modal-dialog">
@@ -28,19 +23,31 @@
             <div class="modal-content">
                 <div>
                     {% if user.is_authenticated %}
-                        <button type="button" class="close" data-dismiss="modal" >&times;</button>
-                        <ul>
-                            <li>
-                                <a href="{% url 'user' %}">My profile</a>
-                            </li>
-                            <hr/>
-                            <li>
-                                <a href="{% url 'logout' %}">Logg out</a>
-                            </li>
-                        </ul>
+                        <button type="button" class="close" data-dismiss="modal" ></button>
+                        <div class="align-content-center">
+                            <ul>
+                                <li>
+                                    <a href="{% url 'events:new_event' %}">Create Event</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'events:user_events' %}">Manage Events</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'user' %}">My profile</a>
+                                </li>
+                                <hr>
+                                <li>
+                                    <a href="{% url 'logout' %}">Log out</a>
+                                </li>
+                            </ul>
+                        </div>
 
                     {% else %}
                         <ul>
+    <!-- tribar icon -->
+    {% if user.is_authenticated %}
+        <a id="tribar-icon" href="" class="fa fa-bars" data-toggle="modal" data-target="#tribarModal"> </a>
+    {% endif %}
                             <li>
                                 <p>Logg in / register bruker med</p>
                                 <div class="social-buttons">
@@ -69,29 +76,6 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    {% if user.is_authenticated %}
-    <div id="tribarModal" class="modal fade" role="button">
-      <div id="tribarModal-dialog" class="modal-dialog">
-
-        <!-- Modal content-->
-
-        <div class="modal-content">
-
-        <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" >&times;</button>
-
-        <ul>
-            <li><a href="{% url 'events:new_event' %}">Create Event</a></li>
-            <li><a href="{% url 'events:user_events' %}">Manage Events</a></li>
-        </ul>
-        </div>
-
-        </div>
-
-      </div>
-    </div>
-    {% endif %}
 
 <script>
 
