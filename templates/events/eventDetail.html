@@ -54,13 +54,15 @@
                     {% if event.address %}
                         Adress: {{ event.address }}
                     {% endif %}
-                    <form action="" method="post">{% csrf_token %}
-                        {% if is_favorited %}
-                            <button class="invisible-button" style="color:#d5693d;" name="remove_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
-                        {% else %}
-                            <button class="invisible-button" name="add_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button>
-                        {% endif %}
-                    </form>
+                    {% if request.user.is_authenticated %}
+                        <form action="" method="post">{% csrf_token %}
+                            {% if is_favorited %}
+                                <button class="invisible-button" style="color:#d5693d;" name="remove_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+                            {% else %}
+                                <button class="invisible-button" name="add_favorite" type="submit" value="{{ event.pk }}"> <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button>
+                            {% endif %}
+                        </form>
+                    {% endif %}
 
                     <hr>
                     <p id="event_description">{{ event.description }}</p>
