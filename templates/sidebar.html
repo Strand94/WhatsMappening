@@ -82,49 +82,50 @@ function addCircle() {
     }
     
 }
-  </script>
-<details onclick="addCircle()"><summary><B>Choose distance from point.</B></summary>
-    <p>
-  <label for="distance">&nbsp;&nbsp;Maximum distance in km:</label>
-  <input type="text" id="distance" name="radiusValue" oninput="circleRadius()">
-</p>
-
-<div id="slider-range-min">
-</div>
-    </details>
-
-    <BR>
-    <BR>
-    <label>&nbsp;&nbsp;Display events that I am:</label>
-    <p>&nbsp;&nbsp;Going to&nbsp;&nbsp;<input type="checkbox" onclick="if(this.checked){myFunction()}"></p>
-    <p>&nbsp;&nbsp;Interested in&nbsp;&nbsp;<input type="checkbox" id="myCheck"></p>
-
-    <!--<select id=127"categories"></select> -->
-    <details><summary><b>Time</b></summary>
-        <form  onsubmit="getTime();event.preventDefault()">
-           <p> <input  type="radio" name="time" value="1" onclick="showDate('else')">   Today</p>
-            <p> <input type="radio" name="time" value="2"onclick="showDate('else')">   Tomorrow</p>
-            <p><input  type="radio" name="time" value="0" checked onclick="showDate('else')">  This week</p>
-            <p><input type ="radio" name="time"  id="custom" value="3" onclick="showDate('custom')"> Custom date</p>
-            <p><input type="hidden" id="date" name="date" ><input type="hidden" name="date" id="date"> </p>
-            <button  type="submit">Choose time</button>
-
-
-        </form>
-
-    </details>
-    <details ><summary>Choose event categories</summary>
-    <div >
-        <form id="categories" >{% csrf_token %}</form>
-        <p><input type="checkbox" id="allCategories" name="All" value="AllCategories" onclick="checkAllCategories()" checked="True">
-        <label for="All">All Categories</label></p>
-        {% for category in categories %}
-            <p><input type="checkbox" id="{{ category.title }}" name="{{ category.title }}" value="{{ category.title }}" onclick="categoryChecked()">
-            <label for="{{ category.title }}">{{ category.title }}</label></p>
-        {% endfor %}
-
-    </div> </details>
-
+    </script>
+        <div style="padding-bottom: 10px;">
+            <label>Show only starred events: <input type="checkbox" id="myCheck"></label>
+        </div>
+        <div style="padding-bottom: 20px;">
+            <details onclick="addCircle()"><summary><p class="btn btn-whatsmappening center-block">Choose events within radius</p></summary>
+            <p>
+              <label for="distance">&nbsp;&nbsp;Maximum distance in km:</label>
+              <input type="text" id="distance" name="radiusValue" oninput="circleRadius()">
+            </p>
+            <div id="slider-range-min">
+            </div>
+            </details>
+        </div>
+        <div style="padding-bottom: 20px;">
+            <!--<select id=127"categories"></select> -->
+            <details><summary><b class="btn btn-whatsmappening center-block">Filter events by time</b></summary>
+                <form  onsubmit="getTime();event.preventDefault()">
+                        <div style="padding-left: 65px">
+                            <b><input  type="radio" name="time" value="1" onclick="showDate('else')"> Today</b><br>
+                            <b><input type="radio" name="time" value="2"onclick="showDate('else')"> Tomorrow</b><br>
+                            <b><input  type="radio" name="time" value="0" checked onclick="showDate('else')"> This week</b><br>
+                            <b><input type ="radio" name="time"  id="custom" value="3" onclick="showDate('custom')"> Custom date</b>
+                            <p><input type="hidden" id="date" name="date" ><input type="hidden" name="date" id="date"> </p>
+                        </div>
+                        <div class="center">
+                            <button class="btn btn-whatsmappening" type="submit">Choose time</button>
+                        </div>
+                </form>
+            </details>
+        </div>
+        <div>
+            <details ><summary><p class="btn btn-whatsmappening center-block">Filter events by category</p></summary>
+                <div style="padding-left: 50px">
+                    <form id="categories" >{% csrf_token %}</form>
+                    <p><input type="checkbox" id="allCategories" name="All" value="AllCategories" onclick="checkAllCategories()" checked="True">
+                    <label for="All">All Categories</label></p>
+                    {% for category in categories %}
+                        <p><input type="checkbox" id="{{ category.title }}" name="{{ category.title }}" value="{{ category.title }}" onclick="categoryChecked()">
+                        <label for="{{ category.title }}">{{ category.title }}</label></p>
+                    {% endfor %}
+                </div>
+            </details>
+        </div>
 </div>
 
 
