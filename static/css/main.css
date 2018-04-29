@@ -1,5 +1,9 @@
 body{
-    background-color: rgb(222, 214, 201);
+    background: url(https://source.unsplash.com/user/erondu/1600x900) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .center {
@@ -64,7 +68,7 @@ body{
     position: absolute;
     top: 0;
     left: 0;
-}
+}backgroun
 
 #super-wrapper{
     max-height: 100vh;
