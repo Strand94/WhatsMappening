@@ -10,7 +10,6 @@ class EventForm(forms.ModelForm):
     startTime = forms.TimeField(required=True, widget=widgets.AdminTimeWidget())
     endDate = forms.DateField(required=True, widget=widgets.AdminDateWidget())
     endTime = forms.TimeField(required=True, widget=widgets.AdminTimeWidget())
-    category =forms.CharField(help_text="Choose the category that describes your Event best")
     location = PointField(help_text="click the marker icon and place it in the desired location")
 
     class Meta:
