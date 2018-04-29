@@ -41,45 +41,39 @@
                                 </li>
                             </ul>
                         </div>
-
                     {% else %}
-                        <ul>
-    <!-- tribar icon -->
-    {% if user.is_authenticated %}
-        <a id="tribar-icon" href="" class="fa fa-bars" data-toggle="modal" data-target="#tribarModal"> </a>
-    {% endif %}
-                            <li>
-                                <p>Logg in / register bruker med</p>
-                                <div class="social-buttons">
-                                    <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-fb" style="color: white;"><i class="fa fa-facebook"></i> Facebook</a>
-                                </div>
-                                <p class="center">eller</p>
-                                <form class="form" method="post" action="{% url 'login' %}" accept-charset="UTF-8" id="login-nav">{% csrf_token %}
-                                    <div class="form-group">
-                                         <input type="text" class="form-control" name="username" placeholder="Brukernavn" required>
+                        <div style="padding-right: 45px; padding-left: 10px">
+                            <ul>
+                                <!-- tribar icon -->
+                                {% if user.is_authenticated %}
+                                    <a id="tribar-icon" href="" class="fa fa-bars" data-toggle="modal" data-target="#tribarModal"> </a>
+                                {% endif %}
+                                <li>
+                                    <p>Login/register with:</p>
+                                    <div class="social-buttons">
+                                        <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-fb" style="color: white;"><i class="fa fa-facebook"></i> Facebook</a>
                                     </div>
-                                    <div class="form-group">
-                                         <input type="password" class="form-control" name="password" placeholder="Passord" required>
+                                    <p class="center">or</p>
+                                    <form class="form" method="post" action="{% url 'login' %}" accept-charset="UTF-8" id="login-nav">{% csrf_token %}
+                                        <div class="form-group">
+                                             <input type="text" class="form-control" name="username" placeholder="Username" required>
+                                        </div>
+                                        <div class="form-group">
+                                             <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                        </div>
+                                        <div class="form-group">
+                                             <button type="submit" class="btn btn-primary btn-block">Logg inn</button>
+                                        </div>
+                                    </form>
+                                    <div class="bottom text-center">
+                                        New here ? <a href="{% url 'register' %}"><b>Join Us</b></a>
                                     </div>
-                                    <div class="form-group">
-                                         <button type="submit" class="btn btn-primary btn-block">Logg inn</button>
-                                    </div>
-                                </form>
-                                <div class="bottom text-center">
-                                    New here ? <a href="{% url 'register' %}"><b>Join Us</b></a>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </div>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
-
-
-<script>
-
-</script>
-
-
 {% endblock menuToggle %}

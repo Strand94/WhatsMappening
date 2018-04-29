@@ -20,7 +20,7 @@
 
        {% if user.is_authenticated %}
                 {% if user.is_superuser %}
-                    <li><a href="{% url 'admin:index' %}">Administrering</a>
+                    <li><a href="{% url 'admin:index' %}">Administrate</a>
                 {% endif %}
 
         <li class="dropdown">
@@ -44,18 +44,18 @@
 				<li>
                     <div class="row">
                         <div class="col-md-12">
-                            <p class="center">Logg in / register bruker med</p>
-								<div class="social-buttons">
+                            <p class="center">Login/register with:</p>
+								<div class="social-buttons center-block">
 									<a href="{% url 'social:begin' 'facebook' %}" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
 								</div>
-                                <p class="center">eller</p>
+                                <p class="center">or</p>
 
 								 <form class="form" method="post" action="{% url 'login' %}" accept-charset="UTF-8" id="login-nav">{% csrf_token %}
 										<div class="form-group">
-											 <input type="text" class="form-control" name="username" placeholder="Brukernavn" required>
+											 <input type="text" class="form-control" name="username" placeholder="Username" required>
 										</div>
 										<div class="form-group">
-											 <input type="password" class="form-control" name="password" placeholder="Passord" required>
+											 <input type="password" class="form-control" name="password" placeholder="Password" required>
 {#                                             <div class="help-block center">#}
 {#                                                 <a href="">Glemt passordet?</a>#}
 {#                                             </div>#}
