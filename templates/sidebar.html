@@ -14,6 +14,7 @@
         <hr/>
 
     </ul>
+<br>
     <!-- Search form -->
 
        <div align = "center">
@@ -27,7 +28,7 @@
 
        </div>
 
-<BR><BR>
+    <br>
 
       <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -80,25 +81,27 @@ function addCircle() {
         circleOfLife.addTo(eventMap);
         circleOnMap=true;
     }
-    
+
 }
     </script>
-        <div style="padding-bottom: 10px;">
+        <div style="text-align: center; padding-bottom: 15px; padding-left: 10px; padding-right: 10px">
             <label>Show only starred events: <input type="checkbox" id="starred" onclick="filterMarkers()"></label>
         </div>
-        <div style="padding-bottom: 20px;">
+        <div style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px">
             <details onclick="addCircle()"><summary><p class="btn btn-whatsmappening center-block">Choose events within radius</p></summary>
-            <p>
-              <label for="distance">&nbsp;&nbsp;Maximum distance in km:</label>
-              <input type="text" id="distance" name="radiusValue" oninput="circleRadius()">
-            </p>
-            <div id="slider-range-min">
-            </div>
+                <div style="text-align: center">
+                    <br>
+                    <label for="distance" >Maximum distance in km:</label>
+                    <input type="text" id="distance" name="radiusValue" oninput="circleRadius()">
+                </div>
+                <br>
+                <div id="slider-range-min"></div>
             </details>
         </div>
-        <div style="padding-bottom: 20px;">
+        <div style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px">
             <!--<select id=127"categories"></select> -->
             <details><summary><b class="btn btn-whatsmappening center-block">Filter events by time</b></summary>
+                <br>
                 <form  onsubmit="getTime();event.preventDefault()">
                         <div style="padding-left: 65px">
                             <b><input  type="radio" name="time" value="1" onclick="showDate('else')"> Today</b><br>
@@ -110,11 +113,13 @@ function addCircle() {
                         <div class="center">
                             <button class="btn btn-whatsmappening" type="submit">Choose time</button>
                         </div>
+                        <br>
                 </form>
             </details>
         </div>
-        <div>
+        <div style="padding-left: 10px; padding-right: 10px">
             <details ><summary><p class="btn btn-whatsmappening center-block">Filter events by category</p></summary>
+                <br>
                 <div style="padding-left: 50px">
                     <form id="categories" >{% csrf_token %}</form>
                     <p><input type="checkbox" id="allCategories" name="All" value="AllCategories" onclick="checkAllCategories()" checked="True">
