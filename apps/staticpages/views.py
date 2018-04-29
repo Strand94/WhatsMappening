@@ -12,8 +12,10 @@ from social_django.models import UserSocialAuth
 
 
 def frontpage(request):
-    categories = Category.objects.all();
-    favoritedEvents = Starred.objects.filter(user=request.user).first().favorites.all();
+    categories = Category.objects.all()
+    favoritedEvents = []
+    if request.user.is_authenticated:
+        favoritedEvents = Starred.objects.filter(user=request.user).first().favorites.all()
     return render(request, "frontpage.html", {
         'categories': categories,
         'favoritedEvents': favoritedEvents

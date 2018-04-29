@@ -83,9 +83,17 @@ function addCircle() {
     
 }
     </script>
+        {% if request.user.is_authenticated %}
         <div style="padding-bottom: 10px;">
-            <label>Show only starred events: <input type="checkbox" id="starred" onclick="filterMarkers()"></label>
+            <label>Show only starred events: <input type="checkbox" id="starred" onclick="filterMarkers()" ></label>
         </div>
+        {% else %}
+       <div style="padding-bottom: 10px;">
+        <label>Show only starred events: <input type="checkbox" id="starred" onclick="filterMarkers()" disabled ></label>
+           <br><p style="font-size: 12px; text-align: center">log in to star events</p>
+        </div>
+        {% endif %}
+
         <div style="padding-bottom: 20px;">
             <details onclick="addCircle()"><summary><p class="btn btn-whatsmappening center-block">Choose events within radius</p></summary>
             <p>
