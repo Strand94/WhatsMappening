@@ -5,14 +5,21 @@ from apps.staticpages.forms import CreateUserForm
 from django.contrib import messages
 from django.db import transaction
 from .forms import *
-from apps.events.models import Starred
+from apps.events.models import Category, Starred
 from django.contrib.auth.decorators import user_passes_test
 
 from social_django.models import UserSocialAuth
 
 
 def frontpage(request):
-    return render(request, "frontpage.html")
+    categories = Category.objects.all()
+    favoritedEvents = []
+    if request.user.is_authenticated:
+        favoritedEvents = Starred.objects.filter(user=request.user).first().favorites.all()
+    return render(request, "frontpage.html", {
+        'categories': categories,
+        'favoritedEvents': favoritedEvents
+    })
 
 
 @login_required

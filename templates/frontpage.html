@@ -70,6 +70,7 @@
 
     var layer;
     var markerLayer = new L.markerClusterGroup();
+    var hiddenMarkers = new L.markerClusterGroup();
 
     eventMap.locate({setView:true}).on('locationfound',function (e) {
         eventMap.setZoom(13);
@@ -99,52 +100,62 @@ L.easyButton('fa-map-marker', function(btn, map){
 }).addTo(eventMap);
 
 userMarker.on("drag", function(e) {
-    console.log("Dragging");
     var marker = e.target;
     var position = marker.getLatLng();
     circleOfLife.setLatLng(position);
 });
-</script>
 
-    <script type="text/javascript">
-    var categoryMap = new Map();
-    populateCategoryMap();
+
 
     function onEachFeature(feature, layer) {
-        var ourPopup = '<h4 class=centered">' + feature.properties.title + "</h4>" +
-            '<p>Start: ' + feature.properties.start + '</p>' +
+        var date = feature.properties.start.substr(0,10);
+        var time = feature.properties.start.substr(11);
+        time = time.substr(0,5);
+
+          var ourPopup = '<h4 class=centered">' + feature.properties.title + "</h4>" +
+            '<p>Start: ' + date + ", " + time + '</p>' +
             '<hr>' + '<h4 class=centered style="font-size: 16px">' + feature.properties.ingress + '</h4>' +
-            '<a class="btn btn-github centerize" href="{% url 'events:event_detail' 55 %}">See more</a>'
+            '<a class="btn btn-whatsmappening centerize" style="color:white" href="{% url 'events:event_detail' 55 %}">See more</a>'
                 .replace(/55/, feature.properties.pk.toString()) ;
         var marker = getMarker(feature.properties.category, layer);
+        setTags(feature.properties, marker);
+
         marker.bindPopup(ourPopup);
         markerLayer.addLayer(marker);
+
     }
 
-    function getMarker(categoryID, layer) {
+    var notFavoritedMarker = [];
 
-        if (Object.keys(categoryMap).length < 1){
-            location.reload(true);
-            categoryMap = populateCategoryMap();
+    //uses categoryMap, categoryMarkerMap
+    function setTags(properties, marker) {
+        var curCategory = categoryMap[properties.category];// get title for the event category
+        var tagMarkers = categoryMarkerMap[curCategory]; // get the current Markers for this tag
+        tagMarkers.push(marker); // add this marker to list
+        categoryMarkerMap[curCategory] = tagMarkers;
+
+        if(!favoriteMap[properties.pk]){
+            notFavoritedMarker.push(marker);
         }
+    }
+
+    //uses categoryMap
+    function getMarker(categoryID, layer) {
 
         var markerCategory = categoryMap[categoryID];
 
         switch(markerCategory) {
-            case "Children":
-                return L.marker(layer.getLatLng(), {icon: childMarkerBlue});
+            case "Family":
+                return L.marker(layer.getLatLng(), {icon: familyMarker});
                 break;
             case "Concert":
-                return L.marker(layer.getLatLng(), {icon: concert});
+                return L.marker(layer.getLatLng(), {icon: concertMarker});
                 break;
             case "Course":
                 return L.marker(layer.getLatLng(), {icon: courseMarker});
                 break;
-            case "Exhibition":
-                return L.marker(layer.getLatLng(), {icon: expoMarker});
-                break;
-            case "Festival":
-                return L.marker(layer.getLatLng(), {icon: festivalMarker});
+            case "Art":
+                return L.marker(layer.getLatLng(), {icon: artMarker});
                 break;
             case "Food":
                 return L.marker(layer.getLatLng(), {icon: foodMarker});
@@ -164,11 +175,6 @@ userMarker.on("drag", function(e) {
 
     }
 
-    var redMarker = L.AwesomeMarkers.icon({
-    icon: "coffee",
-    markerColor: 'red'
-    });
-
     var theaterMarker = L.icon({
     iconUrl: '{% static "img/icons/theatreMarker.png" %}',
     shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
@@ -180,11 +186,16 @@ userMarker.on("drag", function(e) {
     popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var partyMarker = L.AwesomeMarkers.icon({
-    icon: "glass",
-    markerColor: 'darkblue'
-    });
+    var partyMarker = L.icon({
+    iconUrl: '{% static "img/icons/partyMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
 
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
 
     var sportMarker = L.icon({
     iconUrl: '{% static "img/icons/sportsMarker.png" %}',
@@ -197,38 +208,8 @@ userMarker.on("drag", function(e) {
     popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var defaultMarker = L.AwesomeMarkers.icon({
-    icon: "",
-    markerColor: 'darkblue'
-    });
-
-    var foodMarker = L.AwesomeMarkers.icon({
-    icon: "glyphicon glyphicon-cutlery",
-    markerColor: 'darkblue'
-    });
-
-    var festivalMarker = L.AwesomeMarkers.icon({
-    icon: "glyphicon glyphicon-tent",
-    markerColor: 'darkblue'
-    });
-
-    var expoMarker = L.AwesomeMarkers.icon({
-    icon: "glyphicon glyphicon-picture",
-    markerColor: 'darkblue'
-    });
-
-    var courseMarker = L.AwesomeMarkers.icon({
-    icon: "glyphicon glyphicon-blackboard",
-    markerColor: 'darkblue'
-    });
-
-    var concert = L.AwesomeMarkers.icon({
-    icon: "music",
-    markerColor: 'darkblue'
-    });
-
-    var childMarkerBlue = L.icon({
-    iconUrl: '{% static "img/icons/kidsMarker-blue.png" %}',
+    var defaultMarker = L.icon({
+    iconUrl: '{% static "img/icons/defaultMarker.png" %}',
     shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
 
     iconSize:     [38, 40], // size of the icon
@@ -238,31 +219,121 @@ userMarker.on("drag", function(e) {
     popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
+    var foodMarker = L.icon({
+    iconUrl: '{% static "img/icons/foodMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
 
-
-    var greenIcon = L.icon({
-    iconUrl: '{% static "img/icons/leaf-green.png" %}',
-    shadowUrl: '{% static "img/icons/leaf-shadow.png" %}',
-
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    function addEvents(map) {
-        var EventPoints = "{% url 'events:pointData' %}";
-        $.getJSON(EventPoints, function (data) {
-            //L.geoJSON(data).addTo(map);
+    var artMarker = L.icon({
+    iconUrl: '{% static "img/icons/artMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
+
+    var courseMarker = L.icon({
+    iconUrl: '{% static "img/icons/course.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
+
+    var concertMarker = L.icon({
+    iconUrl: '{% static "img/icons/concertMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
+
+    var familyMarker = L.icon({
+    iconUrl: '{% static "img/icons/familyMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
+    });
+
+    var categoryMap = {}; // mapsCategoryID to categoryName
+    var categoryList = [];
+    var categoryMarkerMap= {};
+    var favoriteMap = {};
+    var eventPoints = "{% url 'events:pointData' %}";
+
+    function cbPopulateCategoryMap() {
+        console.log("in the initiateEventPointCallbackMadnes Callback function");
+        addEvents(map, eventPoints);
+    }
+
+    // fill neccesary category variables -> THEN addEvents -> THEN getAllTags
+    function initiateEventPointCallbackMadnes(){
+       categoryMap = {};
+       categoryList =[];
+       categoryMarkerMap= {};
+       favoriteMap = {};
+       console.log("initiateEventPointCallbackMadnes")
+
+        {% for favEvent in favoritedEvents %}
+           favoriteMap['{{ favEvent.pk }}'] = true;
+        {% endfor %}
+
+
+        var categories ="{% url 'events:categories' %}";
+
+        $.getJSON(categories,function (data) {
+            $.each(data,function (key,val) {
+                categoryMap[val.pk]= val.fields.title;
+                categoryList.push(val.fields.title);
+                categoryMarkerMap[val.fields.title] = [];
+            });
+
+            cbPopulateCategoryMap()
+        });
+        return categoryMap;
+    }
+
+
+    function cbAddEvents() {
+        console.log("in the AddEvents Callback function");
+        getAllTags();
+    }
+
+    function addEvents(map, eventPoints) {
+        markerLayer = new L.markerClusterGroup();
+        hiddenMarkers = new L.markerClusterGroup();
+
+        $.getJSON(eventPoints, function (data) {
             layer = L.geoJson(data, {
                 onEachFeature: onEachFeature
             });
             markerLayer.addTo(eventMap);
+            cbAddEvents();
         });
     }
 
-    addEvents(eventMap);
+
+    initiateEventPointCallbackMadnes();
+    //addEvents(eventMap, eventPoints);
 
 </script>
 

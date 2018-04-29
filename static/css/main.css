@@ -106,3 +106,6 @@ body{
 .clearfix {
     overflow: auto;
 }
+
+.btn-whatsmappening{color:#fff;background-color:#d5693d;border-color:rgba(0,0,0,0.2)}.btn-microsoft:focus,.btn-microsoft.focus{color:#fff;background-color:#125acd;border-color:rgba(0,0,0,0.2)}
+.btn-whatsmappening:hover{color:#fff;background-color: #b65f34;border-color:rgba(0,0,0,0.2)}
