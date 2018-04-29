@@ -138,6 +138,9 @@ function getAllTags( ) {
        console.log(Object.keys(tagMarkerMap)) ;
         allTags = Object.keys(tagMarkerMap);
 
+        setTimeout(function() {
+            filterMarkers();
+        }, 200);
         return allTags;
 
 
@@ -228,12 +231,6 @@ function getTime() {
         var liste = JSON.stringify(radio);
         eventPoints = "{% url 'events:timeData' 12345 %}".replace(/12345/, liste);
        initiateEventPointCallbackMadnes();
-        setTimeout(function() {
-            filterMarkers();
-        }, 700);
-
-
-        //addEvents(eventMap, timeFilteredEvents);
 
     }else{
         var dates=document.getElementsByName("date");
@@ -241,11 +238,6 @@ function getTime() {
        var liste = JSON.stringify(query);
        eventPoints= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
         initiateEventPointCallbackMadnes();
-        setTimeout(function() {
-            filterMarkers();
-        }, 700);
-
-       //addEvents(eventMap, timeFilteredEvents);
     }
 }
 
