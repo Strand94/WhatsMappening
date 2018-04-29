@@ -1,0 +1,1 @@
+web: gunicorn TBA4250.wsgi --log-file -

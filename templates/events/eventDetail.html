@@ -42,7 +42,7 @@
                 <div class="white-box" id="text-box">
                     {% if event.image %}
                         <div class="remove-whitebox-padding">
-                            <img src="/uploads/{{ event.image }}" class="center-block img-responsive art-img" width="100%">
+                            <img src="{{ event.image.url }}" class="center-block img-responsive art-img" width="100%">
                         </div>
                     {% endif %}
                     <h1 id="event_title">{{ event.title }}</h1>
