@@ -144,8 +144,8 @@ userMarker.on("drag", function(e) {
         var markerCategory = categoryMap[categoryID];
 
         switch(markerCategory) {
-            case "Children":
-                return L.marker(layer.getLatLng(), {icon: childMarkerBlue});
+            case "Family":
+                return L.marker(layer.getLatLng(), {icon: familyMarker});
                 break;
             case "Concert":
                 return L.marker(layer.getLatLng(), {icon: concert});
@@ -189,8 +189,14 @@ userMarker.on("drag", function(e) {
     });
 
     var partyMarker = L.AwesomeMarkers.icon({
-    icon: "glass",
-    markerColor: 'darkblue'
+    iconUrl: '{% static "img/icons/partyMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
     var sportMarker = L.icon({
@@ -204,38 +210,63 @@ userMarker.on("drag", function(e) {
     popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var defaultMarker = L.AwesomeMarkers.icon({
-    icon: "",
-    markerColor: 'darkblue'
+    var defaultMarker = L.icon({
+    iconUrl: '{% static "img/icons/defaultMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var foodMarker = L.AwesomeMarkers.icon({
-    icon: "glyphicon glyphicon-cutlery",
-    markerColor: 'darkblue'
+    var foodMarker = L.icon({
+    iconUrl: '{% static "img/icons/foodMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var festivalMarker = L.AwesomeMarkers.icon({
-    icon: "glyphicon glyphicon-tent",
-    markerColor: 'darkblue'
+    var expoMarker = L.icon({
+    iconUrl: '{% static "img/icons/artMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var expoMarker = L.AwesomeMarkers.icon({
-    icon: "glyphicon glyphicon-picture",
-    markerColor: 'darkblue'
+    var courseMarker = L.icon({
+    iconUrl: '{% static "img/icons/courseMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var courseMarker = L.AwesomeMarkers.icon({
-    icon: "glyphicon glyphicon-blackboard",
-    markerColor: 'darkblue'
+    var concertMarker = L.icon({
+    iconUrl: '{% static "img/icons/concertMarker.png" %}',
+    shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
+
+    iconSize:     [38, 40], // size of the icon
+    shadowSize:   [30, 20], // size of the shadow
+    iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [10, 17],  // the same for the shadow
+    popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var concert = L.AwesomeMarkers.icon({
-    icon: "music",
-    markerColor: 'darkblue'
-    });
-
-    var childMarkerBlue = L.icon({
-    iconUrl: '{% static "img/icons/kidsMarker-blue.png" %}',
+    var familyMarker = L.icon({
+    iconUrl: '{% static "img/icons/familyMarker.png" %}',
     shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
 
     iconSize:     [38, 40], // size of the icon
