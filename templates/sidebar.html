@@ -84,7 +84,7 @@ function addCircle() {
 }
     </script>
         <div style="padding-bottom: 10px;">
-            <label>Show only starred events: <input type="checkbox" id="myCheck"></label>
+            <label>Show only starred events: <input type="checkbox" id="starred" onclick="filterMarkers()"></label>
         </div>
         <div style="padding-bottom: 20px;">
             <details onclick="addCircle()"><summary><p class="btn btn-whatsmappening center-block">Choose events within radius</p></summary>
@@ -131,23 +131,23 @@ function addCircle() {
 
 <script>
 
-var allTags;
+var categoryTags;
 
 //uses tagMarkerMap
 function getAllTags( ) {
-        console.log("allTags:");
-       console.log(Object.keys(tagMarkerMap)) ;
-        allTags = Object.keys(tagMarkerMap);
+        console.log("categoryTags:");
+       console.log(Object.keys(categoryMap)) ;
+        categoryTags = Object.keys(categoryMarkerMap);
 
         setTimeout(function() {
             filterMarkers();
         }, 200);
-        return allTags;
+        return categoryTags;
 
 
 }
 
-//uses tagMarkerMap, allTags
+//uses tagMarkerMap, categoryTags
 function filterMarkers() {
     console.log("Filtering Markers");
     eventMap.removeLayer(markerLayer);
@@ -156,15 +156,25 @@ function filterMarkers() {
 
     //remove all unchecked categories
     if (!document.getElementById("allCategories").checked){
-       for(i = 0; i < allTags.length; i++){
-        console.log(allTags[i] + ": " + document.getElementById(allTags[i]).checked);
-       if(!document.getElementById(allTags[i]).checked){
-           for(j = 0; j < tagMarkerMap[allTags[i]].length; j++){
-               markerLayer.removeLayer(tagMarkerMap[allTags[i]][j]);
-               hiddenMarkers.addLayer(tagMarkerMap[allTags[i]][j]);
+       for(i = 0; i < categoryTags.length; i++){
+        console.log(categoryTags[i] + ": " + document.getElementById(categoryTags[i]).checked);
+       if(!document.getElementById(categoryTags[i]).checked){
+           for(j = 0; j < categoryMarkerMap[categoryTags[i]].length; j++){
+               markerLayer.removeLayer(categoryMarkerMap[categoryTags[i]][j]);
+               hiddenMarkers.addLayer(categoryMarkerMap[categoryTags[i]][j]);
            }
        }
         }
+    }
+
+    if(document.getElementById("starred").checked){
+        console.log("starred!");
+        for(i = 0; i < notFavoritedMarker.length; i ++){
+           // remove all non-starred markers
+        markerLayer.removeLayer(notFavoritedMarker[i]);
+        hiddenMarkers.addLayer(notFavoritedMarker[i]);
+        }
+
     }
 
 

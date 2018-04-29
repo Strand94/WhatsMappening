@@ -113,7 +113,7 @@ userMarker.on("drag", function(e) {
           var ourPopup = '<h4 class=centered">' + feature.properties.title + "</h4>" +
             '<p>Start: ' + feature.properties.start + '</p>' +
             '<hr>' + '<h4 class=centered style="font-size: 16px">' + feature.properties.ingress + '</h4>' +
-            '<a class="btn btn-github centerize" href="{% url 'events:event_detail' 55 %}">See more</a>'
+            '<a class="btn btn-whatsmappening centerize" style="color:white" href="{% url 'events:event_detail' 55 %}">See more</a>'
                 .replace(/55/, feature.properties.pk.toString()) ;
         var marker = getMarker(feature.properties.category, layer);
         setTags(feature.properties, marker);
@@ -123,12 +123,19 @@ userMarker.on("drag", function(e) {
 
     }
 
-    //uses categoryMap, tagMarkerMap
+    var notFavoritedMarker = [];
+
+    //uses categoryMap, categoryMarkerMap
     function setTags(properties, marker) {
         var curCategory = categoryMap[properties.category];// get title for the event category
-        var tagMarkers = tagMarkerMap[curCategory]; // get the current Markers for this tag
+        var tagMarkers = categoryMarkerMap[curCategory]; // get the current Markers for this tag
         tagMarkers.push(marker); // add this marker to list
-        tagMarkerMap[curCategory] = tagMarkers;
+        categoryMarkerMap[curCategory] = tagMarkers;
+
+        if(!favoriteMap[properties.pk]){
+            console.log(properties.pk + " is not favorieted");
+            notFavoritedMarker.push(marker);
+        }
     }
 
     //uses categoryMap
@@ -240,7 +247,8 @@ userMarker.on("drag", function(e) {
 
     var categoryMap = {}; // mapsCategoryID to categoryName
     var categoryList = [];
-    var tagMarkerMap= {};
+    var categoryMarkerMap= {};
+    var favoriteMap = {};
     var eventPoints = "{% url 'events:pointData' %}";
 
     function cbPopulateCategoryMap() {
@@ -252,8 +260,16 @@ userMarker.on("drag", function(e) {
     function initiateEventPointCallbackMadnes(){
        categoryMap = {};
        categoryList =[];
-       tagMarkerMap= {};
+       categoryMarkerMap= {};
+       favoriteMap = {};
        console.log("initiateEventPointCallbackMadnes")
+
+        {% for favEvent in favoritedEvents %}
+           favoriteMap['{{ favEvent.pk }}'] = true;
+        {% endfor %}
+
+    console.log(favoriteMap);
+
 
         var categories ="{% url 'events:categories' %}";
 
@@ -261,7 +277,7 @@ userMarker.on("drag", function(e) {
             $.each(data,function (key,val) {
                 categoryMap[val.pk]= val.fields.title;
                 categoryList.push(val.fields.title);
-                tagMarkerMap[val.fields.title] = [];
+                categoryMarkerMap[val.fields.title] = [];
             });
 
             cbPopulateCategoryMap()
@@ -272,7 +288,7 @@ userMarker.on("drag", function(e) {
 
     function cbAddEvents() {
         console.log("in the AddEvents Callback function");
-        allTags = getAllTags();
+        getAllTags();
     }
 
     function addEvents(map, eventPoints) {

@@ -13,7 +13,11 @@ from social_django.models import UserSocialAuth
 
 def frontpage(request):
     categories = Category.objects.all();
-    return render(request, "frontpage.html", {'categories': categories})
+    favoritedEvents = Starred.objects.filter(user=request.user).first().favorites.all();
+    return render(request, "frontpage.html", {
+        'categories': categories,
+        'favoritedEvents': favoritedEvents
+    })
 
 
 @login_required
