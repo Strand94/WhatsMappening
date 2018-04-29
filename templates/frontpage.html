@@ -100,7 +100,6 @@ L.easyButton('fa-map-marker', function(btn, map){
 }).addTo(eventMap);
 
 userMarker.on("drag", function(e) {
-    console.log("Dragging");
     var marker = e.target;
     var position = marker.getLatLng();
     circleOfLife.setLatLng(position);
@@ -109,9 +108,12 @@ userMarker.on("drag", function(e) {
 
 
     function onEachFeature(feature, layer) {
+        var date = feature.properties.start.substr(0,10);
+        var time = feature.properties.start.substr(11);
+        time = time.substr(0,5);
 
           var ourPopup = '<h4 class=centered">' + feature.properties.title + "</h4>" +
-            '<p>Start: ' + feature.properties.start + '</p>' +
+            '<p>Start: ' + date + ", " + time + '</p>' +
             '<hr>' + '<h4 class=centered style="font-size: 16px">' + feature.properties.ingress + '</h4>' +
             '<a class="btn btn-whatsmappening centerize" style="color:white" href="{% url 'events:event_detail' 55 %}">See more</a>'
                 .replace(/55/, feature.properties.pk.toString()) ;
@@ -133,7 +135,6 @@ userMarker.on("drag", function(e) {
         categoryMarkerMap[curCategory] = tagMarkers;
 
         if(!favoriteMap[properties.pk]){
-            console.log(properties.pk + " is not favorieted");
             notFavoritedMarker.push(marker);
         }
     }
@@ -295,8 +296,6 @@ userMarker.on("drag", function(e) {
         {% for favEvent in favoritedEvents %}
            favoriteMap['{{ favEvent.pk }}'] = true;
         {% endfor %}
-
-    console.log(favoriteMap);
 
 
         var categories ="{% url 'events:categories' %}";
