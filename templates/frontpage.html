@@ -148,16 +148,13 @@ userMarker.on("drag", function(e) {
                 return L.marker(layer.getLatLng(), {icon: familyMarker});
                 break;
             case "Concert":
-                return L.marker(layer.getLatLng(), {icon: concert});
+                return L.marker(layer.getLatLng(), {icon: concertMarker});
                 break;
             case "Course":
                 return L.marker(layer.getLatLng(), {icon: courseMarker});
                 break;
-            case "Exhibition":
-                return L.marker(layer.getLatLng(), {icon: expoMarker});
-                break;
-            case "Festival":
-                return L.marker(layer.getLatLng(), {icon: festivalMarker});
+            case "Art":
+                return L.marker(layer.getLatLng(), {icon: artMarker});
                 break;
             case "Food":
                 return L.marker(layer.getLatLng(), {icon: foodMarker});
@@ -188,7 +185,7 @@ userMarker.on("drag", function(e) {
     popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var partyMarker = L.AwesomeMarkers.icon({
+    var partyMarker = L.icon({
     iconUrl: '{% static "img/icons/partyMarker.png" %}',
     shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
 
@@ -232,7 +229,7 @@ userMarker.on("drag", function(e) {
     popupAnchor:  [-3, -40] // point from which the popup should open relative to the iconAnchor
     });
 
-    var expoMarker = L.icon({
+    var artMarker = L.icon({
     iconUrl: '{% static "img/icons/artMarker.png" %}',
     shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
 
@@ -244,7 +241,7 @@ userMarker.on("drag", function(e) {
     });
 
     var courseMarker = L.icon({
-    iconUrl: '{% static "img/icons/courseMarker.png" %}',
+    iconUrl: '{% static "img/icons/course.png" %}',
     shadowUrl: '{% static "img/icons/markers-shadow.png" %}',
 
     iconSize:     [38, 40], // size of the icon
