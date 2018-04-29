@@ -10,12 +10,12 @@ $(window).on('map:init', function(e) {
     // Get the map
     var map = e.originalEvent.detail.map;
 
+    // add search button
     map.addControl( new L.Control.Search({
 		url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
 		jsonpParam: 'json_callback',
 		propertyName: 'display_name',
 		propertyLoc: ['lat','lon'],
-		marker: L.circleMarker([0,0],{radius:30}),
 		autoCollapse: true,
 		autoType: false,
 		minLength: 2
