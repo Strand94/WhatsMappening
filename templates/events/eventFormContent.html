@@ -1,9 +1,30 @@
 {% load static %}
+{% block link %}
 {% load leaflet_tags %}
 
-   {% leaflet_js plugins="forms" %}
-   {% leaflet_css plugins="forms" %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/event_form.css' %}"
+{% leaflet_js plugins="ALL" %}
+{% leaflet_css plugins="ALL" %}
+
+<script>
+$(window).on('map:init', function(e) {
+    // Get the map
+    var map = e.originalEvent.detail.map;
+
+    map.addControl( new L.Control.Search({
+		url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
+		jsonpParam: 'json_callback',
+		propertyName: 'display_name',
+		propertyLoc: ['lat','lon'],
+		marker: L.circleMarker([0,0],{radius:30}),
+		autoCollapse: true,
+		autoType: false,
+		minLength: 2
+	}) );
+});
+
+</script>
+{%  endblock %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/event_form.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %} "/>
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/global.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/>
@@ -16,6 +37,8 @@
 <script type="text/javascript" src="{% static 'admin/js/actions.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/calendar.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
+
+
 
 <div class="container" style="color: black">
     <div class="row space-below">
