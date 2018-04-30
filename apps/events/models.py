@@ -39,6 +39,7 @@ class Starred(models.Model):
     def __str__(self):
         return self.user.username
 
+
 def get_starred(user):
     user_starred = Starred.objects.filter(user=user).first()
     if user_starred:

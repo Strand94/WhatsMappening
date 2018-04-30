@@ -1,6 +1,7 @@
 body {
   overflow-x: hidden;
 }
+details summary::-webkit-details-marker { display:none; }
 
 :root {
     --sidebar-color: #f8f8f8;

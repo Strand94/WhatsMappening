@@ -78,8 +78,10 @@ def user_created(request):
 
 
 def event_detail(request, pk):
-    user_starred = Starred.objects.filter(user=request.user).first()
-    favorites = user_starred.favorites.all()
+    favorites = []
+    if request.user.is_authenticated:
+        user_starred = Starred.objects.filter(user=request.user).first()
+        favorites = user_starred.favorites.all()
     event = get_object_or_404(Event, pk=pk)
     if request.method == 'POST':
         if 'add_favorite' in request.POST:
