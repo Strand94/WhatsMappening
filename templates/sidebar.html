@@ -22,6 +22,29 @@
         <input type="text" name="addr" placeholder="Search for location" id="addr" list="try" value="">
            <datalist id="try">
            </datalist>
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static "css/sidebar.css" %}">
+
+<!-- Sidebar -->
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+            <a href="{% url 'frontpage' %}">
+                <p id="main-logo">WhatsMappening</p>
+            </a>
+        </li>
+        <hr/>
+
+    </ul>
+<br>
+    <!-- Search form -->
+
+       <div align = "center">
+
+        <input type="text" name="addr" placeholder="Search for location" id="addr" list="try" value="">
+           <datalist id="try">
+           </datalist>
 
         <button type="button" id="addrbtn" onclick="addr_search()" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
 
@@ -40,8 +63,8 @@
   $( function() {
     $( "#slider-range-min" ).slider({
       range: "min",
-      value: 0,
-      min: 0,
+      value: 1,
+      min: 1,
       max: 100,
       slide: function( event, ui ) {
         $( "#distance" ).val( ui.value );
@@ -83,7 +106,21 @@ function addCircle() {
     }
 
 }
-    </script>
+
+function useDistanceBtn() {
+    var btn =document.getElementById("distanceBtn");
+    if(!distanceSearch){
+        btn.innerText="Add marker";
+        distanceSearch=true;
+        filterDistance();
+    }else{
+        btn.innerText="Remove marker";
+        distanceSearch=false;
+        filterMarkers();
+    }
+
+}
+</script>
 
         {% if request.user.is_authenticated %}
             <div style="text-align: center; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
@@ -93,7 +130,7 @@ function addCircle() {
             <div style="text-align: center; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
                 <label>Show only starred events: <input type="checkbox" id="starred" onclick="filterMarkers()" disabled ></label>
                 <br><p style="font-size: 12px; text-align: center">log in to star events</p>
-            </div>
+            </div>Off
         {% endif %}
 
         <div style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px">
@@ -105,8 +142,12 @@ function addCircle() {
                 </div>
                 <br>
                 <div id="slider-range-min"></div>
+                <div class="center" style="padding-top: 20px">
+                    <button class="btn btn-whatsmappening" onclick="useDistanceBtn()" id="distanceBtn" value="Off">Remove marker</button>
+                </div>
             </details>
         </div>
+
         <div style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px">
             <!--<select id=127"categories"></select> -->
             <details><summary><b class="btn btn-whatsmappening center-block">Filter events by time</b></summary>
@@ -126,6 +167,7 @@ function addCircle() {
                 </form>
             </details>
         </div>
+
         <div style="padding-left: 10px; padding-right: 10px">
             <details ><summary><p class="btn btn-whatsmappening center-block">Filter events by category</p></summary>
                 <br>
@@ -228,9 +270,10 @@ function categoryChecked() {
                 input[i].type = "hidden";
             }
         }
-        //TODO remove it later
         filterDistance();
 }
+
+var distanceSearch=false;
 
 //for search on enter to work
     var input =document.getElementById("addr");
@@ -303,16 +346,372 @@ function searchSug() {
 
 
     function filterDistance() {
-        eventMap.removeLayer(markerLayer);
+
+     eventMap.removeLayer(markerLayer);
+    //markerLayer = allMarkersLayer;
+    markerLayer.addLayer(hiddenMarkers);
+
+    //remove all unchecked categories
+    if (!document.getElementById("allCategories").checked){
+       for(i = 0; i < allTags.length; i++){
+        console.log(allTags[i] + ": " + document.getElementById(allTags[i]).checked);
+       if(!document.getElementById(allTags[i]).checked){
+           for(j = 0; j < tagMarkerMap[allTags[i]].length; j++){
+               markerLayer.removeLayer(tagMarkerMap[allTags[i]][j]);
+               hiddenMarkers.addLayer(tagMarkerMap[allTags[i]][j]);
+           }
+       }
+        }
+    }
+
+
+
         markerLayer.eachLayer(function (layer) {
             var distance = layer.getLatLng().distanceTo(userMarker.getLatLng());
             if (distance > circleOfLife.getRadius()) {
-                //hiddenLayer.addToLayer(layer);
+                hiddenMarkers.addLayer(layer);
                 markerLayer.removeLayer(layer);
             }
         });
         markerLayer.addTo(eventMap);
-        //TODO use markerLayer and HiddenLayer
+
+        //remember to add layers to new map somehow. Maybe add a "use distanceSearch" to toogle a distance mode?
+    }
+
+    </script>
+<!-- /#sidebar-wrapper -->
+
+
+        <button type="button" id="addrbtn" onclick="addr_search()" class="btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
+
+
+       </div>
+
+    <br>
+
+      <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Slider - Range with fixed minimum</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#slider-range-min" ).slider({
+      range: "min",
+      value: 1,
+      min: 1,
+      max: 100,
+      slide: function( event, ui ) {
+        $( "#distance" ).val( ui.value );
+        circleOfLife.setRadius(ui.value*1000);
+      }
+    });
+    $( "#distance" ).val( $( "#slider-range-min" ).slider( "value" ) );
+  } );
+
+function circleRadius() {
+    var field=document.getElementsByName("radiusValue");
+    for(i=0;i<field.length;i++) {
+        console.log(field[i].value);
+        var radius=field[i].value;
+        console.log(radius);
+        circleOfLife.setRadius(radius*1000)
+    }
+
+}
+
+var circleOnMap=false;
+function addCircle() {
+    if(!addedToMap) {
+        userMarker.setLatLng(eventMap.getCenter()).addTo(eventMap);
+        addedToMap=true;
+    }else{
+        userMarker.setLatLng(eventMap.getCenter());
+
+    }
+      circleOfLife.setLatLng(userMarker.getLatLng());
+
+
+    if (circleOnMap){
+        circleOfLife.removeFrom(eventMap);
+        circleOnMap=false;
+    }else{
+        circleOfLife.addTo(eventMap);
+        circleOnMap=true;
+    }
+
+}
+
+function useDistanceBtn() {
+    var btn =document.getElementById("distanceBtn");
+    if(!distanceSearch){
+        btn.innerText="Add marker";
+        distanceSearch=true;
+        filterDistance();
+    }else{
+        btn.innerText="Remove marker";
+        distanceSearch=false;
+        filterMarkers();
+    }
+
+}
+</script>
+
+        {% if request.user.is_authenticated %}
+            <div style="text-align: center; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                <label>Show only starred events: <input type="checkbox" id="starred" onclick="filterMarkers()"  ></label>
+            </div>
+        {% else %}
+            <div style="text-align: center; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                <label>Show only starred events: <input type="checkbox" id="starred" onclick="filterMarkers()" disabled ></label>
+                <br><p style="font-size: 12px; text-align: center">log in to star events</p>
+            </div>Off
+        {% endif %}
+
+        <div style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px">
+            <details onclick="addCircle()"><summary><p class="btn btn-whatsmappening center-block">Choose events within radius</p></summary>
+                <div style="text-align: center">
+                    <br>
+                    <label for="distance" >Maximum distance in km:</label>
+                    <input type="text" id="distance" name="radiusValue" oninput="circleRadius()">
+                </div>
+                <br>
+                <div id="slider-range-min"></div>
+                <div class="center" style="padding-top: 20px">
+                    <button class="btn btn-whatsmappening" onclick="useDistanceBtn()" id="distanceBtn" value="Off">Remove marker</button>
+                </div>
+            </details>
+        </div>
+
+        <div style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px">
+            <!--<select id=127"categories"></select> -->
+            <details><summary><b class="btn btn-whatsmappening center-block">Filter events by time</b></summary>
+                <br>
+                <form  onsubmit="getTime();event.preventDefault()">
+                        <div style="padding-left: 65px">
+                            <b><input  type="radio" name="time" value="1" onclick="showDate('else')"> Today</b><br>
+                            <b><input type="radio" name="time" value="2"onclick="showDate('else')"> Tomorrow</b><br>
+                            <b><input  type="radio" name="time" value="0" checked onclick="showDate('else')"> This week</b><br>
+                            <b><input type ="radio" name="time"  id="custom" value="3" onclick="showDate('custom')"> Custom date</b>
+                            <p><input type="hidden" id="date" name="date" ><input type="hidden" name="date" id="date"> </p>
+                        </div>
+                        <div class="center">
+                            <button class="btn btn-whatsmappening" type="submit">Choose time</button>
+                        </div>
+                        <br>
+                </form>
+            </details>
+        </div>
+
+        <div style="padding-left: 10px; padding-right: 10px">
+            <details ><summary><p class="btn btn-whatsmappening center-block">Filter events by category</p></summary>
+                <br>
+                <div style="padding-left: 50px">
+                    <form id="categories" >{% csrf_token %}</form>
+                    <p><input type="checkbox" id="allCategories" name="All" value="AllCategories" onclick="checkAllCategories()" checked="True">
+                    <label for="All">All Categories</label></p>
+                    {% for category in categories %}
+                        <p><input type="checkbox" id="{{ category.title }}" name="{{ category.title }}" value="{{ category.title }}" onclick="categoryChecked()">
+                        <label for="{{ category.title }}">{{ category.title }}</label></p>
+                    {% endfor %}
+                </div>
+            </details>
+        </div>
+</div>
+
+
+<script>
+
+var categoryTags;
+
+//uses tagMarkerMap
+function getAllTags( ) {
+        console.log("categoryTags:");
+       console.log(Object.keys(categoryMap)) ;
+        categoryTags = Object.keys(categoryMarkerMap);
+
+        setTimeout(function() {
+            filterMarkers();
+        }, 200);
+        return categoryTags;
+
+
+}
+
+//uses tagMarkerMap, categoryTags
+function filterMarkers() {
+    console.log("Filtering Markers");
+    eventMap.removeLayer(markerLayer);
+    //markerLayer = allMarkersLayer;
+    markerLayer.addLayer(hiddenMarkers);
+
+    //remove all unchecked categories
+    if (!document.getElementById("allCategories").checked){
+       for(i = 0; i < categoryTags.length; i++){
+        console.log(categoryTags[i] + ": " + document.getElementById(categoryTags[i]).checked);
+       if(!document.getElementById(categoryTags[i]).checked){
+           for(j = 0; j < categoryMarkerMap[categoryTags[i]].length; j++){
+               markerLayer.removeLayer(categoryMarkerMap[categoryTags[i]][j]);
+               hiddenMarkers.addLayer(categoryMarkerMap[categoryTags[i]][j]);
+           }
+       }
+        }
+    }
+
+    if(document.getElementById("starred").checked){
+        console.log("starred!");
+        for(i = 0; i < notFavoritedMarker.length; i ++){
+           // remove all non-starred markers
+        markerLayer.removeLayer(notFavoritedMarker[i]);
+        hiddenMarkers.addLayer(notFavoritedMarker[i]);
+        }
+
+    }
+
+
+    eventMap.addLayer(markerLayer);
+}
+
+function checkAllCategories() {
+    console.log("All categories checked");
+
+    //uncheck all categories
+    {% for category in categories %}
+        document.getElementById("{{ category.title }}").checked = false;
+    {% endfor %}
+
+    filterMarkers();
+}
+
+function categoryChecked() {
+    document.getElementById("allCategories").checked = false;
+    console.log("category Checked");
+    filterMarkers();
+}
+
+//this function makes the date input visible/hidden
+
+
+   function showDate(box) {
+       var input= document.getElementsByName("date");
+        if(box==="custom"){
+            for(var i=0;i<input.length;i++){
+                console.log("Now date");
+                input[i].type="date";
+            }
+        }else {
+            for (var i = 0; i < input.length; i++) {
+                console.log("Nowhidden ");
+                input[i].type = "hidden";
+            }
+        }
+        filterDistance();
+}
+
+var distanceSearch=false;
+
+//for search on enter to work
+    var input =document.getElementById("addr");
+    input.addEventListener("keyup",function (event) {
+        // Cancel the default action, if needed
+  event.preventDefault();
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Trigger the button element with a click
+    document.getElementById("addrbtn").click();
+    //If any other key is pressed
+  }else if (!event.shiftKey){
+      searchSug();
+  }
+});
+
+//get the events in a timeperiod
+function getTime() {
+    var radio = document.querySelector('input[name="time"]:checked').value;
+    eventMap.removeLayer(markerLayer);
+    markerLayer = new L.markerClusterGroup();
+    if(radio!="3") {
+        var liste = JSON.stringify(radio);
+        eventPoints = "{% url 'events:timeData' 12345 %}".replace(/12345/, liste);
+       initiateEventPointCallbackMadnes();
+
+    }else{
+        var dates=document.getElementsByName("date");
+       var query=dates[0].value+"&&&"+dates[1].value;
+       var liste = JSON.stringify(query);
+       eventPoints= "{% url 'events:customData' 12345 %}".replace(/12345/, liste);
+        initiateEventPointCallbackMadnes();
+    }
+}
+
+
+//searching suggestions
+function searchSug() {
+    var inp = document.getElementById("addr");
+    $("#try").empty();
+    var dataList=document.getElementById("try");
+        $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=10&q=' + inp.value, function(data) {
+            $.each(data, function (key,val) {
+
+                var option=document.createElement("option");
+                option.setAttribute("value",val.display_name);
+                dataList.appendChild(option);
+
+            });
+        });
+
+    }
+
+//search on adress
+    function addr_search() {
+        var inp=document.getElementById("addr");
+        $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + inp.value, function(data) {
+    $.each(data, function (key,val) {
+        var location = new L.LatLng(val.lat,val.lon);
+        if(val.type=='city' || val.type=='administrative'){
+            eventMap.setView(location);
+            eventMap.fitBounds([[val.boundingbox[0],val.boundingbox[2]],[val.boundingbox[1],val.boundingbox[3]]])
+        }else{
+            eventMap.setView(location,13);
+        }
+
+    });
+        });
+    }
+
+
+    function filterDistance() {
+
+     eventMap.removeLayer(markerLayer);
+    //markerLayer = allMarkersLayer;
+    markerLayer.addLayer(hiddenMarkers);
+
+    //remove all unchecked categories
+    if (!document.getElementById("allCategories").checked){
+       for(i = 0; i < allTags.length; i++){
+        console.log(allTags[i] + ": " + document.getElementById(allTags[i]).checked);
+       if(!document.getElementById(allTags[i]).checked){
+           for(j = 0; j < tagMarkerMap[allTags[i]].length; j++){
+               markerLayer.removeLayer(tagMarkerMap[allTags[i]][j]);
+               hiddenMarkers.addLayer(tagMarkerMap[allTags[i]][j]);
+           }
+       }
+        }
+    }
+
+
+
+        markerLayer.eachLayer(function (layer) {
+            var distance = layer.getLatLng().distanceTo(userMarker.getLatLng());
+            if (distance > circleOfLife.getRadius()) {
+                hiddenMarkers.addLayer(layer);
+                markerLayer.removeLayer(layer);
+            }
+        });
+        markerLayer.addTo(eventMap);
+
+        //remember to add layers to new map somehow. Maybe add a "use distanceSearch" to toogle a distance mode?
     }
 
     </script>
