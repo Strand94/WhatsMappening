@@ -39,8 +39,8 @@
   $( function() {
     $( "#slider-range-min" ).slider({
       range: "min",
-      value: 0,
-      min: 0,
+      value: 1,
+      min: 1,
       max: 100,
       slide: function( event, ui ) {
         $( "#distance" ).val( ui.value );
@@ -82,8 +82,22 @@ function addCircle() {
     }
     
 }
+
+function useDistanceBtn() {
+    var btn =document.getElementById("distanceBtn");
+    if(!distanceSearch){
+        btn.innerText="On";
+        distanceSearch=true;
+        filterDistance();
+    }else{
+        btn.innerText="Off";
+        distanceSearch=false;
+        filterMarkers();
+    }
+
+}
   </script>
-<details onclick="addCircle()"><summary><B>Choose distance from point.</B></summary>
+<details ><summary onclick="addCircle()"><B>Choose distance from point.</B></summary>
     <p>
   <label for="distance">&nbsp;&nbsp;Maximum distance in km:</label>
   <input type="text" id="distance" name="radiusValue" oninput="circleRadius()">
@@ -91,6 +105,8 @@ function addCircle() {
 
 <div id="slider-range-min">
 </div>
+
+    <button onclick="useDistanceBtn()" id="distanceBtn" value="Off">Off</button>
     </details>
 
     <BR>
@@ -200,9 +216,10 @@ function categoryChecked() {
                 input[i].type = "hidden";
             }
         }
-        //TODO remove it later
         filterDistance();
 }
+
+var distanceSearch=false;
 
 //for search on enter to work
     var input =document.getElementById("addr");
@@ -286,16 +303,36 @@ function searchSug() {
 
 
     function filterDistance() {
-        eventMap.removeLayer(markerLayer);
+
+     eventMap.removeLayer(markerLayer);
+    //markerLayer = allMarkersLayer;
+    markerLayer.addLayer(hiddenMarkers);
+
+    //remove all unchecked categories
+    if (!document.getElementById("allCategories").checked){
+       for(i = 0; i < allTags.length; i++){
+        console.log(allTags[i] + ": " + document.getElementById(allTags[i]).checked);
+       if(!document.getElementById(allTags[i]).checked){
+           for(j = 0; j < tagMarkerMap[allTags[i]].length; j++){
+               markerLayer.removeLayer(tagMarkerMap[allTags[i]][j]);
+               hiddenMarkers.addLayer(tagMarkerMap[allTags[i]][j]);
+           }
+       }
+        }
+    }
+
+
+
         markerLayer.eachLayer(function (layer) {
             var distance = layer.getLatLng().distanceTo(userMarker.getLatLng());
             if (distance > circleOfLife.getRadius()) {
-                //hiddenLayer.addToLayer(layer);
+                hiddenMarkers.addLayer(layer);
                 markerLayer.removeLayer(layer);
             }
         });
         markerLayer.addTo(eventMap);
-        //TODO use markerLayer and HiddenLayer
+
+        //remember to add layers to new map somehow. Maybe add a "use distanceSearch" to toogle a distance mode?
     }
 
     </script>

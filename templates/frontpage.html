@@ -96,7 +96,11 @@ L.easyButton('fa-map-marker', function(btn, map){
         userMarker.setLatLng(map.getCenter());
 
     }
+    if (distanceSearch){
+        filterDistance();
+    }
       circleOfLife.setLatLng(userMarker.getLatLng());
+
 }).addTo(eventMap);
 
 userMarker.on("drag", function(e) {
@@ -104,6 +108,10 @@ userMarker.on("drag", function(e) {
     var marker = e.target;
     var position = marker.getLatLng();
     circleOfLife.setLatLng(position);
+    if (distanceSearch){
+        filterDistance();
+    }
+
 });
 
 
