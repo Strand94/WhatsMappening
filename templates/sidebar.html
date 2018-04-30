@@ -83,7 +83,20 @@ function addCircle() {
     }
 
 }
-    </script>
+function useDistanceBtn() {
+    var btn =document.getElementById("distanceBtn");
+    if(!distanceSearch){
+        btn.innerText="Add marker";
+        distanceSearch=true;
+        filterDistance();
+    }else{
+        btn.innerText="Remove marker";
+        distanceSearch=false;
+        filterMarkers();
+    }
+
+}
+</script>
 
         {% if request.user.is_authenticated %}
             <div style="text-align: center; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
@@ -105,8 +118,12 @@ function addCircle() {
                 </div>
                 <br>
                 <div id="slider-range-min"></div>
+                <div class="center" style="padding-top: 20px">
+                    <button class="btn btn-whatsmappening" onclick="useDistanceBtn()" id="distanceBtn" value="Off">Remove marker</button>
+                </div>
             </details>
         </div>
+
         <div style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px">
             <!--<select id=127"categories"></select> -->
             <details><summary><b class="btn btn-whatsmappening center-block">Filter events by time</b></summary>
