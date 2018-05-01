@@ -22,6 +22,9 @@ six==1.11.0
 social-auth-app-django==2.1.0
 social-auth-core==1.6.0
 urllib3==1.22
+django-leaflet==0.23.0
+django-geojson==2.11.0
+django-datetime-widget==0.9.3
 whitenoise==3.3.1
 geos == 0.1.0
 gunicorn==19.7.1

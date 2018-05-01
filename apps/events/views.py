@@ -18,8 +18,6 @@ def create_event(request):
             event = form.save(commit=False)
             event.author = request.user
             event.timestamp = timezone.now()
-            event.start = str(request.POST.get(("startDate"), "")+" "+request.POST.get(("startTime"), ""))
-            event.end = str(request.POST.get(("endDate"), "")+" "+request.POST.get(("endTime"), ""))
             event.save()
             return redirect('events:user_events')
     form = EventForm(request.POST)
@@ -31,12 +29,6 @@ def create_event(request):
 
 def edit_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    start_dateTime = str(event.start).split()
-    end_dateTime = str(event.end).split()
-    start_date = (start_dateTime[0])
-    start_time = (start_dateTime[1][0:8])
-    end_date = (end_dateTime[0])
-    end_time = (end_dateTime[1][0:8])
     owner = event.author
     action = 'Edit'
     if request.method == 'POST':
@@ -46,12 +38,10 @@ def edit_event(request, pk):
             event = form.save(commit=False)
             event.author = request.user
             event.timestamp = timezone.now()
-            event.start = str(request.POST.get(("startDate"), "") + " " + request.POST.get(("startTime"), ""))
-            event.end = str(request.POST.get(("endDate"), "") + " " + request.POST.get(("endTime"), ""))
             event.save()
             return redirect('events:event_detail', pk=event.pk)
     else:
-        form = EventForm(instance=event, initial={'startDate': start_date, 'startTime': start_time, 'endDate': end_date, 'endTime': end_time})
+        form = EventForm(instance=event)
     return render(request, 'events/eventForm.html',{
         'form':form,
         'action':action,

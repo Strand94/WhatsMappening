@@ -40,12 +40,13 @@
   $( function() {
     $( "#slider-range-min" ).slider({
       range: "min",
-      value: 0,
-      min: 0,
+      value: 1,
+      min: 1,
       max: 100,
       slide: function( event, ui ) {
         $( "#distance" ).val( ui.value );
         circleOfLife.setRadius(ui.value*1000);
+        eventMap.fitBounds(circleOfLife.getBounds());
       }
     });
     $( "#distance" ).val( $( "#slider-range-min" ).slider( "value" ) );
@@ -53,11 +54,13 @@
 
 function circleRadius() {
     var field=document.getElementsByName("radiusValue");
+    console.log("bounds:  " /*+ circleOfLife.getBounds()*/);
     for(i=0;i<field.length;i++) {
         console.log(field[i].value);
         var radius=field[i].value;
         console.log(radius);
-        circleOfLife.setRadius(radius*1000)
+        circleOfLife.setRadius(radius*1000);
+        eventMap.fitBounds(circleOfLife.getBounds());
     }
 
 }
@@ -76,14 +79,33 @@ function addCircle() {
 
     if (circleOnMap){
         circleOfLife.removeFrom(eventMap);
+        userMarker.removeFrom(eventMap);
+        //user marker is removed from map
+        addedToMap=false;
+        //the circle is removed from map
         circleOnMap=false;
     }else{
         circleOfLife.addTo(eventMap);
+        eventMap.fitBounds(circleOfLife.getBounds());
         circleOnMap=true;
     }
 
 }
-    </script>
+var distanceSearch=false;
+function useDistanceBtn() {
+    var btn =document.getElementById("distanceBtn");
+    if(!distanceSearch){
+        btn.innerText="On";
+        distanceSearch=true;
+        filterDistance();
+    }else{
+        btn.innerText="Off";
+        distanceSearch=false;
+        filterMarkers();
+    }
+
+}
+</script>
 
         {% if request.user.is_authenticated %}
             <div style="text-align: center; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
@@ -97,7 +119,7 @@ function addCircle() {
         {% endif %}
 
         <div style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px">
-            <details onclick="addCircle()"><summary><p class="btn btn-whatsmappening center-block">Choose events within radius</p></summary>
+            <details><summary onclick="addCircle()"><p class="btn btn-whatsmappening center-block">Choose events within radius</p></summary>
                 <div style="text-align: center">
                     <br>
                     <label for="distance" >Maximum distance in km:</label>
@@ -105,8 +127,12 @@ function addCircle() {
                 </div>
                 <br>
                 <div id="slider-range-min"></div>
+                <div class="center" style="padding-top: 20px">
+                    <button class="btn btn-whatsmappening" onclick="useDistanceBtn()" id="distanceBtn" value="Off">Off</button>
+                </div>
             </details>
         </div>
+
         <div style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px">
             <!--<select id=127"categories"></select> -->
             <details><summary><b class="btn btn-whatsmappening center-block">Filter events by time</b></summary>
@@ -228,8 +254,6 @@ function categoryChecked() {
                 input[i].type = "hidden";
             }
         }
-        //TODO remove it later
-        filterDistance();
 }
 
 //for search on enter to work
@@ -303,16 +327,16 @@ function searchSug() {
 
 
     function filterDistance() {
-        eventMap.removeLayer(markerLayer);
+  filterMarkers();
+         eventMap.removeLayer(markerLayer);
         markerLayer.eachLayer(function (layer) {
             var distance = layer.getLatLng().distanceTo(userMarker.getLatLng());
             if (distance > circleOfLife.getRadius()) {
-                //hiddenLayer.addToLayer(layer);
+                hiddenMarkers.addLayer(layer);
                 markerLayer.removeLayer(layer);
             }
         });
         markerLayer.addTo(eventMap);
-        //TODO use markerLayer and HiddenLayer
     }
 
     </script>

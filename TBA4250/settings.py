@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'fvlabevmq+je0ybvu8_ksjgrz-v(*$0_93sjhz13l0)s%5!l7-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # External packages
     'social_django',
+    'datetimewidget'
     'storages',
 
 ]
