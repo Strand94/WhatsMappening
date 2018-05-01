@@ -46,6 +46,7 @@
       slide: function( event, ui ) {
         $( "#distance" ).val( ui.value );
         circleOfLife.setRadius(ui.value*1000);
+        eventMap.fitBounds(circleOfLife.getBounds());
       }
     });
     $( "#distance" ).val( $( "#slider-range-min" ).slider( "value" ) );
@@ -53,11 +54,13 @@
 
 function circleRadius() {
     var field=document.getElementsByName("radiusValue");
+    console.log("bounds:  " /*+ circleOfLife.getBounds()*/);
     for(i=0;i<field.length;i++) {
         console.log(field[i].value);
         var radius=field[i].value;
         console.log(radius);
-        circleOfLife.setRadius(radius*1000)
+        circleOfLife.setRadius(radius*1000);
+        eventMap.fitBounds(circleOfLife.getBounds());
     }
 
 }
