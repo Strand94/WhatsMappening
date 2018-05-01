@@ -293,10 +293,11 @@ userMarker.on("drag", function(e) {
 
     // fill neccesary category variables -> THEN addEvents -> THEN getAllTags
     function initiateEventPointCallbackMadnes(){
-       categoryMap = {};
+        categoryMap = {};
        categoryList =[];
        categoryMarkerMap= {};
        favoriteMap = {};
+       notFavoritedMarker = [];
        console.log("initiateEventPointCallbackMadnes")
 
         {% for favEvent in favoritedEvents %}
