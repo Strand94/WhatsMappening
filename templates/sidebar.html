@@ -76,6 +76,10 @@ function addCircle() {
 
     if (circleOnMap){
         circleOfLife.removeFrom(eventMap);
+        userMarker.removeFrom(eventMap);
+        //user marker is removed from map
+        addedToMap=false;
+        //the circle is removed from map
         circleOnMap=false;
     }else{
         circleOfLife.addTo(eventMap);
