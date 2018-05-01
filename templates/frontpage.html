@@ -97,12 +97,18 @@ L.easyButton('fa-map-marker', function(btn, map){
 
     }
       circleOfLife.setLatLng(userMarker.getLatLng());
+    if (distanceSearch){
+           filterDistance();
+    }
 }).addTo(eventMap);
 
 userMarker.on("drag", function(e) {
     var marker = e.target;
     var position = marker.getLatLng();
     circleOfLife.setLatLng(position);
+    if (distanceSearch){
+           filterDistance();
+    }
 });
 
 
@@ -287,10 +293,11 @@ userMarker.on("drag", function(e) {
 
     // fill neccesary category variables -> THEN addEvents -> THEN getAllTags
     function initiateEventPointCallbackMadnes(){
-       categoryMap = {};
+        categoryMap = {};
        categoryList =[];
        categoryMarkerMap= {};
        favoriteMap = {};
+       notFavoritedMarker = [];
        console.log("initiateEventPointCallbackMadnes")
 
         {% for favEvent in favoritedEvents %}
