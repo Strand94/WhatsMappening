@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'fvlabevmq+je0ybvu8_ksjgrz-v(*$0_93sjhz13l0)s%5!l7-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # External packages
     'social_django',
     'datetimewidget'
+    'storages',
 
 ]
 
@@ -65,6 +66,7 @@ ROOT_URLCONF = 'TBA4250.urls'
 
 TEMPLATES = [
     {
+
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')]
         ,
@@ -90,8 +92,8 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'frontpage'
 LOGIN_REDIRECT_URL = 'frontpage'
 
-SOCIAL_AUTH_FACEBOOK_KEY = '171056550287904'  # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = '0cf6dd3741e9a1382cc2c834c8e844ba'  # App Secret
+SOCIAL_AUTH_FACEBOOK_KEY = '291419894719204'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '243912c0256ce347c18ac95e25293579'  # App Secret
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
@@ -119,14 +121,17 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'whatsmappening',
-        'USER': 'postgres',
-        'HOST': 'localhost',
-        'PASSWORD': 'supergib',
-        'PORT': '5432',
-    }
+   'default': {
+       'ENGINE': 'django.contrib.gis.db.backends.postgis',
+       'NAME': 'webinar',
+       'USER': 'webinar',
+       'HOST': '46.101.4.130',
+       'PASSWORD': 'webinar',
+       'PORT': '5432',
+       'OPTIONS': {
+           'options': '-c search_path=whatsmappening,public'
+       }
+   }
 }
 
 # Password validation
@@ -149,7 +154,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',
-
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -163,13 +167,13 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_L10N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = '/uploads/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -191,3 +195,12 @@ LEAFLET_CONFIG = {
         }
     }
 }
+
+
+GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
+GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
+
+
+DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+DROPBOX_OAUTH2_TOKEN = '5S9o2uS5nGAAAAAAAAAABsyX295X-hfVSF7Z5G3m2S-tiH5PcqwF0eGxn76zUuFH'
+
