@@ -97,12 +97,18 @@ L.easyButton('fa-map-marker', function(btn, map){
 
     }
       circleOfLife.setLatLng(userMarker.getLatLng());
+    if (distanceSearch){
+           filterDistance();
+    }
 }).addTo(eventMap);
 
 userMarker.on("drag", function(e) {
     var marker = e.target;
     var position = marker.getLatLng();
     circleOfLife.setLatLng(position);
+    if (distanceSearch){
+           filterDistance();
+    }
 });
 
 
