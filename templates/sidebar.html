@@ -86,6 +86,7 @@ function addCircle() {
         circleOnMap=false;
     }else{
         circleOfLife.addTo(eventMap);
+        eventMap.fitBounds(circleOfLife.getBounds());
         circleOnMap=true;
     }
 
