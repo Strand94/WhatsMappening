@@ -1,21 +1,23 @@
 from django import forms
 from .models import *
-from django.contrib.admin import widgets
+from datetimewidget.widgets import DateTimeWidget
 from leaflet.forms.fields import PointField
 
 
 class EventForm(forms.ModelForm):
     description = forms.CharField(max_length=2000, required=True, widget=forms.Textarea(), help_text='Write the description here!' )
-    startDate = forms.DateField(required=True, widget=widgets.AdminDateWidget())
-    startTime = forms.TimeField(required=True, widget=widgets.AdminTimeWidget())
-    endDate = forms.DateField(required=True, widget=widgets.AdminDateWidget())
-    endTime = forms.TimeField(required=True, widget=widgets.AdminTimeWidget())
     location = PointField(help_text="click the marker icon and place it in the desired location")
 
     class Meta:
         model = Event
-        exclude =['author', 'timestamp', 'start', 'end']
-        fields = ('title', 'ingress', 'description','startTime','startDate','endTime','endDate','address','image','category', 'location')
+        widgets = {
+            # Use localization and bootstrap 3
+            'start': DateTimeWidget(attrs={'id': "start"}, usel10n=True, bootstrap_version=3),
+            'end': DateTimeWidget(attrs={'id': "start"}, usel10n=True, bootstrap_version=3),
+
+        }
+        exclude =['author', 'timestamp']
+        fields = ('title', 'ingress', 'description','start','end','address','image','category', 'location')
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)

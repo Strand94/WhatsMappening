@@ -18,3 +18,4 @@ social-auth-core==1.6.0
 urllib3==1.22
 django-leaflet==0.23.0
 django-geojson==2.11.0
+django-datetime-widget==0.9.3

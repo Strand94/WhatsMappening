@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # External packages
     'social_django',
+    'datetimewidget'
 
 ]
 
