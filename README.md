@@ -24,18 +24,37 @@ Windows:
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
+A step by step series of examples that tell you have to get a development enviroment running
 
-Say what the step will be
-
+First step is to clone the project and navigate to the project folder
 ```
-Give the example
+virtualenv venv          # create virtualenv venv
+source venv/bin/activate # activate 
 ```
-
-And repeat
-
+make a virtual enviroment and activate it. For linux/mac:
 ```
-until finished
+git clone https://github.com/Strand94/WhatsMappening.git
+cd whatsmappening
+```
+For windows make virtualenv manually (can be done in pycharm settings at project interprenter)
+```
+cd Venv/Scripts         # Go to the virtualenv folder
+activate # activate 
+cd ../.. # navigate back to project folder
+```
+To ensure this worked, there should now be a (venv) marker to the left of you navigation path in the terminal.
+
+After that you need to install the development dependencies,
+```
+pip install -r requirements.txt
+```
+After you have installed all the requirements, its time to generate the database
+```
+Python manage.py migrate
+```
+Run the web application locally,
+```
+Python manage.py runserver
 ```
 
 ## Deployment
@@ -48,14 +67,15 @@ In order to deply the latest version of our application to the live server, one 
 * [Django](https://www.djangoproject.com/) - The web framework used
 * [Leaflet](http://leafletjs.com/) - a JavaScript library for interactive maps
 * [PostGIS](http://postgis.net/) - Spatial and Geographic Objects for PostgreSQL
-
+* [django-datetime-widget](https://github.com/asaglimbeni/django-datetime-widget) - Widget for selecting valid DateTime data
+ 
 ## Authors
 
-* **Andreas G. Strand** - *Initial work* - [Strand94](https://github.com/Strand94)
-* **Bartosz J. Zarosa** - *Initial work* - [Bartors](https://github.com/Bartors)
-* **Inès Blomvågnes** - *Initial work* - [Blomsi](https://github.com/blomsi)
-* **Kari M. Johannessen** - *Initial work* - [ThaiKari](https://github.com/ThaiKari)
-* **Nicolaj Nielsen** - *Initial work* - [Nicolajn](https://github.com/nicolajn)
+* **Andreas G. Strand** - *Developer* - [Strand94](https://github.com/Strand94)
+* **Bartosz J. Zarosa** - *Developer* - [Bartors](https://github.com/Bartors)
+* **Inès Blomvågnes** - *Developer* - [Blomsi](https://github.com/blomsi)
+* **Kari M. Johannessen** - *Developer* - [ThaiKari](https://github.com/ThaiKari)
+* **Nicolaj Nielsen** - *Developer* - [Nicolajn](https://github.com/nicolajn)
 
 
 ## License
